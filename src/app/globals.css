@@ -10,15 +10,15 @@
   }
 
   body {
-    @apply font-sans text-secondary-800 bg-white;
+    @apply font-sans text-gray-800 bg-white;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif text-primary-500;
+    @apply font-serif text-primary-800;
   }
 
   ::selection {
-    @apply bg-gold-500 text-white;
+    @apply bg-primary-300 text-white;
   }
 }
 
@@ -29,53 +29,70 @@
 
   .btn-primary {
     @apply inline-flex items-center justify-center px-6 py-3 
-           bg-primary-500 text-white font-medium rounded-md
+           bg-primary-500 text-white font-medium rounded-full
            hover:bg-primary-600 transition-all duration-300
-           focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2;
+           focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2
+           shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 hover:-translate-y-0.5;
   }
 
   .btn-outline {
     @apply inline-flex items-center justify-center px-6 py-3
-           border-2 border-primary-500 text-primary-500 font-medium rounded-md
+           border-2 border-primary-500 text-primary-500 font-medium rounded-full
            hover:bg-primary-500 hover:text-white transition-all duration-300
            focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2;
   }
 
-  .btn-gold {
+  .btn-accent {
     @apply inline-flex items-center justify-center px-6 py-3
-           bg-gold-500 text-white font-medium rounded-md
-           hover:bg-gold-600 transition-all duration-300
-           focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2;
+           bg-accent-500 text-white font-medium rounded-full
+           hover:bg-accent-600 transition-all duration-300
+           focus:outline-none focus:ring-2 focus:ring-accent-400 focus:ring-offset-2
+           shadow-lg shadow-accent-500/25 hover:shadow-accent-500/40 hover:-translate-y-0.5;
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center px-6 py-3
+           bg-green-500 text-white font-medium rounded-full
+           hover:bg-green-600 transition-all duration-300
+           shadow-lg shadow-green-500/25;
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-serif font-bold text-primary-500 mb-4;
+    @apply text-3xl md:text-4xl font-serif font-bold text-primary-800 mb-4;
   }
 
   .section-subtitle {
-    @apply text-lg text-secondary-600 max-w-2xl;
+    @apply text-lg text-gray-600 max-w-2xl;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-md hover:shadow-xl 
+    @apply bg-white rounded-2xl shadow-md hover:shadow-xl 
            transition-all duration-300 overflow-hidden;
   }
 
   .card-elevated {
-    @apply bg-white rounded-xl shadow-lg hover:shadow-2xl
+    @apply bg-white rounded-2xl shadow-lg hover:shadow-2xl
            transition-all duration-300 overflow-hidden
-           border border-secondary-100;
+           border border-primary-100;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 border border-secondary-300 rounded-md
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl
            focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500
-           transition-all duration-200 text-secondary-800 placeholder:text-secondary-400;
+           transition-all duration-200 text-gray-800 placeholder:text-gray-400;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  .gradient-pink {
+    @apply bg-gradient-to-r from-primary-400 via-primary-500 to-accent-500;
+  }
+
+  .gradient-hero {
+    @apply bg-gradient-to-br from-primary-50 via-baby-lilac to-baby-pink;
   }
 }

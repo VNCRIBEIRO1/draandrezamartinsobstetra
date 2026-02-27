@@ -1,127 +1,55 @@
-'use client';
-
+import { Heart, Baby, Stethoscope, Flower2, Microscope, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
-import {
-  Briefcase,
-  Users,
-  ShieldCheck,
-  Building2,
-  Landmark,
-  Scale,
-  ArrowRight,
-  CheckCircle2,
-  FileText,
-  Handshake,
-  Gavel,
-  LucideIcon,
-} from 'lucide-react';
 import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeader from '@/components/SectionHeader';
-import { AREA_IMAGES, DEFAULT_IMAGE } from '@/lib/images';
 
-const iconMap: Record<string, LucideIcon> = {
-  Briefcase,
-  Users,
-  ShieldCheck,
-  Building2,
-  Landmark,
-  Scale,
-  FileText,
-  Handshake,
-  Gavel,
+export const metadata = {
+  title: 'Áreas de Atuação | Dra. Andresa Martin Louzada',
+  description: 'Conheça as áreas de atuação da Dra. Andresa: Ginecologia, Obstetrícia, Pré-natal, Menopausa, Ginecologia Regenerativa e Microscopia Vaginal.',
 };
 
 const areas = [
   {
-    iconName: 'Users',
-    title: 'Direito Trabalhista',
-    description:
-      'Atuação estratégica na defesa dos direitos do trabalhador e do empregador. Assessoria completa em todas as fases do processo trabalhista, desde a negociação até o julgamento final.',
-    topics: [
-      'Rescisão Contratual',
-      'Verbas Rescisórias',
-      'Assédio Moral e Sexual',
-      'Horas Extras e Adicionais',
-      'Acidentes de Trabalho',
-      'Reclamações Trabalhistas',
-    ],
-    color: 'from-[#1a2e1f] to-[#2d4a35]',
+    icon: Heart,
+    title: 'Ginecologia',
+    description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher. Prevenção, diagnóstico e tratamento com cuidado e acolhimento.',
+    items: ['Consulta ginecológica de rotina', 'Papanicolau e colposcopia', 'Infecções e corrimentos', 'Endometriose e miomas', 'Planejamento reprodutivo', 'Métodos contraceptivos'],
+    color: 'from-pink-400 to-pink-600',
   },
   {
-    iconName: 'ShieldCheck',
-    title: 'Direito Criminal',
-    description:
-      'Defesa criminal robusta e estratégica em todas as instâncias. Atuação em inquéritos policiais, audiências de custódia, habeas corpus, recursos e acompanhamento processual completo.',
-    topics: [
-      'Defesa Criminal',
-      'Habeas Corpus',
-      'Audiência de Custódia',
-      'Crimes contra o Patrimônio',
-      'Crimes contra a Pessoa',
-      'Recursos Criminais',
-    ],
-    color: 'from-[#1a1a1a] to-[#333333]',
+    icon: Baby,
+    title: 'Obstetrícia',
+    description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para a mãe e o bebê, do planejamento ao puerpério.',
+    items: ['Parto humanizado', 'Gestação de alto risco', 'Ultrassom obstétrico', 'Orientações sobre amamentação', 'Acompanhamento pós-parto', 'Planejamento da gestação'],
+    color: 'from-purple-400 to-purple-600',
   },
   {
-    iconName: 'Briefcase',
-    title: 'Direito Civil',
-    description:
-      'Orientação e representação em questões civis como contratos, responsabilidade civil, indenizações, cobranças judiciais e direito das obrigações.',
-    topics: [
-      'Contratos e Obrigações',
-      'Responsabilidade Civil',
-      'Indenizações por Danos',
-      'Direito das Sucessões',
-      'Cobranças Judiciais',
-      'Ações de Reparação',
-    ],
-    color: 'from-[#1a2e1f] to-[#3a5a42]',
+    icon: Stethoscope,
+    title: 'Pré-natal',
+    description: 'Pré-natal completo e humanizado com acompanhamento individualizado. Cada gestação é única e merece atenção especial.',
+    items: ['Consultas mensais/quinzenais/semanais', 'Exames laboratoriais completos', 'Ultrassonografias de rotina', 'Acompanhamento nutricional', 'Orientação sobre parto', 'Vacinação na gestação'],
+    color: 'from-rose-400 to-rose-600',
   },
   {
-    iconName: 'Building2',
-    title: 'Direito Empresarial',
-    description:
-      'Assessoria jurídica completa para empresas de todos os portes. Desde a constituição da empresa até a resolução de conflitos societários, contratos comerciais e recuperação judicial.',
-    topics: [
-      'Constituição de Empresas',
-      'Contratos Comerciais',
-      'Recuperação Judicial',
-      'Questões Societárias',
-      'Compliance Empresarial',
-      'Falência',
-    ],
-    color: 'from-[#8b7320] to-[#b8942e]',
+    icon: Flower2,
+    title: 'Menopausa',
+    description: 'Tratamento personalizado para os sintomas da menopausa, garantindo qualidade de vida e bem-estar nessa nova fase.',
+    items: ['Reposição hormonal bioidêntica', 'Tratamento de fogachos', 'Saúde óssea e cardiovascular', 'Controle de peso', 'Saúde mental e emocional', 'Sexualidade na menopausa'],
+    color: 'from-violet-400 to-violet-600',
   },
   {
-    iconName: 'Landmark',
-    title: 'Direito Administrativo',
-    description:
-      'Atuação em questões envolvendo a Administração Pública, licitações, contratos administrativos, concursos públicos, mandados de segurança e processos disciplinares.',
-    topics: [
-      'Licitações e Contratos',
-      'Mandado de Segurança',
-      'Concursos Públicos',
-      'Processos Disciplinares',
-      'Responsabilidade do Estado',
-      'Improbidade Administrativa',
-    ],
-    color: 'from-[#1a1a1a] to-[#2a2a2a]',
+    icon: Sparkles,
+    title: 'Ginecologia Regenerativa',
+    description: 'Procedimentos inovadores com tecnologias de ponta para restauração e rejuvenescimento íntimo feminino.',
+    items: ['Laser íntimo', 'Bioestimuladores de colágeno', 'Ácido hialurônico íntimo', 'Tratamento de incontinência urinária leve', 'Rejuvenescimento vulvovaginal', 'Síndrome geniturinária da menopausa'],
+    color: 'from-fuchsia-400 to-fuchsia-600',
   },
   {
-    iconName: 'Scale',
-    title: 'Cálculos Judiciais',
-    description:
-      'Elaboração e conferência de cálculos judiciais com precisão e rigor técnico. Liquidação de sentenças, atualização de débitos judiciais e perícias contábeis para diversas áreas do Direito.',
-    topics: [
-      'Liquidação de Sentenças',
-      'Atualização de Débitos',
-      'Perícias Contábeis',
-      'Cálculos Trabalhistas',
-      'Cálculos Cíveis',
-      'Impugnação de Cálculos',
-    ],
-    color: 'from-[#7c6318] to-[#c9a84c]',
+    icon: Microscope,
+    title: 'Microscopia Vaginal',
+    description: 'Diagnóstico imediato durante a consulta — análise microscópica do conteúdo vaginal com resultado na hora, sem necessidade de aguardar exames laboratoriais.',
+    items: ['Resultado na hora da consulta', 'Diagnóstico preciso de infecções', 'Candidíase, vaginose, tricomoníase', 'Tratamento iniciado imediatamente', 'Sem custos adicionais de lab', 'Acompanhamento microscópico'],
+    color: 'from-pink-500 to-primary-500',
   },
 ];
 
@@ -129,115 +57,95 @@ export default function AreasPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-[#050905] via-[#0e1810] to-[#1a2e1f] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 right-10 w-72 h-72 bg-gold-500 rounded-full blur-3xl" />
-        </div>
-        <div className="container-custom relative z-10">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+        <div className="container-custom text-center">
           <AnimatedSection>
-            <span className="inline-flex items-center gap-2 bg-gold-500/20 text-gold-400 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Gavel className="w-4 h-4" />
-              Áreas de Atuação
+            <span className="inline-block text-sm font-medium text-primary-600 bg-primary-100 px-4 py-1.5 rounded-full mb-4">
+              Especialidades
             </span>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">
-              Nossas <span className="text-gold-400">Áreas de Atuação</span>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6">
+              Áreas de <span className="text-primary-500">Atuação</span>
             </h1>
-            <p className="text-primary-200 text-lg max-w-2xl">
-              Atuação estratégica e humanizada em diversas áreas do Direito,
-              sempre com ética e compromisso com resultados.
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Atendimento especializado e humanizado em diversas áreas da saúde feminina,
+              do planejamento reprodutivo à menopausa.
             </p>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Áreas detalhadas */}
+      {/* Áreas */}
       <section className="py-20 bg-white">
         <div className="container-custom">
-          <div className="space-y-20">
-            {areas.map((area, index) => {
-              const AreaIcon = iconMap[area.iconName] || Briefcase;
-              return (
-                <AnimatedSection key={area.title}>
-                  <div
-                    className={`grid lg:grid-cols-2 gap-12 items-center ${
-                      index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-                    }`}
-                  >
-                    <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                      <div className="flex items-center gap-4 mb-6">
-                        <div
-                          className={`w-14 h-14 bg-gradient-to-br ${area.color} rounded-xl flex items-center justify-center`}
-                        >
-                          <AreaIcon className="w-7 h-7 text-white" />
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-serif font-bold text-primary-500">
-                          {area.title}
-                        </h2>
+          <div className="space-y-16">
+            {areas.map((area, index) => (
+              <AnimatedSection key={area.title} delay={0.1}>
+                <div className={`grid lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+                  <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={`w-14 h-14 bg-gradient-to-r ${area.color} rounded-2xl flex items-center justify-center`}>
+                        <area.icon className="w-7 h-7 text-white" />
                       </div>
-
-                      <p className="text-secondary-600 leading-relaxed mb-8">
-                        {area.description}
-                      </p>
-
-                      <div className="grid grid-cols-2 gap-3 mb-8">
-                        {area.topics.map((topic) => (
-                          <div key={topic} className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-gold-500 flex-shrink-0" />
-                            <span className="text-secondary-700 text-sm">
-                              {topic}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-
-                      <Link
-                        href="/contato"
-                        className="btn-primary inline-flex items-center text-sm"
-                      >
-                        Saiba Mais
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Link>
+                      <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900">{area.title}</h2>
                     </div>
+                    <p className="text-gray-600 leading-relaxed mb-6">{area.description}</p>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                      {area.items.map((item) => (
+                        <li key={item} className="flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
+                          <span className="text-gray-700 text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <a
+                      href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary inline-flex items-center"
+                    >
+                      Agendar Consulta <ArrowRight className="w-5 h-5 ml-2" />
+                    </a>
+                  </div>
 
-                    <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                      <div className="aspect-[4/3] rounded-2xl shadow-lg overflow-hidden relative">
-                        <Image
-                          src={AREA_IMAGES[area.title] || DEFAULT_IMAGE}
-                          alt={area.title}
-                          fill
-                          className="object-cover hover:scale-105 transition-transform duration-500"
-                          sizes="(max-width: 1024px) 100vw, 50vw"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  <div className={`${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+                    <div className={`bg-gradient-to-br ${area.color} p-8 rounded-3xl text-white relative overflow-hidden`}>
+                      <div className="absolute inset-0 opacity-20">
+                        <div className="absolute top-4 right-4 w-32 h-32 border border-white/30 rounded-full" />
+                        <div className="absolute bottom-4 left-4 w-24 h-24 border border-white/20 rounded-full" />
+                      </div>
+                      <div className="relative z-10">
+                        <area.icon className="w-16 h-16 mb-6 opacity-80" />
+                        <h3 className="text-2xl font-bold mb-3">{area.title}</h3>
+                        <p className="text-white/80 leading-relaxed">{area.description}</p>
                       </div>
                     </div>
                   </div>
-
-                  {index < areas.length - 1 && (
-                    <div className="border-b border-secondary-200 mt-20" />
-                  )}
-                </AnimatedSection>
-              );
-            })}
+                </div>
+                {index < areas.length - 1 && <hr className="border-primary-100 mt-16" />}
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#050905] via-[#0e1810] to-[#1a2e1f]">
+      <section className="py-16 bg-gradient-to-r from-primary-500 to-accent-500">
         <div className="container-custom text-center">
           <AnimatedSection>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
-              Precisa de Orientação?
+            <h2 className="text-3xl font-serif font-bold text-white mb-4">
+              Tem Dúvidas Sobre Qual Especialidade Procurar?
             </h2>
-            <p className="text-primary-200 text-lg max-w-2xl mx-auto mb-8">
-              Entre em contato para esclarecer suas dúvidas. Nosso atendimento é
-              estratégico, humanizado e segue as normas éticas da OAB.
+            <p className="text-primary-100 max-w-xl mx-auto mb-8">
+              Entre em contato conosco e agende uma consulta. A Dra. Andresa avaliará o seu caso com toda atenção.
             </p>
-            <Link href="/contato" className="btn-gold text-base">
-              Agende uma Consulta
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
+            <a
+              href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+            >
+              Fale Conosco pelo WhatsApp
+            </a>
           </AnimatedSection>
         </div>
       </section>

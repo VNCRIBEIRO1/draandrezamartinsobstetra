@@ -3,1061 +3,440 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  MessageCircle,
-  X,
-  Send,
-  Scale,
-  Bot,
-  ArrowLeft,
-  ExternalLink,
-  ShieldCheck,
-  AlertTriangle,
-  Clock,
-  CheckCircle,
+  MessageCircle, X, Send, Heart, Baby, Stethoscope,
+  Flower2, Microscope, Sparkles, Calendar, Clock,
+  ChevronRight, ArrowLeft, Bot, User
 } from 'lucide-react';
 
-// ============================================================
-// TIPOS
-// ============================================================
-type Mensagem = {
-  id: number;
-  tipo: 'bot' | 'user';
-  texto: string;
-  opcoes?: Opcao[];
-  timestamp: Date;
-};
-
-type Opcao = {
-  label: string;
-  valor: string;
-};
-
-type DadosTriagem = {
-  area: string;
-  subarea: string;
-  urgencia: string;
-  detalhes: string[];
-  nome: string;
-  telefone: string;
-};
-
-// ============================================================
-// FLUXOS POR ÁREA — PERGUNTAS CONVERSACIONAIS COMPLETAS
-// ============================================================
-type Pergunta = {
+/* ─────────────────── Types ─────────────────── */
+interface Message {
   id: string;
-  texto: string;
-  opcoes?: Opcao[];
-  livre?: boolean;
-  campo?: keyof DadosTriagem;
-  campoArray?: boolean;
+  text: string;
+  sender: 'bot' | 'user';
+  options?: Option[];
+  timestamp: Date;
+}
+
+interface Option {
+  label: string;
+  value: string;
+  icon?: React.ReactNode;
+}
+
+type FlowStep = {
+  message: string;
+  options?: Option[];
+  input?: boolean;
+  next?: (value: string) => string;
 };
 
-type Fluxo = {
-  saudacao: string;
-  perguntas: Pergunta[];
-};
-
-// ============================================================
-// PERGUNTA DE URGÊNCIA (reutilizada em todos os fluxos)
-// ============================================================
-const PERGUNTA_URGENCIA: Pergunta = {
-  id: 'urgencia',
-  texto: 'Qual o nível de urgência da sua situação?',
-  opcoes: [
-    { label: '🔴 Urgente — preciso de atendimento imediato', valor: 'URGENTE' },
-    { label: '🟡 Moderado — preciso resolver em breve', valor: 'MODERADO' },
-    { label: '🟢 Consulta — quero entender meus direitos', valor: 'CONSULTA' },
-  ],
-  campo: 'urgencia',
-};
-
-const FLUXOS: Record<string, Fluxo> = {
-  // ============================================================
-  // TRABALHISTA
-  // ============================================================
-  trabalhista: {
-    saudacao:
-      'Entendi! Vamos conversar sobre sua questão *trabalhista*. Vou fazer algumas perguntas para entender melhor sua situação e direcionar seu atendimento.',
-    perguntas: [
-      {
-        id: 'sub',
-        texto: 'Qual situação melhor descreve o que você está passando?',
-        opcoes: [
-          { label: '🔴 Fui demitido(a) por justa causa', valor: 'Demissão por justa causa' },
-          { label: '💰 Não recebi verbas rescisórias', valor: 'Verbas rescisórias não pagas' },
-          { label: '⏰ Horas extras não pagas', valor: 'Horas extras não pagas' },
-          { label: '😰 Assédio moral ou sexual no trabalho', valor: 'Assédio moral/sexual no trabalho' },
-          { label: '🤕 Acidente de trabalho / doença ocupacional', valor: 'Acidente de trabalho / doença ocupacional' },
-          { label: '📋 Desvio ou acúmulo de função', valor: 'Desvio ou acúmulo de função' },
-          { label: '🚫 Trabalho sem registro (CLT)', valor: 'Trabalho sem registro em carteira' },
-          { label: '⚖️ Rescisão indireta (quero sair com direitos)', valor: 'Rescisão indireta' },
-          { label: '🔒 Estabilidade (gestante, CIPA, acidente)', valor: 'Estabilidade provisória' },
-          { label: '📋 Outro assunto trabalhista', valor: 'Outro assunto trabalhista' },
-        ],
-        campo: 'subarea',
-      },
-      PERGUNTA_URGENCIA,
-      {
-        id: 'tempo',
-        texto: 'Há quanto tempo ocorreu ou está ocorrendo essa situação?',
-        opcoes: [
-          { label: '📅 Menos de 30 dias', valor: 'Menos de 30 dias' },
-          { label: '📅 Entre 1 e 6 meses', valor: 'Entre 1 e 6 meses' },
-          { label: '📅 Entre 6 meses e 1 ano', valor: 'Entre 6 meses e 1 ano' },
-          { label: '📅 Entre 1 e 2 anos', valor: 'Entre 1 e 2 anos' },
-          { label: '⚠️ Mais de 2 anos (atenção ao prazo prescricional)', valor: 'Mais de 2 anos' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'vinculo',
-        texto: 'Qual era/é o vínculo empregatício?',
-        opcoes: [
-          { label: '✅ Carteira assinada (CLT)', valor: 'CLT — carteira assinada' },
-          { label: '❌ Sem registro em carteira', valor: 'Sem registro em carteira' },
-          { label: '📄 Contrato temporário / terceirizado', valor: 'Contrato temporário / terceirizado' },
-          { label: '🏠 Trabalho doméstico', valor: 'Empregado(a) doméstico(a)' },
-          { label: '🚗 Motorista de aplicativo / PJ', valor: 'Motorista de app / PJ' },
-          { label: '📋 Outro tipo de vínculo', valor: 'Outro tipo de vínculo' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'documentos',
-        texto: 'Você tem documentos ou provas da situação?',
-        opcoes: [
-          { label: '✅ Sim, tenho documentos e comprovantes', valor: 'Possui documentos/comprovantes' },
-          { label: '📱 Tenho conversas (WhatsApp, e-mail)', valor: 'Possui conversas digitais como prova' },
-          { label: '👥 Tenho testemunhas', valor: 'Possui testemunhas' },
-          { label: '❌ Não tenho provas no momento', valor: 'Sem provas no momento' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'detalhe',
-        texto: 'Descreva brevemente o que aconteceu. Quanto mais detalhes, melhor poderemos orientá-lo(a):',
-        livre: true,
-        campoArray: true,
-      },
-    ],
-  },
-
-  // ============================================================
-  // CRIMINAL
-  // ============================================================
-  criminal: {
-    saudacao:
-      'Compreendo. Vamos tratar da sua questão na área *criminal* com total sigilo e seriedade. Preciso de algumas informações para direcionar o atendimento.',
-    perguntas: [
-      {
-        id: 'sub',
-        texto: 'Qual situação mais se aproxima do seu caso?',
-        opcoes: [
-          { label: '🔒 Fui preso(a) ou alguém próximo foi preso', valor: 'Prisão / flagrante' },
-          { label: '📋 Estou respondendo a processo criminal', valor: 'Processo criminal em andamento' },
-          { label: '🔍 Estou sendo investigado(a) (inquérito policial)', valor: 'Investigação / inquérito policial' },
-          { label: '🗣️ Sofri calúnia, difamação ou injúria', valor: 'Crimes contra a honra' },
-          { label: '⚖️ Preciso de habeas corpus', valor: 'Habeas corpus' },
-          { label: '🛡️ Fui vítima de crime', valor: 'Vítima de crime' },
-          { label: '💊 Questão envolvendo drogas', valor: 'Questão envolvendo drogas / Lei de Drogas' },
-          { label: '🚗 Crime de trânsito', valor: 'Crime de trânsito' },
-          { label: '👨‍👩‍👧 Violência doméstica (Lei Maria da Penha)', valor: 'Violência doméstica / Maria da Penha' },
-          { label: '💻 Crime cibernético / estelionato digital', valor: 'Crime cibernético / estelionato digital' },
-          { label: '📋 Outro assunto criminal', valor: 'Outro assunto criminal' },
-        ],
-        campo: 'subarea',
-      },
-      {
-        id: 'urgencia',
-        texto: 'Qual o nível de urgência?',
-        opcoes: [
-          { label: '🔴 Urgente — pessoa presa ou em risco imediato', valor: 'URGENTE' },
-          { label: '🟡 Moderado — preciso de orientação em breve', valor: 'MODERADO' },
-          { label: '🟢 Consulta — quero entender meus direitos', valor: 'CONSULTA' },
-        ],
-        campo: 'urgencia',
-      },
-      {
-        id: 'posicao',
-        texto: 'Qual sua posição na situação?',
-        opcoes: [
-          { label: '🛡️ Sou a vítima / ofendido(a)', valor: 'Vítima / ofendido(a)' },
-          { label: '⚖️ Sou o(a) acusado(a) / investigado(a)', valor: 'Acusado(a) / investigado(a)' },
-          { label: '👨‍👩‍👧 Familiar de envolvido(a)', valor: 'Familiar de envolvido(a)' },
-          { label: '📋 Outro', valor: 'Outra posição' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'inquerito',
-        texto: 'Já existe boletim de ocorrência, inquérito policial ou processo?',
-        opcoes: [
-          { label: '📄 Sim, já tem B.O. registrado', valor: 'B.O. já registrado' },
-          { label: '🔍 Sim, inquérito policial em andamento', valor: 'Inquérito policial em andamento' },
-          { label: '⚖️ Sim, processo criminal em curso', valor: 'Processo criminal em curso' },
-          { label: '❌ Não, nenhum registro ainda', valor: 'Sem registro / B.O.' },
-          { label: '❓ Não sei informar', valor: 'Não sabe informar' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'advogado',
-        texto: 'Já teve ou tem advogado(a) atuando no caso?',
-        opcoes: [
-          { label: '✅ Sim, mas quero trocar', valor: 'Já tem advogado, deseja trocar' },
-          { label: '⚖️ Estou com defensor público', valor: 'Com defensor público' },
-          { label: '❌ Não, ainda não consultei ninguém', valor: 'Sem advogado' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'detalhe',
-        texto: 'Descreva brevemente a situação (todas as informações são tratadas com *total sigilo*):',
-        livre: true,
-        campoArray: true,
-      },
-    ],
-  },
-
-  // ============================================================
-  // CIVIL
-  // ============================================================
-  civil: {
-    saudacao:
-      'Certo! Vamos conversar sobre sua questão de *Direito Civil*. Me conte um pouco mais para que possamos direcionar o melhor atendimento.',
-    perguntas: [
-      {
-        id: 'sub',
-        texto: 'Qual desses temas se relaciona com sua situação?',
-        opcoes: [
-          { label: '💔 Danos morais ou materiais', valor: 'Responsabilidade civil / danos' },
-          { label: '📝 Problemas com contratos', valor: 'Questões contratuais' },
-          { label: '🏠 Questão imobiliária (compra, venda, locação)', valor: 'Direito imobiliário' },
-          { label: '👨‍👩‍👧 Divórcio / separação', valor: 'Divórcio / separação' },
-          { label: '👶 Guarda de filhos / regulamentação de visitas', valor: 'Guarda / regulamentação de visitas' },
-          { label: '💰 Pensão alimentícia', valor: 'Pensão alimentícia' },
-          { label: '📜 Inventário / herança / testamento', valor: 'Sucessões / inventário / testamento' },
-          { label: '🛒 Direito do consumidor', valor: 'Direito do consumidor' },
-          { label: '🏥 Erro médico / hospitalar', valor: 'Responsabilidade médica / hospitalar' },
-          { label: '🚗 Acidente de trânsito (indenização)', valor: 'Acidente de trânsito (indenização)' },
-          { label: '📋 Outro assunto cível', valor: 'Outro assunto cível' },
-        ],
-        campo: 'subarea',
-      },
-      PERGUNTA_URGENCIA,
-      {
-        id: 'situacao_atual',
-        texto: 'Qual a situação atual do caso?',
-        opcoes: [
-          { label: '🆕 Ainda não tomei nenhuma medida', valor: 'Nenhuma medida tomada ainda' },
-          { label: '🤝 Tentei resolver amigavelmente sem sucesso', valor: 'Tentou resolver amigavelmente sem sucesso' },
-          { label: '📨 Recebi notificação / intimação', valor: 'Recebeu notificação ou intimação' },
-          { label: '⚖️ Já tenho processo judicial em andamento', valor: 'Processo judicial já em andamento' },
-          { label: '📋 Preciso apenas de orientação / consulta', valor: 'Busca orientação / consulta' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'valor',
-        texto: 'Existe valor financeiro envolvido na questão?',
-        opcoes: [
-          { label: '💲 Até R$ 10.000', valor: 'Valor até R$ 10.000' },
-          { label: '💲💲 De R$ 10.000 a R$ 50.000', valor: 'Valor entre R$ 10.000 e R$ 50.000' },
-          { label: '💲💲💲 Acima de R$ 50.000', valor: 'Valor acima de R$ 50.000' },
-          { label: '❓ Não sei estimar / não se aplica', valor: 'Valor não estimado / não se aplica' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'documentos',
-        texto: 'Você tem documentos relacionados ao caso?',
-        opcoes: [
-          { label: '✅ Sim, tenho documentos e contratos', valor: 'Possui documentos/contratos' },
-          { label: '📱 Tenho conversas e registros digitais', valor: 'Possui conversas/registros digitais' },
-          { label: '❌ Não tenho documentos no momento', valor: 'Sem documentos no momento' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'detalhe',
-        texto: 'Conte brevemente o que aconteceu e o que você busca:',
-        livre: true,
-        campoArray: true,
-      },
-    ],
-  },
-
-  // ============================================================
-  // EMPRESARIAL
-  // ============================================================
-  empresarial: {
-    saudacao:
-      'Perfeito! Vamos tratar da sua questão de *Direito Empresarial*. Me ajude a entender o cenário para direcionarmos o atendimento.',
-    perguntas: [
-      {
-        id: 'sub',
-        texto: 'Qual é a principal necessidade?',
-        opcoes: [
-          { label: '📝 Elaboração ou revisão de contrato', valor: 'Contratos empresariais' },
-          { label: '🏢 Abertura de empresa (constituição societária)', valor: 'Abertura de empresa' },
-          { label: '🔄 Alteração contratual / societária', valor: 'Alteração contratual / societária' },
-          { label: '⚠️ Recuperação judicial / extrajudicial', valor: 'Recuperação judicial / extrajudicial' },
-          { label: '❌ Encerramento / dissolução de empresa', valor: 'Encerramento / dissolução' },
-          { label: '🤝 Disputa entre sócios', valor: 'Conflitos societários' },
-          { label: '📊 Compliance e governança corporativa', valor: 'Compliance e governança' },
-          { label: '🔒 LGPD / proteção de dados', valor: 'LGPD / proteção de dados' },
-          { label: '📋 Cobranças / execução de títulos', valor: 'Cobranças / execução de títulos' },
-          { label: '⚖️ Ação judicial contra ou da empresa', valor: 'Ação judicial empresarial' },
-          { label: '📋 Outro assunto empresarial', valor: 'Outro assunto empresarial' },
-        ],
-        campo: 'subarea',
-      },
-      PERGUNTA_URGENCIA,
-      {
-        id: 'porte',
-        texto: 'Qual o porte da empresa?',
-        opcoes: [
-          { label: '🏪 MEI (Microempreendedor Individual)', valor: 'MEI' },
-          { label: '🏬 ME (Microempresa)', valor: 'ME — Microempresa' },
-          { label: '🏢 EPP (Empresa de Pequeno Porte)', valor: 'EPP' },
-          { label: '🏗️ Média ou Grande Empresa', valor: 'Média/Grande empresa' },
-          { label: '🆕 Ainda não tenho empresa', valor: 'Empresa ainda não constituída' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'funcionarios',
-        texto: 'A empresa possui funcionários registrados?',
-        opcoes: [
-          { label: '👤 Não, sou só eu', valor: 'Sem funcionários' },
-          { label: '👥 1 a 5 funcionários', valor: '1 a 5 funcionários' },
-          { label: '👥👥 6 a 20 funcionários', valor: '6 a 20 funcionários' },
-          { label: '🏢 Mais de 20 funcionários', valor: 'Mais de 20 funcionários' },
-          { label: '❓ Não se aplica', valor: 'Não se aplica' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'detalhe',
-        texto: 'Descreva brevemente sua necessidade ou situação empresarial:',
-        livre: true,
-        campoArray: true,
-      },
-    ],
-  },
-
-  // ============================================================
-  // ADMINISTRATIVO
-  // ============================================================
-  administrativo: {
-    saudacao:
-      'Entendido! Vamos conversar sobre *Direito Administrativo*. Me conte mais sobre sua demanda para direcionarmos o atendimento adequado.',
-    perguntas: [
-      {
-        id: 'sub',
-        texto: 'Qual tema se aplica ao seu caso?',
-        opcoes: [
-          { label: '📋 Licitações e contratos públicos', valor: 'Licitações e contratos públicos' },
-          { label: '👨‍💼 Concurso público (nomeação, recurso)', valor: 'Concurso público' },
-          { label: '⚖️ Processo administrativo disciplinar (PAD)', valor: 'Processo administrativo disciplinar' },
-          { label: '🏛️ Ação contra órgão público', valor: 'Ação contra a Administração Pública' },
-          { label: '📑 Mandado de segurança', valor: 'Mandado de segurança' },
-          { label: '💼 Servidor público (direitos e vantagens)', valor: 'Direitos do servidor público' },
-          { label: '🏗️ Desapropriação', valor: 'Desapropriação' },
-          { label: '🔒 Improbidade administrativa', valor: 'Improbidade administrativa' },
-          { label: '📋 Outro assunto administrativo', valor: 'Outro assunto administrativo' },
-        ],
-        campo: 'subarea',
-      },
-      {
-        id: 'urgencia',
-        texto: 'Existe prazo correndo (recurso, defesa, impugnação)?',
-        opcoes: [
-          { label: '🔴 Sim, prazo urgente (menos de 5 dias)', valor: 'URGENTE' },
-          { label: '🟡 Sim, mas ainda tenho alguns dias/semanas', valor: 'MODERADO' },
-          { label: '🟢 Não tenho prazo imediato', valor: 'CONSULTA' },
-          { label: '❓ Não sei informar sobre prazos', valor: 'CONSULTA' },
-        ],
-        campo: 'urgencia',
-      },
-      {
-        id: 'esfera',
-        texto: 'Em qual esfera da Administração Pública está o caso?',
-        opcoes: [
-          { label: '🏛️ Federal', valor: 'Esfera Federal' },
-          { label: '🏢 Estadual', valor: 'Esfera Estadual' },
-          { label: '🏠 Municipal', valor: 'Esfera Municipal' },
-          { label: '❓ Não tenho certeza', valor: 'Esfera não identificada' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'posicao',
-        texto: 'Qual a sua posição na situação?',
-        opcoes: [
-          { label: '👨‍💼 Sou servidor público', valor: 'Servidor público' },
-          { label: '🏢 Sou empresário / licitante', valor: 'Empresário / licitante' },
-          { label: '👤 Sou cidadão afetado', valor: 'Cidadão afetado' },
-          { label: '📋 Outro', valor: 'Outra posição' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'detalhe',
-        texto: 'Descreva brevemente a situação:',
-        livre: true,
-        campoArray: true,
-      },
-    ],
-  },
-
-  // ============================================================
-  // CÁLCULOS JUDICIAIS
-  // ============================================================
-  calculos: {
-    saudacao:
-      'Entendi! Vamos falar sobre *Cálculos Judiciais*. Esse serviço é essencial para garantir que seus direitos sejam corretamente quantificados.',
-    perguntas: [
-      {
-        id: 'sub',
-        texto: 'Que tipo de cálculo você precisa?',
-        opcoes: [
-          { label: '💰 Cálculos trabalhistas (rescisão, horas extras, etc.)', valor: 'Cálculos trabalhistas' },
-          { label: '📊 Liquidação de sentença', valor: 'Liquidação de sentença' },
-          { label: '🔄 Atualização monetária de valores', valor: 'Atualização monetária de valores' },
-          { label: '📈 Cálculos previdenciários', valor: 'Cálculos previdenciários' },
-          { label: '🏠 Cálculos imobiliários / locatícios', valor: 'Cálculos imobiliários / locatícios' },
-          { label: '📋 Conferência / impugnação de cálculos', valor: 'Conferência / impugnação de cálculos' },
-          { label: '📋 Outro tipo de cálculo', valor: 'Outro tipo de cálculo judicial' },
-        ],
-        campo: 'subarea',
-      },
-      PERGUNTA_URGENCIA,
-      {
-        id: 'processo',
-        texto: 'Já existe processo judicial em andamento?',
-        opcoes: [
-          { label: '✅ Sim, com número de processo', valor: 'Processo judicial em andamento' },
-          { label: '📋 Não, é para ajuizar ação futura', valor: 'Cálculo para ação futura' },
-          { label: '🔍 É para conferência / impugnação', valor: 'Conferência / impugnação de cálculos' },
-          { label: '📊 É para negociação extrajudicial', valor: 'Para negociação extrajudicial' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'periodo',
-        texto: 'Qual o período que precisa ser calculado?',
-        opcoes: [
-          { label: '📅 Até 1 ano', valor: 'Período de até 1 ano' },
-          { label: '📅 De 1 a 5 anos', valor: 'Período de 1 a 5 anos' },
-          { label: '📅 Mais de 5 anos', valor: 'Período superior a 5 anos' },
-          { label: '❓ Não sei precisar', valor: 'Período não identificado' },
-        ],
-        campoArray: true,
-      },
-      {
-        id: 'detalhe',
-        texto: 'Descreva brevemente o que precisa ser calculado:',
-        livre: true,
-        campoArray: true,
-      },
-    ],
-  },
-};
-
-// ============================================================
-// ÁREAS DO MENU INICIAL
-// ============================================================
-const AREAS: Opcao[] = [
-  { label: '⚖️ Direito Trabalhista', valor: 'trabalhista' },
-  { label: '🔒 Direito Criminal', valor: 'criminal' },
-  { label: '📜 Direito Civil', valor: 'civil' },
-  { label: '🏢 Direito Empresarial', valor: 'empresarial' },
-  { label: '🏛️ Direito Administrativo', valor: 'administrativo' },
-  { label: '📊 Cálculos Judiciais', valor: 'calculos' },
+/* ─────────────────── Flow Data ─────────────────── */
+const WELCOME_OPTIONS: Option[] = [
+  { label: 'Agendar Consulta', value: 'agendar', icon: <Calendar className="w-4 h-4" /> },
+  { label: 'Áreas de Atuação', value: 'areas', icon: <Heart className="w-4 h-4" /> },
+  { label: 'Dúvidas sobre Saúde', value: 'duvidas', icon: <Stethoscope className="w-4 h-4" /> },
+  { label: 'Localização e Horário', value: 'localizacao', icon: <Clock className="w-4 h-4" /> },
 ];
 
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP || '5518996101884';
+const AREA_OPTIONS: Option[] = [
+  { label: 'Ginecologia', value: 'ginecologia', icon: <Heart className="w-4 h-4" /> },
+  { label: 'Obstetrícia / Pré-natal', value: 'obstetricia', icon: <Baby className="w-4 h-4" /> },
+  { label: 'Menopausa', value: 'menopausa', icon: <Flower2 className="w-4 h-4" /> },
+  { label: 'Ginecologia Regenerativa', value: 'regenerativa', icon: <Sparkles className="w-4 h-4" /> },
+  { label: 'Microscopia Vaginal', value: 'microscopia', icon: <Microscope className="w-4 h-4" /> },
+  { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
+];
 
-// ============================================================
-// HELPERS DE URGÊNCIA
-// ============================================================
-const getUrgenciaMarcador = (nivel: string) => {
-  switch (nivel) {
-    case 'URGENTE':
-      return '[!!!]';
-    case 'MODERADO':
-      return '[!!]';
-    case 'CONSULTA':
-      return '[!]';
-    default:
-      return '[-]';
-  }
+const DUVIDA_OPTIONS: Option[] = [
+  { label: 'Quando ir ao ginecologista?', value: 'duvida_quando' },
+  { label: 'Pré-natal: quando iniciar?', value: 'duvida_prenatal' },
+  { label: 'O que é microscopia vaginal?', value: 'duvida_microscopia' },
+  { label: 'Menopausa: sintomas comuns', value: 'duvida_menopausa' },
+  { label: 'Métodos contraceptivos', value: 'duvida_contraceptivos' },
+  { label: 'Ginecologia regenerativa', value: 'duvida_regenerativa' },
+  { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
+];
+
+const CONSULTA_TIPO_OPTIONS: Option[] = [
+  { label: 'Consulta Ginecológica', value: 'tipo_gineco' },
+  { label: 'Pré-natal', value: 'tipo_prenatal' },
+  { label: 'Menopausa', value: 'tipo_menopausa' },
+  { label: 'Ginecologia Regenerativa', value: 'tipo_regenerativa' },
+  { label: 'Microscopia Vaginal', value: 'tipo_microscopia' },
+  { label: 'Primeira Consulta', value: 'tipo_primeira' },
+  { label: 'Voltar', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
+];
+
+/* ─────────────────── Response Data ─────────────────── */
+const AREA_DETAILS: Record<string, string> = {
+  ginecologia: `💗 **Ginecologia**\n\nA Dra. Andresa oferece acompanhamento ginecológico completo:\n\n• Consulta de rotina e check-up\n• Papanicolau e colposcopia\n• Infecções e corrimentos\n• Endometriose e miomas\n• Planejamento reprodutivo\n• Métodos contraceptivos\n\nO acompanhamento ginecológico regular é essencial para a saúde da mulher em todas as fases da vida.`,
+  obstetricia: `🤰 **Obstetrícia e Pré-natal**\n\nAcompanhamento humanizado da gestação:\n\n• Pré-natal completo e individualizado\n• Ultrassonografias de rotina\n• Gestação de alto risco\n• Orientação sobre parto humanizado\n• Acompanhamento pós-parto\n• Orientações sobre amamentação\n\nCada gestação é única e merece atenção especial. A Dra. Andresa acompanha você em cada etapa!`,
+  menopausa: `🌸 **Menopausa**\n\nTratamento personalizado para essa fase:\n\n• Reposição hormonal bioidêntica\n• Tratamento de fogachos e sudorese\n• Saúde óssea (prevenção de osteoporose)\n• Saúde cardiovascular\n• Controle de peso\n• Sexualidade na menopausa\n\nA menopausa é uma fase natural — com acompanhamento adequado, é possível viver com qualidade de vida!`,
+  regenerativa: `✨ **Ginecologia Regenerativa**\n\nProcedimentos inovadores:\n\n• Laser íntimo\n• Bioestimuladores de colágeno\n• Ácido hialurônico íntimo\n• Rejuvenescimento vulvovaginal\n• Tratamento de incontinência leve\n• Síndrome geniturinária da menopausa\n\nTecnologias de ponta para restauração e rejuvenescimento íntimo.`,
+  microscopia: `🔬 **Microscopia Vaginal**\n\nDiferencial da Dra. Andresa:\n\n• Diagnóstico imediato na consulta\n• Análise microscópica do conteúdo vaginal\n• Identificação precisa: candidíase, vaginose, tricomoníase\n• Tratamento iniciado no mesmo dia\n• Sem custo adicional de laboratório\n\n✅ Resultado na hora! Sem precisar esperar dias por exames laboratoriais.`,
 };
 
-const getUrgenciaTexto = (nivel: string) => {
-  switch (nivel) {
-    case 'URGENTE':
-      return 'URGENTE — Atendimento imediato';
-    case 'MODERADO':
-      return 'MODERADO — Resolver em breve';
-    case 'CONSULTA':
-      return 'CONSULTA — Orientação';
-    default:
-      return 'Não informado';
-  }
+const DUVIDA_RESPOSTAS: Record<string, string> = {
+  duvida_quando: `🩺 **Quando ir ao ginecologista?**\n\nA consulta ginecológica deve ser feita:\n\n• A partir da primeira menstruação (menarca)\n• Anualmente para exames de rotina (Papanicolau)\n• Sempre que houver sintomas: corrimento, dor, irregularidade menstrual\n• Antes de iniciar métodos contraceptivos\n• No planejamento de uma gestação\n• Na menopausa\n\n💡 Dica: Não espere sintomas! A prevenção é o melhor cuidado.`,
+  duvida_prenatal: `🤰 **Quando iniciar o pré-natal?**\n\nO ideal é iniciar o pré-natal assim que descobrir a gestação:\n\n• Idealmente até a 12ª semana\n• Consultas mensais até 28 semanas\n• Quinzenais de 28 a 36 semanas\n• Semanais a partir de 36 semanas\n\nExames importantes no 1º trimestre: hemograma, tipagem sanguínea, sorologias, ultrassom morfológico.\n\n💗 O pré-natal humanizado da Dra. Andresa acompanha cada detalhe!`,
+  duvida_microscopia: `🔬 **O que é Microscopia Vaginal?**\n\nÉ um exame realizado durante a consulta onde o conteúdo vaginal é analisado em microscópio.\n\n✅ Vantagens:\n• Resultado imediato (na hora!)\n• Diagnóstico preciso de infecções\n• Tratamento iniciado no mesmo dia\n• Sem custos adicionais de laboratório\n\nA microscopia identifica: candidíase, vaginose bacteriana, tricomoníase e outros agentes.\n\n🏥 Este é um dos diferenciais da Dra. Andresa!`,
+  duvida_menopausa: `🌸 **Sintomas comuns da menopausa:**\n\n• Fogachos (ondas de calor)\n• Suores noturnos\n• Insônia e irritabilidade\n• Secura vaginal\n• Diminuição da libido\n• Alterações de humor\n• Ganho de peso\n• Dores articulares\n\n💡 A reposição hormonal pode aliviar significativamente esses sintomas. Converse com a Dra. Andresa sobre as opções de tratamento!`,
+  duvida_contraceptivos: `💊 **Métodos Contraceptivos**\n\nA Dra. Andresa orienta sobre todas as opções:\n\n• Pílulas anticoncepcionais\n• DIU de cobre e hormonal (Mirena/Kyleena)\n• Implante subdérmico\n• Anel vaginal\n• Adesivo anticoncepcional\n• Injeção anticoncepcional\n• Preservativos\n\n⚠️ O melhor método é aquele adequado ao seu perfil e momento de vida. Agende uma consulta para orientação personalizada!`,
+  duvida_regenerativa: `✨ **Ginecologia Regenerativa**\n\nÉ uma área da ginecologia que utiliza tecnologias avançadas para:\n\n• Melhorar a lubrificação vaginal\n• Tratar incontinência urinária leve\n• Rejuvenescer a região íntima\n• Melhorar a satisfação sexual\n• Tratar a síndrome geniturinária da menopausa\n\nProcedimentos disponíveis: laser íntimo, bioestimuladores de colágeno e ácido hialurônico.\n\n🩺 Agende uma avaliação com a Dra. Andresa!`,
 };
 
-const getUrgenciaCor = (nivel: string) => {
-  switch (nivel) {
-    case 'URGENTE':
-      return 'text-red-600 bg-red-50 border-red-200';
-    case 'MODERADO':
-      return 'text-yellow-700 bg-yellow-50 border-yellow-200';
-    case 'CONSULTA':
-      return 'text-green-700 bg-green-50 border-green-200';
-    default:
-      return 'text-secondary-600 bg-secondary-50 border-secondary-200';
-  }
-};
-
-// ============================================================
-// COMPONENTE PRINCIPAL
-// ============================================================
+/* ─────────────────── Component ─────────────────── */
 export default function ChatBot() {
-  const [aberto, setAberto] = useState(false);
-  const [mensagens, setMensagens] = useState<Mensagem[]>([]);
-  const [inputTexto, setInputTexto] = useState('');
-  const [etapa, setEtapa] = useState<'inicio' | 'fluxo' | 'nome' | 'telefone' | 'resumo'>('inicio');
-  const [areaAtual, setAreaAtual] = useState('');
-  const [perguntaIdx, setPerguntaIdx] = useState(0);
-  const [dados, setDados] = useState<DadosTriagem>({
-    area: '',
-    subarea: '',
-    urgencia: '',
-    detalhes: [],
-    nome: '',
-    telefone: '',
-  });
-  const [digitando, setDigitando] = useState(false);
-
-  const chatRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [collectingData, setCollectingData] = useState<{
+    step: 'nome' | 'telefone' | 'tipo' | null;
+    nome?: string;
+    telefone?: string;
+    tipo?: string;
+  }>({ step: null });
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const idCounter = useRef(0);
 
-  const nextId = () => ++idCounter.current;
-
-  // Auto-scroll
-  useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
-  }, [mensagens, digitando]);
-
-  // Focus input
-  useEffect(() => {
-    if (aberto && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [aberto, etapa, mensagens]);
-
-  // Mensagem inicial
-  const iniciar = useCallback(() => {
-    idCounter.current = 0;
-    setMensagens([]);
-    setEtapa('inicio');
-    setAreaAtual('');
-    setPerguntaIdx(0);
-    setDados({ area: '', subarea: '', urgencia: '', detalhes: [], nome: '', telefone: '' });
-
-    setTimeout(() => {
-      setDigitando(true);
-      setTimeout(() => {
-        setDigitando(false);
-        setMensagens([
-          {
-            id: nextId(),
-            tipo: 'bot',
-            texto:
-              'Olá! 👋 Sou o assistente virtual do escritório *Cerbelera & Oliveira Advogados*.\n\nEstou aqui para entender sua situação e direcionar seu atendimento. Em qual área do Direito posso ajudá-lo(a)?',
-            opcoes: AREAS,
-            timestamp: new Date(),
-          },
-        ]);
-      }, 800);
-    }, 300);
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
-    if (aberto && mensagens.length === 0) {
-      iniciar();
-    }
-  }, [aberto, mensagens.length, iniciar]);
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
 
-  // Adicionar mensagem do bot com delay de digitação
-  const addBotMsg = (texto: string, opcoes?: Opcao[]) => {
-    setDigitando(true);
-    return new Promise<void>((resolve) => {
+  const addMessage = useCallback((text: string, sender: 'bot' | 'user', options?: Option[]) => {
+    const msg: Message = {
+      id: Date.now().toString() + Math.random().toString(36).slice(2),
+      text,
+      sender,
+      options,
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, msg]);
+  }, []);
+
+  const simulateTyping = useCallback(async (text: string, options?: Option[]) => {
+    setIsTyping(true);
+    await new Promise((r) => setTimeout(r, 600 + Math.random() * 600));
+    setIsTyping(false);
+    addMessage(text, 'bot', options);
+  }, [addMessage]);
+
+  const openChat = useCallback(() => {
+    setIsOpen(true);
+    if (messages.length === 0) {
       setTimeout(() => {
-        setDigitando(false);
-        setMensagens((prev) => [
-          ...prev,
-          { id: nextId(), tipo: 'bot', texto, opcoes, timestamp: new Date() },
+        addMessage(
+          '🌸 Olá! Eu sou a assistente virtual da Dra. Andresa Martin Louzada, Ginecologista e Obstetra.\n\nComo posso ajudar você hoje?',
+          'bot',
+          WELCOME_OPTIONS
+        );
+      }, 300);
+    }
+  }, [messages.length, addMessage]);
+
+  const buildWhatsAppLink = (tipo?: string, nome?: string) => {
+    const tipoLabels: Record<string, string> = {
+      tipo_gineco: 'Consulta Ginecológica',
+      tipo_prenatal: 'Pré-natal',
+      tipo_menopausa: 'Menopausa',
+      tipo_regenerativa: 'Ginecologia Regenerativa',
+      tipo_microscopia: 'Microscopia Vaginal',
+      tipo_primeira: 'Primeira Consulta',
+    };
+    const tipoText = tipo && tipoLabels[tipo] ? tipoLabels[tipo] : 'consulta';
+    const nomeText = nome ? ` Meu nome é ${nome}.` : '';
+    const msg = encodeURIComponent(`Olá! Gostaria de agendar uma ${tipoText}.${nomeText} Entrei em contato pelo site.`);
+    return `https://wa.me/5518998207964?text=${msg}`;
+  };
+
+  const handleOption = useCallback(async (value: string) => {
+    // Find the label for the option
+    const allOptions = [...WELCOME_OPTIONS, ...AREA_OPTIONS, ...DUVIDA_OPTIONS, ...CONSULTA_TIPO_OPTIONS];
+    const opt = allOptions.find((o) => o.value === value);
+    if (opt) addMessage(opt.label, 'user');
+
+    switch (value) {
+      case 'inicio':
+        await simulateTyping('Como posso ajudar você?', WELCOME_OPTIONS);
+        break;
+
+      case 'agendar':
+        setCollectingData({ step: 'tipo' });
+        await simulateTyping('Ótimo! Que tipo de consulta você gostaria de agendar?', CONSULTA_TIPO_OPTIONS);
+        break;
+
+      case 'areas':
+        await simulateTyping('A Dra. Andresa atua nas seguintes especialidades. Selecione uma para saber mais:', AREA_OPTIONS);
+        break;
+
+      case 'duvidas':
+        await simulateTyping('Sobre qual assunto você gostaria de saber mais?', DUVIDA_OPTIONS);
+        break;
+
+      case 'localizacao':
+        await simulateTyping(
+          `📍 **Espaço Humanizare**\nAv. Mathias Mendes Cardoso, 460\nSala 08 - Central Park Residence\nPresidente Prudente, SP\n\n🕐 **Horário:**\nSegunda a Sexta: 08h às 18h\nSábado: 08h às 12h\n\n📱 **WhatsApp:** (18) 99820-7964\n📸 **Instagram:** @dra.andreamartin`,
+          [
+            { label: 'Agendar Consulta', value: 'agendar', icon: <Calendar className="w-4 h-4" /> },
+            { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
+          ]
+        );
+        break;
+
+      // Areas
+      case 'ginecologia':
+      case 'obstetricia':
+      case 'menopausa':
+      case 'regenerativa':
+      case 'microscopia':
+        await simulateTyping(AREA_DETAILS[value] || '', [
+          { label: 'Agendar Consulta', value: 'agendar', icon: <Calendar className="w-4 h-4" /> },
+          { label: 'Outras Áreas', value: 'areas', icon: <Heart className="w-4 h-4" /> },
+          { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
         ]);
-        resolve();
-      }, 600 + Math.random() * 400);
+        break;
+
+      // Dúvidas
+      case 'duvida_quando':
+      case 'duvida_prenatal':
+      case 'duvida_microscopia':
+      case 'duvida_menopausa':
+      case 'duvida_contraceptivos':
+      case 'duvida_regenerativa':
+        await simulateTyping(DUVIDA_RESPOSTAS[value] || '', [
+          { label: 'Agendar Consulta', value: 'agendar', icon: <Calendar className="w-4 h-4" /> },
+          { label: 'Outras Dúvidas', value: 'duvidas', icon: <Stethoscope className="w-4 h-4" /> },
+          { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
+        ]);
+        break;
+
+      // Agendamento - tipo selecionado
+      case 'tipo_gineco':
+      case 'tipo_prenatal':
+      case 'tipo_menopausa':
+      case 'tipo_regenerativa':
+      case 'tipo_microscopia':
+      case 'tipo_primeira':
+        setCollectingData((prev) => ({ ...prev, tipo: value, step: 'nome' }));
+        await simulateTyping('Perfeito! Qual é o seu nome completo?');
+        break;
+
+      default:
+        await simulateTyping('Desculpe, não entendi. Como posso ajudar?', WELCOME_OPTIONS);
+    }
+  }, [addMessage, simulateTyping]);
+
+  const handleTextInput = useCallback(async (text: string) => {
+    if (!text.trim()) return;
+
+    addMessage(text, 'user');
+    setInputValue('');
+
+    if (collectingData.step === 'nome') {
+      setCollectingData((prev) => ({ ...prev, nome: text, step: 'telefone' }));
+      await simulateTyping(`Obrigada, ${text}! Agora, por favor, informe seu telefone com DDD:`);
+    } else if (collectingData.step === 'telefone') {
+      const nome = collectingData.nome || '';
+      const tipo = collectingData.tipo || '';
+      setCollectingData({ step: null });
+
+      const link = buildWhatsAppLink(tipo, nome);
+      await simulateTyping(
+        `✅ Perfeito, ${nome}!\n\nPara finalizar seu agendamento, clique no botão abaixo para falar com nossa secretaria pelo WhatsApp. Ela confirmará o melhor horário para você.\n\n📱 Seus dados já serão enviados automaticamente na mensagem!`,
+        [
+          { label: '📱 Abrir WhatsApp', value: `whatsapp:${link}` },
+          { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
+        ]
+      );
+    } else {
+      // Free text - try to match intent
+      const lower = text.toLowerCase();
+      if (lower.includes('agendar') || lower.includes('consulta') || lower.includes('marcar')) {
+        handleOption('agendar');
+      } else if (lower.includes('horario') || lower.includes('horário') || lower.includes('endereço') || lower.includes('localiza')) {
+        handleOption('localizacao');
+      } else if (lower.includes('prenatal') || lower.includes('pré-natal') || lower.includes('grávida') || lower.includes('gestante')) {
+        handleOption('duvida_prenatal');
+      } else if (lower.includes('menopausa')) {
+        handleOption('duvida_menopausa');
+      } else if (lower.includes('microscopia')) {
+        handleOption('duvida_microscopia');
+      } else if (lower.includes('contraceptivo') || lower.includes('anticoncepcional') || lower.includes('pilula') || lower.includes('diu')) {
+        handleOption('duvida_contraceptivos');
+      } else if (lower.includes('regenerativa') || lower.includes('laser') || lower.includes('rejuvenescimento')) {
+        handleOption('duvida_regenerativa');
+      } else {
+        await simulateTyping(
+          'Entendi! Para melhor atendê-la, selecione uma das opções abaixo ou fale diretamente com nossa equipe pelo WhatsApp:',
+          WELCOME_OPTIONS
+        );
+      }
+    }
+  }, [addMessage, collectingData, simulateTyping, handleOption]);
+
+  const handleOptionClick = useCallback((value: string) => {
+    if (value.startsWith('whatsapp:')) {
+      window.open(value.replace('whatsapp:', ''), '_blank');
+      return;
+    }
+    handleOption(value);
+  }, [handleOption]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleTextInput(inputValue);
+  };
+
+  const formatMessage = (text: string) => {
+    return text.split('\n').map((line, i) => {
+      // Bold **text**
+      const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      return (
+        <span key={i}>
+          <span dangerouslySetInnerHTML={{ __html: formatted }} />
+          {i < text.split('\n').length - 1 && <br />}
+        </span>
+      );
     });
   };
 
-  const addUserMsg = (texto: string) => {
-    setMensagens((prev) => [
-      ...prev,
-      { id: nextId(), tipo: 'user', texto, timestamp: new Date() },
-    ]);
-  };
-
-  // ============================================================
-  // HANDLERS
-  // ============================================================
-
-  // Selecionar área
-  const selecionarArea = async (valor: string) => {
-    const areaLabel = AREAS.find((a) => a.valor === valor)?.label || valor;
-    addUserMsg(areaLabel);
-
-    const fluxo = FLUXOS[valor];
-    if (!fluxo) return;
-
-    setAreaAtual(valor);
-    setDados((prev) => ({ ...prev, area: areaLabel.replace(/^[^\s]+\s/, '') }));
-    setPerguntaIdx(0);
-    setEtapa('fluxo');
-
-    await addBotMsg(fluxo.saudacao);
-    const primeiraPergunta = fluxo.perguntas[0];
-    await addBotMsg(primeiraPergunta.texto, primeiraPergunta.opcoes);
-  };
-
-  // Responder pergunta do fluxo
-  const responderPergunta = async (resposta: string, label?: string) => {
-    addUserMsg(label || resposta);
-
-    const fluxo = FLUXOS[areaAtual];
-    if (!fluxo) return;
-
-    const perguntaAtual = fluxo.perguntas[perguntaIdx];
-
-    // Gravar dados
-    if (perguntaAtual.campo) {
-      setDados((prev) => ({ ...prev, [perguntaAtual.campo!]: resposta }));
-    }
-    if (perguntaAtual.campoArray) {
-      setDados((prev) => ({
-        ...prev,
-        detalhes: [...prev.detalhes, `${perguntaAtual.texto}\n→ ${resposta}`],
-      }));
-    }
-
-    const nextIdx = perguntaIdx + 1;
-
-    if (nextIdx < fluxo.perguntas.length) {
-      // Próxima pergunta
-      setPerguntaIdx(nextIdx);
-      const prox = fluxo.perguntas[nextIdx];
-      await addBotMsg(prox.texto, prox.opcoes);
-    } else {
-      // Fim do fluxo → pedir nome
-      setEtapa('nome');
-      await addBotMsg(
-        'Obrigado pelas informações! Para finalizar, qual o seu *nome completo*?'
-      );
-    }
-  };
-
-  // Coletar nome
-  const enviarNome = async (nome: string) => {
-    addUserMsg(nome);
-    setDados((prev) => ({ ...prev, nome }));
-    setEtapa('telefone');
-    await addBotMsg(
-      `Prazer, ${nome.split(' ')[0]}! Agora me informe seu *telefone* para contato:`
-    );
-  };
-
-  // Coletar telefone → gerar resumo
-  const enviarTelefone = async (telefone: string) => {
-    addUserMsg(telefone);
-    setDados((prev) => ({ ...prev, telefone }));
-    setEtapa('resumo');
-
-    await addBotMsg(
-      'Perfeito! Preparei o resumo da sua consulta. Ao clicar no botão abaixo, voce sera redirecionado(a) ao *WhatsApp* com a mensagem pronta — basta enviar.'
-    );
-
-    // Mensagem especial de resumo com botão
-    setDigitando(true);
-    setTimeout(() => {
-      setDigitando(false);
-      setMensagens((prev) => [
-        ...prev,
-        {
-          id: nextId(),
-          tipo: 'bot',
-          texto: '__RESUMO__',
-          timestamp: new Date(),
-        },
-      ]);
-    }, 500);
-  };
-
-  // ============================================================
-  // GERAR MENSAGEM WHATSAPP — FORMATAÇÃO PROFISSIONAL
-  // ============================================================
-  const gerarMensagemWhatsApp = () => {
-    const d = dados;
-    const urgMarcador = getUrgenciaMarcador(d.urgencia);
-    const urgTexto = getUrgenciaTexto(d.urgencia);
-    const dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-
-    // Formatar detalhes como lista limpa
-    const detalhesFormatados = d.detalhes
-      .map((item, idx) => {
-        const parts = item.split('\n→ ');
-        if (parts.length === 2) {
-          return `${idx + 1}. _${parts[0]}_\n   > *${parts[1]}*`;
-        }
-        return `${idx + 1}. ${item}`;
-      })
-      .join('\n\n');
-
-    const linha = '________________________________';
-
-    return `${urgMarcador} *${urgTexto.toUpperCase()}*
-${linha}
-
-*NOVA CONSULTA — Cerbelera & Oliveira*
-${linha}
-
-*Area:* ${d.area}
-*Assunto:* ${d.subarea}
-*Urgencia:* ${urgMarcador} ${urgTexto}
-${linha}
-
-*DETALHES DA TRIAGEM*
-${linha}
-
-${detalhesFormatados}
-${linha}
-
-*DADOS DO CLIENTE*
-${linha}
-
-*Nome:* ${d.nome}
-*Telefone:* ${d.telefone}
-${linha}
-
-*Data/Hora:* ${dataHora}
-_Enviado via Assistente Virtual do site_`.trim();
-  };
-
-  const abrirWhatsApp = () => {
-    const msg = encodeURIComponent(gerarMensagemWhatsApp());
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-  };
-
-  // Submit input de texto
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const texto = inputTexto.trim();
-    if (!texto) return;
-    setInputTexto('');
-
-    if (etapa === 'nome') {
-      enviarNome(texto);
-    } else if (etapa === 'telefone') {
-      enviarTelefone(texto);
-    } else if (etapa === 'fluxo') {
-      const fluxo = FLUXOS[areaAtual];
-      const pAtual = fluxo?.perguntas[perguntaIdx];
-      if (pAtual?.livre) {
-        responderPergunta(texto);
-      }
-    }
-  };
-
-  // ============================================================
-  // VERIFICAÇÃO: campo de texto ativo?
-  // ============================================================
-  const inputAtivo =
-    etapa === 'nome' ||
-    etapa === 'telefone' ||
-    (etapa === 'fluxo' &&
-      FLUXOS[areaAtual]?.perguntas[perguntaIdx]?.livre === true);
-
-  // ============================================================
-  // RENDER
-  // ============================================================
   return (
     <>
-      {/* Botão Flutuante do Chatbot — acima do WhatsApp */}
+      {/* Toggle Button */}
       <AnimatePresence>
-        {!aberto && (
+        {!isOpen && (
           <motion.button
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ delay: 1.5, type: 'spring', stiffness: 200 }}
-            onClick={() => setAberto(true)}
-            className="fixed bottom-24 right-6 z-50 w-14 h-14 bg-gradient-to-br from-gold-500 to-gold-700 rounded-full flex items-center justify-center shadow-lg hover:shadow-gold-500/40 transition-shadow group"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            onClick={openChat}
+            className="fixed bottom-24 right-6 z-40 w-14 h-14 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center transition-shadow group"
             aria-label="Abrir assistente virtual"
-            title="Assistente Virtual"
           >
-            <Scale className="w-7 h-7 text-white" />
-
-            {/* Pulse */}
-            <span className="absolute inset-0 rounded-full bg-gold-400 animate-ping opacity-20" />
-
-            {/* Tooltip */}
-            <span className="absolute right-full mr-3 bg-white text-secondary-700 text-sm px-4 py-2 rounded-lg shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-              Assistente Virtual
-            </span>
-
-            {/* Badge de notificação */}
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] text-white font-bold shadow">
-              1
-            </span>
+            <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse" />
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* Painel do Chat */}
+      {/* Chat Window */}
       <AnimatePresence>
-        {aberto && (
+        {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] h-[560px] max-h-[calc(100vh-4rem)] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-secondary-200"
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(600px,calc(100vh-2rem))] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-primary-100"
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#0e1810] via-[#1a2e1f] to-[#0e1810] px-4 py-3 flex items-center gap-3 flex-shrink-0">
-              <div className="w-10 h-10 bg-gold-500/20 rounded-full flex items-center justify-center">
-                <Scale className="w-5 h-5 text-gold-400" />
+            <div className="bg-gradient-to-r from-primary-500 to-accent-500 p-4 flex items-center gap-3">
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <Bot className="w-5 h-5 text-white" />
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-white font-semibold text-sm truncate">
-                  Cerbelera & Oliveira
-                </h3>
-                <p className="text-primary-300 text-xs flex items-center gap-1">
-                  <span className="w-2 h-2 bg-green-400 rounded-full inline-block" />
-                  Assistente online
-                </p>
+              <div className="flex-1">
+                <h3 className="text-white font-semibold text-sm">Assistente Virtual</h3>
+                <p className="text-white/70 text-xs">Dra. Andresa Martin • Online</p>
               </div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={iniciar}
-                  className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-primary-300 hover:text-white"
-                  title="Reiniciar conversa"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setAberto(false)}
-                  className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-primary-300 hover:text-white"
-                  title="Fechar"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                aria-label="Fechar chat"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
             </div>
 
-            {/* Linha dourada */}
-            <div className="h-[2px] bg-gradient-to-r from-transparent via-gold-500 to-transparent flex-shrink-0" />
-
-            {/* Corpo do chat */}
-            <div
-              ref={chatRef}
-              className="flex-1 overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-secondary-50 to-white"
-            >
-              {mensagens.map((msg) => (
-                <div key={msg.id}>
-                  {/* Mensagem especial: RESUMO */}
-                  {msg.texto === '__RESUMO__' ? (
-                    <div className="bg-gradient-to-br from-primary-50 to-gold-50 border border-gold-200 rounded-xl p-4 space-y-3">
-                      <p className="font-semibold text-sm text-secondary-800 flex items-center gap-2">
-                        <Scale className="w-4 h-4 text-gold-600" />
-                        Resumo da Consulta
-                      </p>
-
-                      {/* Badge de urgência */}
-                      {dados.urgencia && (
-                        <div
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${getUrgenciaCor(dados.urgencia)}`}
-                        >
-                          {dados.urgencia === 'URGENTE' && <AlertTriangle className="w-3 h-3" />}
-                          {dados.urgencia === 'MODERADO' && <Clock className="w-3 h-3" />}
-                          {dados.urgencia === 'CONSULTA' && <CheckCircle className="w-3 h-3" />}
-                          {getUrgenciaMarcador(dados.urgencia)} {getUrgenciaTexto(dados.urgencia)}
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-primary-50/30 to-white">
+              {messages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[85%] ${msg.sender === 'user' ? 'order-1' : 'order-1'}`}>
+                    {msg.sender === 'bot' && (
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center">
+                          <Bot className="w-3 h-3 text-primary-600" />
                         </div>
-                      )}
+                        <span className="text-xs text-gray-400">Assistente</span>
+                      </div>
+                    )}
+                    <div
+                      className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                        msg.sender === 'user'
+                          ? 'bg-primary-500 text-white rounded-br-md'
+                          : 'bg-white text-gray-700 rounded-bl-md shadow-sm border border-gray-100'
+                      }`}
+                    >
+                      {formatMessage(msg.text)}
+                    </div>
 
-                      <div className="text-xs text-secondary-600 space-y-1">
-                        <p>
-                          <strong>Área:</strong> {dados.area}
-                        </p>
-                        <p>
-                          <strong>Assunto:</strong> {dados.subarea}
-                        </p>
-                        <p>
-                          <strong>Cliente:</strong> {dados.nome}
-                        </p>
-                        <p>
-                          <strong>Telefone:</strong> {dados.telefone}
-                        </p>
+                    {/* Options */}
+                    {msg.options && msg.options.length > 0 && (
+                      <div className="mt-2 space-y-1.5">
+                        {msg.options.map((opt) => (
+                          <button
+                            key={opt.value}
+                            onClick={() => handleOptionClick(opt.value)}
+                            className="w-full flex items-center gap-2 px-4 py-2.5 bg-white border border-primary-200 rounded-xl text-sm text-gray-700 hover:bg-primary-50 hover:border-primary-300 hover:text-primary-700 transition-all text-left group"
+                          >
+                            {opt.icon && <span className="text-primary-400 group-hover:text-primary-600">{opt.icon}</span>}
+                            <span className="flex-1">{opt.label}</span>
+                            <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-primary-400" />
+                          </button>
+                        ))}
                       </div>
-                      <button
-                        onClick={abrirWhatsApp}
-                        className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-sm py-2.5 rounded-lg transition-colors shadow"
-                      >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                        </svg>
-                        Enviar para o Advogado
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </button>
-                      <p className="text-[10px] text-secondary-400 text-center flex items-center justify-center gap-1">
-                        <ShieldCheck className="w-3 h-3" />
-                        Ao clicar, você será redirecionado ao WhatsApp
-                      </p>
-                    </div>
-                  ) : msg.tipo === 'bot' ? (
-                    /* Mensagem do bot */
-                    <div className="flex gap-2 items-start">
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#1a2e1f] to-[#2d4a35] flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Bot className="w-3.5 h-3.5 text-gold-400" />
-                      </div>
-                      <div className="max-w-[85%] space-y-2">
-                        <div className="bg-white border border-secondary-100 rounded-2xl rounded-tl-sm px-3.5 py-2.5 shadow-sm">
-                          <p
-                            className="text-sm text-secondary-700 leading-relaxed whitespace-pre-line"
-                            dangerouslySetInnerHTML={{
-                              __html: msg.texto
-                                .replace(
-                                  /\*([^*]+)\*/g,
-                                  '<strong class="text-secondary-800">$1</strong>'
-                                ),
-                            }}
-                          />
-                        </div>
+                    )}
 
-                        {/* Opções */}
-                        {msg.opcoes && msg.id === mensagens[mensagens.length - 1]?.id && (
-                          <div className="space-y-1.5">
-                            {msg.opcoes.map((op) => (
-                              <button
-                                key={op.valor}
-                                onClick={() => {
-                                  if (etapa === 'inicio') {
-                                    selecionarArea(op.valor);
-                                  } else {
-                                    responderPergunta(op.valor, op.label);
-                                  }
-                                }}
-                                className="block w-full text-left text-sm px-3 py-2 rounded-xl bg-gold-50 hover:bg-gold-100 border border-gold-200 hover:border-gold-300 text-secondary-700 transition-all hover:shadow-sm"
-                              >
-                                {op.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    /* Mensagem do usuário */
-                    <div className="flex justify-end">
-                      <div className="max-w-[80%] bg-gradient-to-br from-[#1a2e1f] to-[#2d4a35] text-white px-3.5 py-2.5 rounded-2xl rounded-tr-sm shadow-sm">
-                        <p className="text-sm leading-relaxed">{msg.texto}</p>
-                      </div>
-                    </div>
-                  )}
+                    <p className={`text-[10px] mt-1 ${msg.sender === 'user' ? 'text-right text-gray-400' : 'text-gray-400'}`}>
+                      {msg.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
                 </div>
               ))}
 
-              {/* Indicador de digitação */}
-              {digitando && (
-                <div className="flex gap-2 items-start">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#1a2e1f] to-[#2d4a35] flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-3.5 h-3.5 text-gold-400" />
+              {isTyping && (
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center">
+                    <Bot className="w-3 h-3 text-primary-600" />
                   </div>
-                  <div className="bg-white border border-secondary-100 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                  <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-md shadow-sm border border-gray-100">
                     <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-secondary-300 rounded-full animate-bounce [animation-delay:0ms]" />
-                      <span className="w-2 h-2 bg-secondary-300 rounded-full animate-bounce [animation-delay:150ms]" />
-                      <span className="w-2 h-2 bg-secondary-300 rounded-full animate-bounce [animation-delay:300ms]" />
+                      <span className="w-2 h-2 bg-primary-300 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 bg-primary-300 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-2 h-2 bg-primary-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
 
-            {/* Input area */}
-            <div className="border-t border-secondary-100 p-3 flex-shrink-0 bg-white">
-              {etapa === 'resumo' ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={abrirWhatsApp}
-                    className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    Enviar via WhatsApp
-                  </button>
-                  <button
-                    onClick={iniciar}
-                    className="px-3 py-2.5 rounded-xl border border-secondary-200 hover:bg-secondary-50 text-secondary-600 text-sm transition-colors"
-                    title="Nova consulta"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="flex gap-2">
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={inputTexto}
-                    onChange={(e) => setInputTexto(e.target.value)}
-                    placeholder={
-                      inputAtivo
-                        ? etapa === 'nome'
-                          ? 'Digite seu nome completo...'
-                          : etapa === 'telefone'
-                          ? '(18) 99999-9999'
-                          : 'Digite sua resposta...'
-                        : 'Selecione uma opção acima'
-                    }
-                    disabled={!inputAtivo}
-                    className="flex-1 text-sm px-3 py-2.5 rounded-xl border border-secondary-200 focus:border-gold-400 focus:ring-1 focus:ring-gold-400 outline-none disabled:bg-secondary-50 disabled:text-secondary-400 transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!inputAtivo || !inputTexto.trim()}
-                    className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-gold-500 to-gold-700 text-white disabled:opacity-40 transition-opacity hover:shadow-lg"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                </form>
-              )}
-            </div>
-
-            {/* Rodapé legal */}
-            <div className="px-3 pb-2 flex-shrink-0 bg-white">
-              <p className="text-[9px] text-secondary-400 text-center leading-tight">
-                Assistente informativo. Não constitui aconselhamento jurídico nem
-                estabelece relação advogado-cliente. Provimento 205/2021 OAB.
-              </p>
-            </div>
+            {/* Input */}
+            <form onSubmit={handleSubmit} className="p-3 border-t border-gray-100 bg-white">
+              <div className="flex gap-2">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder={collectingData.step === 'nome' ? 'Digite seu nome...' : collectingData.step === 'telefone' ? '(18) 99999-9999' : 'Digite sua mensagem...'}
+                  className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-300"
+                />
+                <button
+                  type="submit"
+                  disabled={!inputValue.trim()}
+                  className="w-10 h-10 bg-primary-500 text-white rounded-xl flex items-center justify-center hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Enviar mensagem"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            </form>
           </motion.div>
         )}
       </AnimatePresence>

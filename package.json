@@ -1,5 +1,5 @@
 {
-  "name": "cerbelera-oliveira-advocacia",
+  "name": "dra-andresa-martin-ginecologista",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
+    "bcryptjs": "^2.4.3",
     "framer-motion": "^11.15.0",
+    "jose": "^5.2.0",
     "lucide-react": "^0.468.0",
     "next": "^16.1.6",
     "react": "^18.3.1",
@@ -20,6 +22,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.5",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",

@@ -1,13 +1,13 @@
-import { MetadataRoute } from 'next';
+import { siteConfig } from '@/lib/site-config';
+import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cerbeleraeoliveiraadv.vercel.app';
-
+  const baseUrl = siteConfig.url;
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/admin/'],
+      disallow: ['/admin/', '/api/'],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };
