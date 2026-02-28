@@ -7,7 +7,7 @@ import AreaCard from '@/components/AreaCard';
 import TestimonialCard from '@/components/TestimonialCard';
 import BlogCard from '@/components/BlogCard';
 import AnimatedSection from '@/components/AnimatedSection';
-import { IMAGES } from '@/lib/images';
+import { IMAGES, getArticleImage } from '@/lib/images';
 
 const areas = [
   { iconName: 'Heart', title: 'Ginecologia', description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher, com exames de rotina, prevenção e tratamento de doenças.' },
@@ -26,9 +26,9 @@ const testimonials = [
 ];
 
 const blogPosts = [
-  { title: 'A Importância do Pré-Natal: Cuidando da Mãe e do Bebê', excerpt: 'O pré-natal é essencial para garantir a saúde da mãe e do bebê. Saiba quando iniciar, quais exames fazer e como é o pré-natal humanizado.', date: '25 Fev 2026', readTime: '7 min', slug: 'importancia-pre-natal', category: 'Pré-natal' },
-  { title: 'Microscopia Vaginal: Diagnóstico na Hora com Precisão', excerpt: 'Saiba como a microscopia vaginal permite diagnóstico imediato durante a consulta, agilizando o tratamento.', date: '20 Fev 2026', readTime: '5 min', slug: 'microscopia-vaginal-diagnostico', category: 'Microscopia Vaginal' },
-  { title: 'Menopausa: Como Manter a Qualidade de Vida', excerpt: 'Entenda os sintomas da menopausa e as opções de tratamento para viver essa fase com saúde e bem-estar.', date: '15 Fev 2026', readTime: '8 min', slug: 'menopausa-qualidade-vida', category: 'Menopausa' },
+  { title: 'A Importância do Pré-Natal: Cuidando da Mãe e do Bebê', excerpt: 'O pré-natal é essencial para garantir a saúde da mãe e do bebê. Saiba quando iniciar, quais exames fazer e como é o pré-natal humanizado.', date: '25 Fev 2026', readTime: '7 min', slug: 'importancia-pre-natal', category: 'Pré-natal', image: getArticleImage('importancia-pre-natal') },
+  { title: 'Microscopia Vaginal: Diagnóstico na Hora com Precisão', excerpt: 'Saiba como a microscopia vaginal permite diagnóstico imediato durante a consulta, agilizando o tratamento.', date: '20 Fev 2026', readTime: '5 min', slug: 'microscopia-vaginal-diagnostico', category: 'Microscopia Vaginal', image: getArticleImage('microscopia-vaginal-diagnostico') },
+  { title: 'Menopausa: Como Manter a Qualidade de Vida', excerpt: 'Entenda os sintomas da menopausa e as opções de tratamento para viver essa fase com saúde e bem-estar.', date: '15 Fev 2026', readTime: '8 min', slug: 'menopausa-qualidade-vida', category: 'Menopausa', image: getArticleImage('menopausa-qualidade-vida') },
 ];
 
 export default function HomePage() {
@@ -66,7 +66,7 @@ export default function HomePage() {
             <AnimatedSection>
               <div className="relative">
                 <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl relative">
-                  <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+                  <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada no Espaço Humanizare" fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" priority />
                 </div>
                 <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-primary-500 to-accent-500 text-white p-6 rounded-2xl shadow-xl">
                   <div className="flex items-center gap-1 mb-1">

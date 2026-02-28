@@ -3,6 +3,7 @@ import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeader from '@/components/SectionHeader';
 import BlogCard from '@/components/BlogCard';
 import { articlesList } from '@/lib/articles';
+import { getArticleImage } from '@/lib/images';
 
 export const metadata = {
   title: 'Blog Saúde da Mulher | Dra. Andresa Martin Louzada',
@@ -42,6 +43,7 @@ export default function BlogPage() {
                 readTime={article.readTime}
                 slug={article.slug}
                 category={article.category}
+                image={getArticleImage(article.slug)}
                 delay={index * 0.05}
               />
             ))}

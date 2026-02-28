@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, Tag, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 import AnimatedSection from '@/components/AnimatedSection';
 import { articles, articlesList } from '@/lib/articles';
+import { getArticleImage, IMAGES } from '@/lib/images';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -65,6 +67,21 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </section>
 
+      {/* Hero image */}
+      <div className="container-custom max-w-4xl -mt-4 mb-0">
+        <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden shadow-xl">
+          <Image
+            src={getArticleImage(slug)}
+            alt={article.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 1024px) 100vw, 896px"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        </div>
+      </div>
+
       {/* Conteúdo */}
       <section className="py-16 bg-white">
         <div className="container-custom max-w-4xl">
@@ -104,14 +121,14 @@ export default async function ArticlePage({ params }: Props) {
             </article>
 
             {/* Autor */}
-            <div className="mt-12 p-6 bg-primary-50 rounded-2xl border border-primary-100 flex flex-col sm:flex-row gap-4 items-center sm:items-start">
-              <div className="w-16 h-16 bg-primary-200 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-2xl font-bold text-primary-600">A</span>
+            <div className="mt-12 p-6 bg-gradient-to-r from-primary-50 to-purple-50 rounded-2xl border border-primary-100 flex flex-col sm:flex-row gap-5 items-center sm:items-start">
+              <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-primary-200 shadow-lg">
+                <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada" width={80} height={80} className="object-cover w-full h-full" />
               </div>
               <div>
-                <p className="font-bold text-gray-900">Dra. Andresa Martin Louzada</p>
-                <p className="text-sm text-gray-600">Ginecologista e Obstetra | CRM/SP</p>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="font-serif font-bold text-gray-900 text-lg">Dra. Andresa Martin Louzada</p>
+                <p className="text-sm text-primary-600 font-medium">Ginecologista e Obstetra | CRM/SP</p>
+                <p className="text-sm text-gray-500 mt-2 leading-relaxed">
                   Especialista em Ginecologia, Obstetrícia, Ginecologia Regenerativa e Microscopia Vaginal.
                   Atuando no Espaço Humanizare em Presidente Prudente.
                 </p>
@@ -119,9 +136,9 @@ export default async function ArticlePage({ params }: Props) {
             </div>
 
             {/* CTA */}
-            <div className="mt-10 p-8 bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl text-center text-white">
+            <div className="mt-10 p-8 bg-gradient-to-r from-primary-500 via-purple-500 to-accent-500 rounded-2xl text-center text-white shadow-xl">
               <h3 className="text-2xl font-serif font-bold mb-3">Ficou com alguma dúvida?</h3>
-              <p className="text-primary-100 mb-6">Agende uma consulta e converse pessoalmente com a Dra. Andresa.</p>
+              <p className="text-white/80 mb-6">Agende uma consulta e converse pessoalmente com a Dra. Andresa.</p>
               <a
                 href="https://wa.me/5518998207964?text=Olá!%20Li%20o%20artigo%20e%20gostaria%20de%20agendar%20uma%20consulta."
                 target="_blank"
