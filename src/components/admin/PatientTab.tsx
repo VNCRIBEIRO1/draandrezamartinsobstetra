@@ -14,6 +14,10 @@ import {
   VALORES_CONSULTA, ESTADOS_CIVIS, MEDICO_CONFIG, CIDS_COMUNS, PREPARO_EXAME,
   calcularIdade, calcularIMC, formatarMoeda, formatDateBR, toISO, LS_KEYS,
 } from '@/lib/admin-types';
+import {
+  imprimirSolicitacao, downloadSolicitacao,
+  imprimirSolicitacaoMultipla,
+} from '@/lib/exam-print';
 
 /* ═══════════════════════════════════════════════════════════
    FORM HELPERS — defined at MODULE LEVEL to prevent
@@ -119,6 +123,7 @@ export default function PatientTab() {
   const [editingE, setEditingE] = useState<ExamRecord | null>(null);
   const [eForm, setEForm] = useState<Partial<ExamRecord>>(defaultEForm());
   const [viewExam, setViewExam] = useState<ExamRecord | null>(null);
+  const [selectedExamIds, setSelectedExamIds] = useState<Set<string>>(new Set());
 
   /* ── Load/Save ── */
   useEffect(() => {
@@ -236,6 +241,22 @@ export default function PatientTab() {
   const resetEForm = () => { setShowEForm(false); setEditingE(null); setEForm(defaultEForm()); };
 
   const selectPatient = (id: string) => { setSelectedId(id); setDetailTab('perfil'); };
+
+  /* ═══ Exam selection for batch print ═══ */
+  const toggleExamSelect = (id: string) => {
+    setSelectedExamIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+  const selectAllExams = () => {
+    if (selectedExamIds.size === patientExams.length) {
+      setSelectedExamIds(new Set());
+    } else {
+      setSelectedExamIds(new Set(patientExams.map(e => e.id)));
+    }
+  };
 
   /* ═══ Auto-fill exam preparo when type changes ═══ */
   const handleExamTypeChange = (tipo: string) => {
@@ -533,18 +554,40 @@ export default function PatientTab() {
               {/* ── EXAMES TAB ── */}
               {detailTab === 'exames' && (
                 <>
-                  <div className="flex gap-3 mb-4">
+                  <div className="flex flex-wrap gap-3 mb-4">
                     <button onClick={() => { resetEForm(); setShowEForm(true); }}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600">
                       <Plus className="w-4 h-4" /> Solicitar Exame
                     </button>
+                    {patientExams.length > 0 && (
+                      <>
+                        <button onClick={selectAllExams}
+                          className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium border transition-colors ${
+                            selectedExamIds.size === patientExams.length
+                              ? 'bg-primary-50 border-primary-300 text-primary-700'
+                              : 'bg-white border-gray-200 text-gray-600 hover:border-primary-300'
+                          }`}>
+                          <CheckCircle2 className="w-4 h-4" />
+                          {selectedExamIds.size === patientExams.length ? 'Desmarcar Todos' : 'Selecionar Todos'}
+                        </button>
+                        {selectedExamIds.size > 0 && (
+                          <button onClick={() => {
+                            const selected = patientExams.filter(e => selectedExamIds.has(e.id));
+                            if (selected.length > 0 && selectedPatient) imprimirSolicitacaoMultipla(selected, selectedPatient);
+                          }}
+                            className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium hover:bg-green-100">
+                            <Printer className="w-4 h-4" /> Imprimir Selecionados ({selectedExamIds.size})
+                          </button>
+                        )}
+                      </>
+                    )}
                   </div>
 
                   {/* Alerta de obrigatoriedade */}
                   <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2">
                     <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
                     <p className="text-xs text-amber-700">
-                      <strong>CFM Res. 1.638/2002:</strong> A solicitação de exame deve conter identificação do paciente, indicação clínica, CID-10 (quando aplicável), e identificação do médico solicitante com CRM.
+                      <strong>CFM Res. 1.638/2002 + ANVISA RDC 302/2005:</strong> A solicitação de exame deve conter: identificação completa do paciente, indicação clínica, CID-10, identificação do médico solicitante com CRM, e orientações de preparo quando aplicável.
                     </p>
                   </div>
 
@@ -617,9 +660,29 @@ export default function PatientTab() {
 
                       <FTextArea label="Observações Adicionais" value={eForm.observacoes || ''} onChange={v => setEForm(f => ({ ...f, observacoes: v }))} rows={2} className="mt-3" />
 
-                      <div className="flex gap-2 mt-4">
+                      <div className="flex flex-wrap gap-2 mt-4">
                         <button onClick={saveExam} className="px-5 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600 inline-flex items-center gap-2">
                           <Save className="w-4 h-4" /> {editingE ? 'Salvar Alterações' : 'Solicitar Exame'}
+                        </button>
+                        {/* Salvar + Imprimir */}
+                        <button onClick={() => {
+                          if (!eForm.nome || !eForm.indicacaoClinica || !selectedPatient) { alert('Preencha nome e indicação clínica antes de imprimir.'); return; }
+                          saveExam();
+                          const printExam: ExamRecord = {
+                            id: '', pacienteId: '', criadoEm: '',
+                            nome: eForm.nome || '', tipo: eForm.tipo || '', dataSolicitacao: eForm.dataSolicitacao || toISO(new Date()),
+                            dataResultado: '', resultado: '', status: 'solicitado',
+                            arquivoNome: '', arquivoBase64: '', arquivoTipo: '', consultaId: '',
+                            observacoes: eForm.observacoes || '', indicacaoClinica: eForm.indicacaoClinica || '',
+                            cid10: eForm.cid10 || '', urgencia: eForm.urgencia || 'rotina',
+                            laboratorio: eForm.laboratorio || '',
+                            medicoSolicitante: eForm.medicoSolicitante || MEDICO_CONFIG.nome,
+                            crm: eForm.crm || MEDICO_CONFIG.crm,
+                            preparoEspecial: eForm.preparoEspecial || '',
+                          };
+                          setTimeout(() => imprimirSolicitacao(printExam, selectedPatient), 100);
+                        }} className="px-4 py-2 bg-green-500 text-white rounded-xl text-sm font-medium hover:bg-green-600 inline-flex items-center gap-2">
+                          <Printer className="w-4 h-4" /> Salvar e Imprimir
                         </button>
                         <button onClick={resetEForm} className="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-sm hover:bg-gray-200">Cancelar</button>
                       </div>
@@ -638,10 +701,14 @@ export default function PatientTab() {
                         const ec = STATUS_EXAME_CONFIG[ex.status] || STATUS_EXAME_CONFIG.solicitado;
                         const isExpanded = viewExam?.id === ex.id;
                         return (
-                          <div key={ex.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group">
+                          <div key={ex.id} className={`bg-white rounded-2xl border shadow-sm overflow-hidden group ${selectedExamIds.has(ex.id) ? 'border-primary-300 ring-1 ring-primary-200' : 'border-gray-100'}`}>
                             <div className="p-4">
                               <div className="flex items-center justify-between">
-                                <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                  {/* Checkbox for batch print */}
+                                  <input type="checkbox" checked={selectedExamIds.has(ex.id)} onChange={() => toggleExamSelect(ex.id)}
+                                    className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 flex-shrink-0 cursor-pointer" />
+                                  <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                                     <h4 className="font-medium text-gray-900 text-sm">{ex.nome}</h4>
                                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${ec.bg}`}>{ec.label}</span>
@@ -662,6 +729,7 @@ export default function PatientTab() {
                                     </div>
                                   )}
                                 </div>
+                                </div>
                                 <div className="flex items-center gap-1 ml-3">
                                   <select value={ex.status} onChange={e => updateExamStatus(ex.id, e.target.value as ExamRecord['status'])}
                                     className={`text-[10px] px-2 py-1 rounded-lg border font-medium ${ec.bg}`}>
@@ -672,6 +740,15 @@ export default function PatientTab() {
                                   </select>
                                   <button onClick={() => setViewExam(isExpanded ? null : ex)} className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg"><Eye className="w-4 h-4" /></button>
                                   <button onClick={() => editExam(ex)} className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg"><Edit3 className="w-4 h-4" /></button>
+                                  {/* Print & Download */}
+                                  <button onClick={() => selectedPatient && imprimirSolicitacao(ex, selectedPatient)}
+                                    className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg" title="Imprimir Solicitação">
+                                    <Printer className="w-4 h-4" />
+                                  </button>
+                                  <button onClick={() => selectedPatient && downloadSolicitacao(ex, selectedPatient)}
+                                    className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg" title="Baixar Documento">
+                                    <Download className="w-4 h-4" />
+                                  </button>
                                   <label className="p-1.5 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg cursor-pointer" title="Anexar laudo">
                                     <Upload className="w-4 h-4" />
                                     <input type="file" className="hidden" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onChange={e => handleFileUpload(ex.id, e)} />
@@ -703,10 +780,17 @@ export default function PatientTab() {
                     </div>
                   )}
 
-                  <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
-                    <p className="text-sm text-primary-700">
-                      📎 <strong>Laudos e Resultados:</strong> Use o ícone <Upload className="w-3 h-3 inline" /> para anexar arquivos (PDF, imagens, documentos — máx. 5MB). Ou expanda o exame com <Eye className="w-3 h-3 inline" /> para digitar o resultado.
-                    </p>
+                  <div className="mt-6 space-y-3">
+                    <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+                      <p className="text-sm text-green-700">
+                        🖨️ <strong>Imprimir / Baixar:</strong> Use <Printer className="w-3 h-3 inline" /> para imprimir a solicitação individual ou selecione vários exames e use &quot;Imprimir Selecionados&quot; para gerar um documento único. Use <Download className="w-3 h-3 inline" /> para baixar o arquivo.
+                      </p>
+                    </div>
+                    <div className="p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
+                      <p className="text-sm text-primary-700">
+                        📎 <strong>Laudos e Resultados:</strong> Use <Upload className="w-3 h-3 inline" /> para anexar arquivos (PDF, imagens, documentos — máx. 5MB). Ou expanda com <Eye className="w-3 h-3 inline" /> para digitar o resultado.
+                      </p>
+                    </div>
                   </div>
                 </>
               )}
