@@ -1,5 +1,6 @@
 import { Heart, Baby, Stethoscope, Flower2, Microscope, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeader from '@/components/SectionHeader';
 
@@ -15,6 +16,7 @@ const areas = [
     description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher. Prevenção, diagnóstico e tratamento com cuidado e acolhimento.',
     items: ['Consulta ginecológica de rotina', 'Papanicolau e colposcopia', 'Infecções e corrimentos', 'Endometriose e miomas', 'Planejamento reprodutivo', 'Métodos contraceptivos'],
     color: 'from-pink-400 to-pink-600',
+    image: '/images/dra-andresa-consultorio-1.jpeg',
   },
   {
     icon: Baby,
@@ -22,6 +24,7 @@ const areas = [
     description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para a mãe e o bebê, do planejamento ao puerpério.',
     items: ['Parto humanizado', 'Gestação de alto risco', 'Ultrassom obstétrico', 'Orientações sobre amamentação', 'Acompanhamento pós-parto', 'Planejamento da gestação'],
     color: 'from-purple-400 to-purple-600',
+    image: '/images/dra-andresa-extra-1.jpeg',
   },
   {
     icon: Stethoscope,
@@ -29,6 +32,7 @@ const areas = [
     description: 'Pré-natal completo e humanizado com acompanhamento individualizado. Cada gestação é única e merece atenção especial.',
     items: ['Consultas mensais/quinzenais/semanais', 'Exames laboratoriais completos', 'Ultrassonografias de rotina', 'Acompanhamento nutricional', 'Orientação sobre parto', 'Vacinação na gestação'],
     color: 'from-rose-400 to-rose-600',
+    image: '/images/dra-andresa-extra-2.jpeg',
   },
   {
     icon: Flower2,
@@ -36,6 +40,7 @@ const areas = [
     description: 'Tratamento personalizado para os sintomas da menopausa, garantindo qualidade de vida e bem-estar nessa nova fase.',
     items: ['Reposição hormonal bioidêntica', 'Tratamento de fogachos', 'Saúde óssea e cardiovascular', 'Controle de peso', 'Saúde mental e emocional', 'Sexualidade na menopausa'],
     color: 'from-violet-400 to-violet-600',
+    image: '/images/dra-andresa-consultorio-3.jpeg',
   },
   {
     icon: Sparkles,
@@ -43,6 +48,7 @@ const areas = [
     description: 'Procedimentos inovadores com tecnologias de ponta para restauração e rejuvenescimento íntimo feminino.',
     items: ['Laser íntimo', 'Bioestimuladores de colágeno', 'Ácido hialurônico íntimo', 'Tratamento de incontinência urinária leve', 'Rejuvenescimento vulvovaginal', 'Síndrome geniturinária da menopausa'],
     color: 'from-fuchsia-400 to-fuchsia-600',
+    image: '/images/dra-andresa-consultorio-5.jpeg',
   },
   {
     icon: Microscope,
@@ -50,6 +56,7 @@ const areas = [
     description: 'Diagnóstico imediato durante a consulta — análise microscópica do conteúdo vaginal com resultado na hora, sem necessidade de aguardar exames laboratoriais.',
     items: ['Resultado na hora da consulta', 'Diagnóstico preciso de infecções', 'Candidíase, vaginose, tricomoníase', 'Tratamento iniciado imediatamente', 'Sem custos adicionais de lab', 'Acompanhamento microscópico'],
     color: 'from-pink-500 to-primary-500',
+    image: '/images/dra-andresa-consultorio-7.jpeg',
   },
 ];
 
@@ -97,26 +104,31 @@ export default function AreasPage() {
                         </li>
                       ))}
                     </ul>
-                    <a
-                      href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href="/agendar"
                       className="btn-primary inline-flex items-center"
                     >
                       Agendar Consulta <ArrowRight className="w-5 h-5 ml-2" />
-                    </a>
+                    </Link>
                   </div>
 
                   <div className={`${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                    <div className={`bg-gradient-to-br ${area.color} p-8 rounded-3xl text-white relative overflow-hidden`}>
-                      <div className="absolute inset-0 opacity-20">
-                        <div className="absolute top-4 right-4 w-32 h-32 border border-white/30 rounded-full" />
-                        <div className="absolute bottom-4 left-4 w-24 h-24 border border-white/20 rounded-full" />
-                      </div>
-                      <div className="relative z-10">
-                        <area.icon className="w-16 h-16 mb-6 opacity-80" />
-                        <h3 className="text-2xl font-bold mb-3">{area.title}</h3>
-                        <p className="text-white/80 leading-relaxed">{area.description}</p>
+                    <div className="relative rounded-3xl overflow-hidden shadow-xl group">
+                      <Image
+                        src={area.image}
+                        alt={area.title}
+                        width={600}
+                        height={400}
+                        className="w-full h-[320px] md:h-[380px] object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className={`absolute inset-0 bg-gradient-to-t ${area.color} opacity-30`} />
+                      <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 bg-gradient-to-r ${area.color} rounded-xl flex items-center justify-center`}>
+                            <area.icon className="w-5 h-5 text-white" />
+                          </div>
+                          <h3 className="text-xl font-bold text-white">{area.title}</h3>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -138,14 +150,12 @@ export default function AreasPage() {
             <p className="text-primary-100 max-w-xl mx-auto mb-8">
               Entre em contato conosco e agende uma consulta. A Dra. Andresa avaliará o seu caso com toda atenção.
             </p>
-            <a
-              href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/agendar"
               className="inline-flex items-center px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
             >
-              Fale Conosco pelo WhatsApp
-            </a>
+              Agendar Consulta
+            </Link>
           </AnimatedSection>
         </div>
       </section>

@@ -6,9 +6,10 @@ import {
   Calendar, Clock, Users, FileText, LogOut, Plus, Trash2,
   ChevronLeft, ChevronRight, Heart, Menu, Home, Eye, EyeOff,
   Video, Save, X, Edit3, Search, Filter, Phone, CheckCircle2,
-  AlertCircle, XCircle, CalendarDays, LayoutGrid, List
+  AlertCircle, XCircle, CalendarDays, LayoutGrid, List, Bell
 } from 'lucide-react';
 import Link from 'next/link';
+import { articles } from '@/lib/articles';
 
 /* ═══════════ TYPES ═══════════ */
 interface Appointment {
@@ -62,16 +63,16 @@ const CATEGORIES = ['Pré-natal','Microscopia Vaginal','Menopausa','Ginecologia 
 
 /* ═══════════ DEFAULT ARTICLES ═══════════ */
 const DEFAULT_ARTICLES: BlogArticle[] = [
-  { id: '1', slug: 'importancia-pre-natal', title: 'A Importância do Pré-Natal: Cuidando da Mãe e do Bebê', category: 'Pré-natal', date: '25 Fev 2026', readTime: '7 min', content: [], published: true },
-  { id: '2', slug: 'microscopia-vaginal-diagnostico', title: 'Microscopia Vaginal: Diagnóstico na Hora com Precisão', category: 'Microscopia Vaginal', date: '20 Fev 2026', readTime: '5 min', content: [], published: true },
-  { id: '3', slug: 'menopausa-qualidade-vida', title: 'Menopausa: Como Manter a Qualidade de Vida Nessa Nova Fase', category: 'Menopausa', date: '15 Fev 2026', readTime: '8 min', content: [], published: true },
-  { id: '4', slug: 'ginecologia-regenerativa', title: 'Ginecologia Regenerativa: Inovação em Saúde Feminina', category: 'Ginecologia Regenerativa', date: '10 Fev 2026', readTime: '6 min', content: [], published: true },
-  { id: '5', slug: 'exames-ginecologicos-rotina', title: 'Exames Ginecológicos de Rotina: Quando e Por Que Fazer', category: 'Ginecologia', date: '05 Fev 2026', readTime: '5 min', content: [], published: true },
-  { id: '6', slug: 'cheiro-intimo-normal-anormal', title: 'Cheiro Íntimo: O Que É Normal e O Que Não É?', category: 'Ginecologia', date: '01 Fev 2026', readTime: '4 min', content: [], published: true },
-  { id: '7', slug: 'pilula-do-dia-seguinte', title: 'Pílula do Dia Seguinte: O Que Você Precisa Saber', category: 'Contracepção', date: '28 Jan 2026', readTime: '5 min', content: [], published: true },
-  { id: '8', slug: 'vsr-recem-nascido', title: 'VSR em Recém-Nascidos: Entenda e Proteja Seu Bebê', category: 'Pré-natal', date: '25 Jan 2026', readTime: '6 min', content: [], published: true },
-  { id: '9', slug: 'cuidar-voce-amor-proprio', title: 'Cuidar de Você É Amor Próprio', category: 'Saúde da Mulher', date: '20 Jan 2026', readTime: '4 min', content: [], published: true },
-  { id: '10', slug: 'nao-faria-sendo-ginecologista', title: '10 Coisas que Eu Não Faria Sendo Ginecologista', category: 'Ginecologia', date: '15 Jan 2026', readTime: '7 min', content: [], published: true },
+  { id: '1', slug: 'importancia-pre-natal', title: 'A Importância do Pré-Natal: Cuidando da Mãe e do Bebê', category: 'Pré-natal', date: '25 Fev 2026', readTime: '7 min', content: articles['importancia-pre-natal']?.content || [], published: true },
+  { id: '2', slug: 'microscopia-vaginal-diagnostico', title: 'Microscopia Vaginal: Diagnóstico na Hora com Precisão', category: 'Microscopia Vaginal', date: '20 Fev 2026', readTime: '5 min', content: articles['microscopia-vaginal-diagnostico']?.content || [], published: true },
+  { id: '3', slug: 'menopausa-qualidade-vida', title: 'Menopausa: Como Manter a Qualidade de Vida Nessa Nova Fase', category: 'Menopausa', date: '15 Fev 2026', readTime: '8 min', content: articles['menopausa-qualidade-vida']?.content || [], published: true },
+  { id: '4', slug: 'ginecologia-regenerativa', title: 'Ginecologia Regenerativa: Inovação em Saúde Feminina', category: 'Ginecologia Regenerativa', date: '10 Fev 2026', readTime: '6 min', content: articles['ginecologia-regenerativa']?.content || [], published: true },
+  { id: '5', slug: 'exames-ginecologicos-rotina', title: 'Exames Ginecológicos de Rotina: Quando e Por Que Fazer', category: 'Ginecologia', date: '05 Fev 2026', readTime: '5 min', content: articles['exames-ginecologicos-rotina']?.content || [], published: true },
+  { id: '6', slug: 'cheiro-intimo-normal-anormal', title: 'Cheiro Íntimo: O Que É Normal e O Que Não É?', category: 'Ginecologia', date: '01 Fev 2026', readTime: '4 min', content: articles['cheiro-intimo-normal-anormal']?.content || [], published: true },
+  { id: '7', slug: 'pilula-do-dia-seguinte', title: 'Pílula do Dia Seguinte: O Que Você Precisa Saber', category: 'Contracepção', date: '28 Jan 2026', readTime: '5 min', content: articles['pilula-do-dia-seguinte']?.content || [], published: true },
+  { id: '8', slug: 'vsr-recem-nascido', title: 'VSR em Recém-Nascidos: Entenda e Proteja Seu Bebê', category: 'Pré-natal', date: '25 Jan 2026', readTime: '6 min', content: articles['vsr-recem-nascido']?.content || [], published: true },
+  { id: '9', slug: 'cuidar-voce-amor-proprio', title: 'Cuidar de Você É Amor Próprio', category: 'Saúde da Mulher', date: '20 Jan 2026', readTime: '4 min', content: articles['cuidar-voce-amor-proprio']?.content || [], published: true },
+  { id: '10', slug: 'nao-faria-sendo-ginecologista', title: '10 Coisas que Eu Não Faria Sendo Ginecologista', category: 'Ginecologia', date: '15 Jan 2026', readTime: '7 min', content: articles['nao-faria-sendo-ginecologista']?.content || [], published: true },
 ];
 
 /* ═══════════ HELPERS ═══════════ */
@@ -120,6 +121,18 @@ export default function DashboardPage() {
     videoUrl: '', content: '', published: true,
   });
 
+  /* ── Horários Schedule State ── */
+  const [horarioWeekStart, setHorarioWeekStart] = useState<Date>(() => {
+    const d = new Date();
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    d.setDate(diff); d.setHours(0, 0, 0, 0);
+    return new Date(d);
+  });
+  const [showGeneralSettings, setShowGeneralSettings] = useState(false);
+  const [slotDetail, setSlotDetail] = useState<{ date: string; horario: string; appointment?: Appointment } | null>(null);
+  const [quickBookData, setQuickBookData] = useState({ paciente: '', telefone: '', tipo: TIPOS[0], observacoes: '' });
+
   /* ── Auth ── */
   useEffect(() => {
     (async () => {
@@ -145,13 +158,143 @@ export default function DashboardPage() {
       });
       setSlots(def);
     }
-    if (b) setBlogArticles(JSON.parse(b)); else setBlogArticles(DEFAULT_ARTICLES);
+    if (b) {
+      const stored: BlogArticle[] = JSON.parse(b);
+      const merged = stored.map((art) => {
+        if ((!art.content || art.content.length === 0) && articles[art.slug]) {
+          return { ...art, content: articles[art.slug].content };
+        }
+        return art;
+      });
+      setBlogArticles(merged);
+    } else {
+      setBlogArticles(DEFAULT_ARTICLES);
+    }
   }, []);
 
   /* ── Save Data ── */
   useEffect(() => { localStorage.setItem('dra_appointments', JSON.stringify(appointments)); }, [appointments]);
   useEffect(() => { if (slots.length > 0) localStorage.setItem('dra_slots', JSON.stringify(slots)); }, [slots]);
   useEffect(() => { localStorage.setItem('dra_blog_articles', JSON.stringify(blogArticles)); }, [blogArticles]);
+
+  /* ── Data Refresh (sync with ChatBot in real-time) ── */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const stored = localStorage.getItem('dra_appointments');
+      if (stored) {
+        try {
+          const parsed: Appointment[] = JSON.parse(stored);
+          setAppointments(prev => {
+            if (JSON.stringify(prev) !== stored) return parsed;
+            return prev;
+          });
+        } catch { /* ignore parse errors */ }
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  /* ── ChatBot Pending Alerts ── */
+  const chatbotPending = useMemo(() =>
+    appointments.filter(a => a.origem === 'chatbot' && a.status === 'pendente'),
+    [appointments]
+  );
+
+  const confirmChatbotAppointment = (id: string) => {
+    setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'confirmado' } : a));
+  };
+
+  /* ── Horários Schedule Helpers ── */
+  const horarioWeekDays = useMemo(() => {
+    const days: Date[] = [];
+    for (let i = 0; i < 6; i++) {
+      const d = new Date(horarioWeekStart);
+      d.setDate(d.getDate() + i);
+      days.push(d);
+    }
+    return days;
+  }, [horarioWeekStart]);
+
+  const navHorarioWeek = (dir: number) => setHorarioWeekStart(prev => {
+    const d = new Date(prev);
+    d.setDate(d.getDate() + dir * 7);
+    return d;
+  });
+
+  const goThisWeek = () => {
+    const d = new Date();
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    d.setDate(diff); d.setHours(0, 0, 0, 0);
+    setHorarioWeekStart(new Date(d));
+  };
+
+  const getDayNameFromDate = (date: Date): string => {
+    const map: Record<number, string> = { 1: 'Segunda', 2: 'Terça', 3: 'Quarta', 4: 'Quinta', 5: 'Sexta', 6: 'Sábado' };
+    return map[date.getDay()] || '';
+  };
+
+  const getDayShort = (date: Date): string => {
+    const map: Record<number, string> = { 0: 'Dom', 1: 'Seg', 2: 'Ter', 3: 'Qua', 4: 'Qui', 5: 'Sex', 6: 'Sáb' };
+    return map[date.getDay()] || '';
+  };
+
+  const isSlotEnabled = useCallback((dayName: string, horario: string) => {
+    if (!dayName) return false;
+    const slot = slots.find(s => s.dia === dayName && s.horario === horario);
+    return slot?.ativo ?? false;
+  }, [slots]);
+
+  const getSlotAppointment = useCallback((dateStr: string, horario: string) => {
+    return appointments.find(a => a.data === dateStr && a.horario === horario);
+  }, [appointments]);
+
+  const weekApptCount = useMemo(() => {
+    const dates = horarioWeekDays.map(d => toISO(d));
+    return appointments.filter(a => dates.includes(a.data)).length;
+  }, [horarioWeekDays, appointments]);
+
+  const weekAvailableCount = useMemo(() => {
+    let count = 0;
+    horarioWeekDays.forEach(day => {
+      const dayName = getDayNameFromDate(day);
+      const dateStr = toISO(day);
+      if (!dayName) return;
+      HORARIOS.forEach(h => {
+        if (isSlotEnabled(dayName, h) && !getSlotAppointment(dateStr, h)) count++;
+      });
+    });
+    return count;
+  }, [horarioWeekDays, isSlotEnabled, getSlotAppointment]);
+
+  const weekOccupancyRate = useMemo(() => {
+    let total = 0, occupied = 0;
+    horarioWeekDays.forEach(day => {
+      const dayName = getDayNameFromDate(day);
+      const dateStr = toISO(day);
+      if (!dayName) return;
+      HORARIOS.forEach(h => {
+        if (isSlotEnabled(dayName, h)) {
+          total++;
+          if (getSlotAppointment(dateStr, h)) occupied++;
+        }
+      });
+    });
+    return total > 0 ? Math.round((occupied / total) * 100) : 0;
+  }, [horarioWeekDays, isSlotEnabled, getSlotAppointment]);
+
+  const bookFromHorarios = (date: string, horario: string) => {
+    if (!quickBookData.paciente) return;
+    setAppointments(prev => [...prev, {
+      id: Date.now().toString(), paciente: quickBookData.paciente,
+      telefone: quickBookData.telefone, tipo: quickBookData.tipo,
+      data: date, horario, status: 'pendente',
+      observacoes: quickBookData.observacoes,
+      criadoEm: new Date().toISOString(), origem: 'manual',
+    }]);
+    setSlotDetail(null);
+    setQuickBookData({ paciente: '', telefone: '', tipo: TIPOS[0], observacoes: '' });
+  };
 
   /* ── Appointment Actions ── */
   const saveAppointment = () => {
@@ -360,6 +503,49 @@ export default function DashboardPage() {
                   </div>
                 ))}
               </div>
+
+              {/* ChatBot Notification Banner */}
+              {chatbotPending.length > 0 && (
+                <div className="mb-6 bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 border-2 border-purple-200 rounded-2xl p-5 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-11 h-11 bg-purple-100 rounded-xl flex items-center justify-center animate-bounce">
+                      <Bell className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-purple-900 text-sm">
+                        🤖 {chatbotPending.length} agendamento{chatbotPending.length !== 1 ? 's' : ''} pelo ChatBot aguardando confirmação
+                      </h3>
+                      <p className="text-xs text-purple-600">Confirme manualmente após contato via WhatsApp com a paciente</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    {chatbotPending.slice(0, 5).map(a => (
+                      <div key={a.id} className="flex items-center justify-between bg-white p-3 rounded-xl border border-purple-100 shadow-sm">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm text-gray-900">{a.paciente}</p>
+                          <p className="text-xs text-gray-500">
+                            📅 {formatDateBR(a.data)} às {a.horario} • {a.tipo}
+                            {a.telefone && <span> • <Phone className="w-3 h-3 inline" /> {a.telefone}</span>}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2 ml-3 flex-shrink-0">
+                          <button onClick={() => confirmChatbotAppointment(a.id)}
+                            className="px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600 transition-colors inline-flex items-center gap-1">
+                            <CheckCircle2 className="w-3.5 h-3.5" /> Confirmar
+                          </button>
+                          <button onClick={() => setAppointments(prev => prev.map(x => x.id === a.id ? { ...x, status: 'cancelado' } : x))}
+                            className="px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors inline-flex items-center gap-1">
+                            <XCircle className="w-3.5 h-3.5" /> Recusar
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    {chatbotPending.length > 5 && (
+                      <p className="text-xs text-purple-500 text-center pt-1">+ {chatbotPending.length - 5} mais agendamentos pendentes</p>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Toolbar */}
               <div className="flex flex-wrap gap-3 mb-6">
@@ -592,99 +778,328 @@ export default function DashboardPage() {
           {/* ═══════════════════════════════════════════ */}
           {activeTab === 'horarios' && (
             <>
-              <div className="flex flex-wrap gap-3 mb-6 items-center">
-                <p className="text-gray-500 text-sm flex-1">
-                  Gerencie os horários disponíveis para agendamento. Clique nos horários para ativar/desativar.
-                </p>
-                <div className="flex gap-2">
-                  <button onClick={() => setSlots(prev => prev.map(s => ({ ...s, ativo: true })))}
-                    className="text-xs px-3 py-1.5 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 font-medium border border-green-200">
-                    ✓ Ativar Todos
-                  </button>
-                  <button onClick={() => setSlots(prev => prev.map(s => ({ ...s, ativo: false })))}
-                    className="text-xs px-3 py-1.5 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 font-medium border border-red-200">
-                    ✗ Desativar Todos
-                  </button>
+              {/* Week Navigator */}
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm mb-6 overflow-hidden">
+                <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => navHorarioWeek(-1)} className="p-1.5 hover:bg-gray-100 rounded-lg"><ChevronLeft className="w-5 h-5 text-gray-600" /></button>
+                    <h3 className="font-bold text-gray-900 min-w-[260px] text-center">
+                      {horarioWeekDays[0].toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })} — {horarioWeekDays[5].toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                    </h3>
+                    <button onClick={() => navHorarioWeek(1)} className="p-1.5 hover:bg-gray-100 rounded-lg"><ChevronRight className="w-5 h-5 text-gray-600" /></button>
+                  </div>
+                  <button onClick={goThisWeek} className="text-xs text-primary-600 font-medium hover:underline px-3 py-1.5 bg-primary-50 rounded-lg">Esta Semana</button>
                 </div>
               </div>
 
-              {/* Summary Stats */}
+              {/* Stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
-                  <p className="text-2xl font-bold text-green-600">{slots.filter(s => s.ativo).length}</p>
-                  <p className="text-xs text-gray-500">Horários Ativos</p>
+                  <p className="text-2xl font-bold text-primary-600">{weekApptCount}</p>
+                  <p className="text-xs text-gray-500">Agendados na Semana</p>
                 </div>
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
-                  <p className="text-2xl font-bold text-gray-400">{slots.filter(s => !s.ativo).length}</p>
-                  <p className="text-xs text-gray-500">Desativados</p>
+                  <p className="text-2xl font-bold text-green-600">{weekAvailableCount}</p>
+                  <p className="text-xs text-gray-500">Horários Livres</p>
                 </div>
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
-                  <p className="text-2xl font-bold text-primary-600">{DIAS_SEMANA_FULL.filter(d => slots.some(s => s.dia === d && s.ativo)).length}</p>
-                  <p className="text-xs text-gray-500">Dias com Atendimento</p>
+                  <p className="text-2xl font-bold text-purple-600">{weekOccupancyRate}%</p>
+                  <p className="text-xs text-gray-500">Taxa de Ocupação</p>
                 </div>
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
-                  <p className="text-2xl font-bold text-purple-600">{slots.length}</p>
-                  <p className="text-xs text-gray-500">Total de Slots</p>
+                  <p className="text-2xl font-bold text-yellow-600">{chatbotPending.length}</p>
+                  <p className="text-xs text-gray-500">Pendentes ChatBot</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {DIAS_SEMANA_FULL.map(dia => {
-                  const diaSlots = slots.filter(s => s.dia === dia);
-                  const activeCount = diaSlots.filter(s => s.ativo).length;
-                  const morning = diaSlots.filter(s => parseInt(s.horario) < 12);
-                  const afternoon = diaSlots.filter(s => parseInt(s.horario) >= 12);
-                  const allActive = diaSlots.every(s => s.ativo);
-                  return (
-                    <div key={dia} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                      <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-bold text-gray-900">{dia}</h3>
-                        <button onClick={() => setSlots(prev => prev.map(s => s.dia === dia ? { ...s, ativo: !allActive } : s))}
-                          className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${allActive ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}>
-                          {allActive ? 'Desativar dia' : 'Ativar dia'}
-                        </button>
-                      </div>
-                      <p className="text-xs text-gray-400 mb-3">{activeCount}/{diaSlots.length} ativos</p>
+              {/* Schedule Grid */}
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="px-3 py-3 text-xs font-medium text-gray-500 w-20 sticky left-0 bg-gray-50 z-10 border-r border-gray-100">Horário</th>
+                        {horarioWeekDays.map((day, i) => {
+                          const isToday = toISO(day) === toISO(new Date());
+                          const dayApptCount = appointments.filter(a => a.data === toISO(day)).length;
+                          return (
+                            <th key={i} className={`px-2 py-3 text-center min-w-[120px] ${isToday ? 'bg-primary-50' : ''}`}>
+                              <div className={`text-xs font-medium ${isToday ? 'text-primary-700' : 'text-gray-500'}`}>{getDayShort(day)}</div>
+                              <div className={`text-lg font-bold ${isToday ? 'text-primary-700' : 'text-gray-900'}`}>{day.getDate()}</div>
+                              {dayApptCount > 0 && <div className="text-[10px] text-gray-400">{dayApptCount} consulta{dayApptCount !== 1 ? 's' : ''}</div>}
+                            </th>
+                          );
+                        })}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {HORARIOS.map((hora, hi) => (
+                        <tr key={hora} className={hi % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'}>
+                          <td className={`px-3 py-1 text-xs font-medium text-gray-500 sticky left-0 z-10 border-r border-gray-100 ${hi % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                            {hora}
+                          </td>
+                          {horarioWeekDays.map((day, di) => {
+                            const dateStr = toISO(day);
+                            const dayName = getDayNameFromDate(day);
+                            const enabled = isSlotEnabled(dayName, hora);
+                            const appt = getSlotAppointment(dateStr, hora);
+                            const isToday = dateStr === toISO(new Date());
 
-                      {morning.length > 0 && (
-                        <div className="mb-3">
-                          <p className="text-[10px] text-gray-500 font-medium mb-1.5 uppercase tracking-wider">☀️ Manhã</p>
-                          <div className="grid grid-cols-3 gap-1.5">
-                            {morning.map(slot => (
-                              <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
-                                className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                                  slot.ativo ? 'bg-primary-100 text-primary-700 hover:bg-primary-200 border border-primary-200' : 'bg-gray-50 text-gray-400 line-through hover:bg-gray-100 border border-gray-100'
-                                }`}>
-                                {slot.horario}
-                              </button>
-                            ))}
+                            if (!dayName) {
+                              return <td key={di} className="p-0.5 bg-gray-50 text-center"><span className="text-[10px] text-gray-200">—</span></td>;
+                            }
+
+                            if (!enabled) {
+                              return (
+                                <td key={di} className={`p-0.5 ${isToday ? 'bg-primary-50/30' : 'bg-gray-50'}`}>
+                                  <div className="w-full p-1.5 rounded text-center text-[10px] text-gray-300">—</div>
+                                </td>
+                              );
+                            }
+
+                            if (appt) {
+                              const sc = STATUS_CONFIG[appt.status];
+                              return (
+                                <td key={di} className={`p-0.5 ${isToday ? 'bg-primary-50/30' : ''}`}>
+                                  <button
+                                    onClick={() => setSlotDetail({ date: dateStr, horario: hora, appointment: appt })}
+                                    className={`w-full p-1.5 rounded-lg text-[10px] ${sc.bg} cursor-pointer hover:shadow-md transition-all text-left`}
+                                  >
+                                    <div className="font-semibold truncate">{appt.paciente.split(' ')[0]}</div>
+                                    <div className="opacity-70 truncate">{appt.tipo.split(' ').slice(0, 2).join(' ')}</div>
+                                    {appt.origem === 'chatbot' && <span className="inline-block mt-0.5 text-[8px] bg-purple-200 text-purple-700 px-1 rounded">🤖</span>}
+                                  </button>
+                                </td>
+                              );
+                            }
+
+                            return (
+                              <td key={di} className={`p-0.5 ${isToday ? 'bg-primary-50/30' : ''}`}>
+                                <button
+                                  onClick={() => setSlotDetail({ date: dateStr, horario: hora })}
+                                  className="w-full p-1.5 rounded-lg bg-green-50 text-green-500 hover:bg-green-100 hover:text-green-700 text-[10px] font-medium transition-all cursor-pointer"
+                                >
+                                  Livre
+                                </button>
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Legend */}
+              <div className="flex flex-wrap gap-4 mb-6 text-xs text-gray-500">
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-green-100 border border-green-200" /> Disponível</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-yellow-100 border border-yellow-200" /> Pendente</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-green-100 border border-green-300" /> Confirmado</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-blue-100 border border-blue-200" /> Realizado</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-red-100 border border-red-200" /> Cancelado</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-gray-50 border border-gray-200" /> Desativado</span>
+              </div>
+
+              {/* Slot Detail Modal */}
+              {slotDetail && (
+                <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" onClick={() => { setSlotDetail(null); setQuickBookData({ paciente: '', telefone: '', tipo: TIPOS[0], observacoes: '' }); }}>
+                  <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
+                    {slotDetail.appointment ? (
+                      <>
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="font-bold text-gray-900">Detalhes do Agendamento</h3>
+                          <button onClick={() => setSlotDetail(null)} className="p-1 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5 text-gray-400" /></button>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="p-3 bg-gray-50 rounded-xl">
+                            <p className="text-xs text-gray-500">Paciente</p>
+                            <p className="font-medium text-gray-900">{slotDetail.appointment.paciente}</p>
+                          </div>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="p-3 bg-gray-50 rounded-xl">
+                              <p className="text-xs text-gray-500">Data</p>
+                              <p className="font-medium text-gray-900">{formatDateBR(slotDetail.date)}</p>
+                            </div>
+                            <div className="p-3 bg-gray-50 rounded-xl">
+                              <p className="text-xs text-gray-500">Horário</p>
+                              <p className="font-medium text-gray-900">{slotDetail.horario}</p>
+                            </div>
+                          </div>
+                          <div className="p-3 bg-gray-50 rounded-xl">
+                            <p className="text-xs text-gray-500">Tipo</p>
+                            <p className="font-medium text-gray-900">{slotDetail.appointment.tipo}</p>
+                          </div>
+                          {slotDetail.appointment.telefone && (
+                            <div className="p-3 bg-gray-50 rounded-xl">
+                              <p className="text-xs text-gray-500">Telefone</p>
+                              <p className="font-medium text-gray-900 flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> {slotDetail.appointment.telefone}</p>
+                            </div>
+                          )}
+                          <div className="p-3 bg-gray-50 rounded-xl">
+                            <p className="text-xs text-gray-500 mb-1">Origem</p>
+                            <span className={`inline-block text-xs px-2 py-0.5 rounded font-medium ${slotDetail.appointment.origem === 'chatbot' ? 'bg-purple-100 text-purple-600' : 'bg-gray-200 text-gray-600'}`}>
+                              {slotDetail.appointment.origem === 'chatbot' ? '🤖 ChatBot' : '✍️ Manual'}
+                            </span>
+                          </div>
+                          {slotDetail.appointment.observacoes && (
+                            <div className="p-3 bg-gray-50 rounded-xl">
+                              <p className="text-xs text-gray-500">Observações</p>
+                              <p className="text-sm text-gray-700 italic">{slotDetail.appointment.observacoes}</p>
+                            </div>
+                          )}
+                          <div>
+                            <p className="text-xs text-gray-500 mb-2">Alterar Status</p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {(['pendente', 'confirmado', 'realizado', 'cancelado'] as const).map(st => (
+                                <button key={st}
+                                  onClick={() => {
+                                    setAppointments(prev => prev.map(x => x.id === slotDetail.appointment!.id ? { ...x, status: st } : x));
+                                    setSlotDetail(prev => prev ? { ...prev, appointment: { ...prev.appointment!, status: st } } : null);
+                                  }}
+                                  className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${slotDetail.appointment!.status === st ? STATUS_CONFIG[st].bg + ' ring-2 ring-offset-1' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}
+                                >
+                                  {STATUS_CONFIG[st].label}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="flex gap-2 pt-2">
+                            <button onClick={() => { startEdit(slotDetail.appointment!); setSlotDetail(null); setActiveTab('agendamentos'); }}
+                              className="flex-1 px-4 py-2 bg-primary-500 text-white text-sm font-medium rounded-xl hover:bg-primary-600 inline-flex items-center justify-center gap-2">
+                              <Edit3 className="w-4 h-4" /> Editar
+                            </button>
+                            <button onClick={() => { setAppointments(prev => prev.filter(x => x.id !== slotDetail.appointment!.id)); setSlotDetail(null); }}
+                              className="px-4 py-2 bg-red-50 text-red-600 text-sm font-medium rounded-xl hover:bg-red-100 inline-flex items-center gap-2">
+                              <Trash2 className="w-4 h-4" /> Excluir
+                            </button>
                           </div>
                         </div>
-                      )}
-                      {afternoon.length > 0 && (
-                        <div>
-                          <p className="text-[10px] text-gray-500 font-medium mb-1.5 uppercase tracking-wider">🌙 Tarde</p>
-                          <div className="grid grid-cols-3 gap-1.5">
-                            {afternoon.map(slot => (
-                              <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
-                                className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                                  slot.ativo ? 'bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200' : 'bg-gray-50 text-gray-400 line-through hover:bg-gray-100 border border-gray-100'
-                                }`}>
-                                {slot.horario}
-                              </button>
-                            ))}
-                          </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="font-bold text-gray-900">Agendar Horário</h3>
+                          <button onClick={() => { setSlotDetail(null); setQuickBookData({ paciente: '', telefone: '', tipo: TIPOS[0], observacoes: '' }); }} className="p-1 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5 text-gray-400" /></button>
                         </div>
-                      )}
+                        <div className="p-3 bg-green-50 rounded-xl mb-4">
+                          <p className="text-sm text-green-700 font-medium">📅 {formatDateBR(slotDetail.date)} às {slotDetail.horario}</p>
+                          <p className="text-xs text-green-600">Horário disponível para agendamento</p>
+                        </div>
+                        <div className="space-y-3">
+                          <div>
+                            <label className="text-xs text-gray-500 mb-1 block">Paciente *</label>
+                            <input value={quickBookData.paciente} onChange={e => setQuickBookData({ ...quickBookData, paciente: e.target.value })}
+                              placeholder="Nome completo" className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300" />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-500 mb-1 block">Telefone</label>
+                            <input value={quickBookData.telefone} onChange={e => setQuickBookData({ ...quickBookData, telefone: e.target.value })}
+                              placeholder="(18) 99999-9999" className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300" />
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-500 mb-1 block">Tipo de Consulta</label>
+                            <select value={quickBookData.tipo} onChange={e => setQuickBookData({ ...quickBookData, tipo: e.target.value })}
+                              className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300">
+                              {TIPOS.map(t => <option key={t}>{t}</option>)}
+                            </select>
+                          </div>
+                          <div>
+                            <label className="text-xs text-gray-500 mb-1 block">Observações</label>
+                            <input value={quickBookData.observacoes} onChange={e => setQuickBookData({ ...quickBookData, observacoes: e.target.value })}
+                              placeholder="Observações (opcional)" className="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300" />
+                          </div>
+                          <button onClick={() => bookFromHorarios(slotDetail.date, slotDetail.horario)}
+                            disabled={!quickBookData.paciente}
+                            className="w-full px-4 py-2.5 bg-primary-500 text-white text-sm font-medium rounded-xl hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">
+                            <Plus className="w-4 h-4" /> Agendar Consulta
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* General Availability Settings (collapsible) */}
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <button onClick={() => setShowGeneralSettings(!showGeneralSettings)}
+                  className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <Clock className="w-5 h-5 text-gray-500" />
+                    <div className="text-left">
+                      <h3 className="font-bold text-gray-900 text-sm">⚙️ Configurações de Disponibilidade Geral</h3>
+                      <p className="text-xs text-gray-500">Defina quais horários ficam disponíveis em cada dia da semana</p>
                     </div>
-                  );
-                })}
+                  </div>
+                  <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${showGeneralSettings ? 'rotate-90' : ''}`} />
+                </button>
+                {showGeneralSettings && (
+                  <div className="p-4 border-t border-gray-100">
+                    <div className="flex gap-2 mb-4">
+                      <button onClick={() => setSlots(prev => prev.map(s => ({ ...s, ativo: true })))}
+                        className="text-xs px-3 py-1.5 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 font-medium border border-green-200">
+                        ✓ Ativar Todos
+                      </button>
+                      <button onClick={() => setSlots(prev => prev.map(s => ({ ...s, ativo: false })))}
+                        className="text-xs px-3 py-1.5 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 font-medium border border-red-200">
+                        ✗ Desativar Todos
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {DIAS_SEMANA_FULL.map(dia => {
+                        const diaSlots = slots.filter(s => s.dia === dia);
+                        const activeCount = diaSlots.filter(s => s.ativo).length;
+                        const morning = diaSlots.filter(s => parseInt(s.horario) < 12);
+                        const afternoon = diaSlots.filter(s => parseInt(s.horario) >= 12);
+                        const allActive = diaSlots.every(s => s.ativo);
+                        return (
+                          <div key={dia} className="p-4 rounded-xl border border-gray-100">
+                            <div className="flex items-center justify-between mb-1">
+                              <h4 className="font-bold text-gray-900 text-sm">{dia}</h4>
+                              <button onClick={() => setSlots(prev => prev.map(s => s.dia === dia ? { ...s, ativo: !allActive } : s))}
+                                className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${allActive ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}>
+                                {allActive ? 'Desativar' : 'Ativar'}
+                              </button>
+                            </div>
+                            <p className="text-xs text-gray-400 mb-2">{activeCount}/{diaSlots.length} ativos</p>
+                            {morning.length > 0 && (
+                              <div className="mb-2">
+                                <p className="text-[10px] text-gray-500 font-medium mb-1 uppercase tracking-wider">☀️ Manhã</p>
+                                <div className="grid grid-cols-3 gap-1">
+                                  {morning.map(slot => (
+                                    <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
+                                      className={`px-1.5 py-1 rounded text-xs font-medium transition-all ${slot.ativo ? 'bg-primary-100 text-primary-700 border border-primary-200' : 'bg-gray-50 text-gray-400 line-through border border-gray-100'}`}>
+                                      {slot.horario}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {afternoon.length > 0 && (
+                              <div>
+                                <p className="text-[10px] text-gray-500 font-medium mb-1 uppercase tracking-wider">🌙 Tarde</p>
+                                <div className="grid grid-cols-3 gap-1">
+                                  {afternoon.map(slot => (
+                                    <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
+                                      className={`px-1.5 py-1 rounded text-xs font-medium transition-all ${slot.ativo ? 'bg-purple-100 text-purple-700 border border-purple-200' : 'bg-gray-50 text-gray-400 line-through border border-gray-100'}`}>
+                                      {slot.horario}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
                 <p className="text-sm text-primary-700 leading-relaxed">
-                  💡 <strong>Sincronizado com o ChatBot:</strong> Os horários que você ativar/desativar aqui serão refletidos automaticamente no agendamento online do assistente virtual.
-                  Pacientes verão apenas os horários ativos ao agendar pelo site.
+                  💡 <strong>Mapa de Horários:</strong> Esta visualização mostra todos os horários da semana selecionada. Clique em um horário <span className="text-green-600 font-medium">livre</span> para agendar uma consulta diretamente, ou em um horário <span className="text-red-600 font-medium">ocupado</span> para ver detalhes, editar ou alterar o status. As configurações de disponibilidade geral (acima) definem quais horários ficam disponíveis para o ChatBot e agendamento online.
                 </p>
               </div>
             </>
