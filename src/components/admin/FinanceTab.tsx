@@ -17,6 +17,7 @@ const defaultPayForm = (): Partial<Payment> => ({
   descricao: '', valor: 0, desconto: 0, valorFinal: 0, formaPagamento: 'pix',
   status: 'pendente', convenio: '', coberturaPercentual: 0,
   valorConvenio: 0, valorParticular: 0, parcelas: 1, observacoes: '',
+  dataVencimento: '', notaFiscal: '',
 });
 
 export default function FinanceTab() {
@@ -305,6 +306,18 @@ export default function FinanceTab() {
                 className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300" />
             </div>
 
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Data de Vencimento</label>
+              <input type="date" value={form.dataVencimento || ''} onChange={e => updateForm({ dataVencimento: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300" />
+            </div>
+
+            <div>
+              <label className="text-xs text-gray-500 mb-1 block">Nº Nota Fiscal / Recibo</label>
+              <input value={form.notaFiscal || ''} onChange={e => updateForm({ notaFiscal: e.target.value })} placeholder="NF-00001"
+                className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-300" />
+            </div>
+
             {/* Insurance section */}
             <div className="sm:col-span-2 lg:col-span-3 p-3 bg-blue-50 rounded-xl">
               <p className="text-xs text-blue-700 font-medium mb-2">🏥 Cobertura de Convênio</p>
@@ -381,14 +394,17 @@ export default function FinanceTab() {
                   <th className="text-right px-4 py-3 font-medium text-gray-500">Valor</th>
                   <th className="text-left px-4 py-3 font-medium text-gray-500">Pagamento</th>
                   <th className="text-left px-4 py-3 font-medium text-gray-500">Status</th>
+                  <th className="text-left px-4 py-3 font-medium text-gray-500">Vencimento</th>
+                  <th className="text-left px-4 py-3 font-medium text-gray-500">NF</th>
                   <th className="text-right px-4 py-3 font-medium text-gray-500">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredPayments.map(p => {
                   const ps = STATUS_PAGAMENTO_CONFIG[p.status] || STATUS_PAGAMENTO_CONFIG.pendente;
+                  const vencido = p.dataVencimento && p.status === 'pendente' && p.dataVencimento < toISO(new Date());
                   return (
-                    <tr key={p.id} className="border-b border-gray-50 hover:bg-gray-50/50 group">
+                    <tr key={p.id} className={`border-b border-gray-50 hover:bg-gray-50/50 group ${vencido ? 'bg-red-50/40' : ''}`}>
                       <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{formatDateBR(p.data)}</td>
                       <td className="px-4 py-3">
                         <p className="text-gray-900 font-medium truncate max-w-[140px]">{p.pacienteNome || '-'}</p>
@@ -405,6 +421,12 @@ export default function FinanceTab() {
                           {ps.label}
                         </button>
                       </td>
+                      <td className="px-4 py-3 text-xs">
+                        {p.dataVencimento ? (
+                          <span className={vencido ? 'text-red-600 font-bold' : 'text-gray-500'}>{formatDateBR(p.dataVencimento)}{vencido && ' ⚠️'}</span>
+                        ) : <span className="text-gray-300">—</span>}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-gray-500">{p.notaFiscal || '—'}</td>
                       <td className="px-4 py-3 text-right">
                         <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button onClick={() => editPayment(p)} className="p-1 text-gray-400 hover:text-primary-600"><Edit3 className="w-4 h-4" /></button>
