@@ -12,9 +12,13 @@ export async function GET(request: NextRequest) {
     }
 
     const secret = new TextEncoder().encode(JWT_SECRET);
-    await jwtVerify(token, secret);
+    const { payload } = await jwtVerify(token, secret);
 
-    return NextResponse.json({ authenticated: true });
+    return NextResponse.json({
+      authenticated: true,
+      role: payload.role || 'medica',
+      userName: payload.userName || 'Usuário',
+    });
   } catch {
     return NextResponse.json({ error: 'Token inválido' }, { status: 401 });
   }

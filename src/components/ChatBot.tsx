@@ -120,15 +120,46 @@ function getAvailableSlots(dateStr: string): string[] {
   const date = new Date(dateStr + 'T12:00');
   const dayName = DIAS_SEMANA_FULL[date.getDay()];
   if (dayName === 'Domingo') return [];
+
+  // Check if the entire date is blocked
+  try {
+    const bdStored = localStorage.getItem('dra_blocked_dates');
+    if (bdStored) {
+      const blocked = JSON.parse(bdStored) as { dataInicio: string; dataFim: string; tipo: string; horariosEspecificos?: string[] }[];
+      const fullBlock = blocked.find(b => dateStr >= b.dataInicio && dateStr <= b.dataFim && b.tipo === 'dia_inteiro');
+      if (fullBlock) return [];
+    }
+  } catch { /* ignore */ }
+
+  let slots: string[] = [];
   try {
     const stored = localStorage.getItem('dra_slots');
     if (stored) {
-      const slots = JSON.parse(stored) as { dia: string; horario: string; ativo: boolean }[];
-      const daySlots = slots.filter(s => s.dia === dayName && s.ativo).map(s => s.horario);
-      if (daySlots.length > 0) return daySlots;
+      const allSlots = JSON.parse(stored) as { dia: string; horario: string; ativo: boolean }[];
+      slots = allSlots.filter(s => s.dia === dayName && s.ativo).map(s => s.horario);
     }
   } catch { /* ignore */ }
-  return HORARIOS_DEFAULT[dayName] || [];
+  if (slots.length === 0) slots = HORARIOS_DEFAULT[dayName] || [];
+
+  // Filter out blocked time slots
+  try {
+    const bdStored = localStorage.getItem('dra_blocked_dates');
+    if (bdStored) {
+      const blocked = JSON.parse(bdStored) as { dataInicio: string; dataFim: string; tipo: string; horariosEspecificos?: string[] }[];
+      slots = slots.filter(h => {
+        for (const b of blocked) {
+          if (dateStr >= b.dataInicio && dateStr <= b.dataFim) {
+            if (b.tipo === 'manha' && parseInt(h) < 12) return false;
+            if (b.tipo === 'tarde' && parseInt(h) >= 13) return false;
+            if (b.tipo === 'horarios' && b.horariosEspecificos?.includes(h)) return false;
+          }
+        }
+        return true;
+      });
+    }
+  } catch { /* ignore */ }
+
+  return slots;
 }
 
 function getBookedSlots(dateStr: string): string[] {
@@ -155,11 +186,17 @@ function MiniCalendar({ year, month, onSelectDate, onNav }: {
   const today = toISO(new Date());
   const daysInMonth = getDaysInMonth(year, month);
   const firstDay = getFirstDayOfMonth(year, month);
-  const days: { date: string; day: number; disabled: boolean }[] = [];
+  const days: { date: string; day: number; disabled: boolean; blocked: boolean }[] = [];
   for (let d = 1; d <= daysInMonth; d++) {
     const date = toISO(new Date(year, month, d));
     const dayOfWeek = new Date(year, month, d).getDay();
-    days.push({ date, day: d, disabled: date < today || dayOfWeek === 0 });
+    const isBlocked = (() => { try {
+      const bd = localStorage.getItem('dra_blocked_dates');
+      if (bd) { const blocks = JSON.parse(bd) as { dataInicio: string; dataFim: string; tipo: string }[];
+        return blocks.some(b => date >= b.dataInicio && date <= b.dataFim && b.tipo === 'dia_inteiro');
+      }
+    } catch {} return false; })();
+    days.push({ date, day: d, disabled: date < today || dayOfWeek === 0 || isBlocked, blocked: isBlocked });
   }
 
   return (
@@ -179,18 +216,21 @@ function MiniCalendar({ year, month, onSelectDate, onNav }: {
           return (
             <button key={d.date} disabled={d.disabled} onClick={() => onSelectDate(d.date)}
               className={`relative text-[11px] py-1.5 rounded-lg transition-all text-center ${
-                d.disabled ? 'text-gray-300 cursor-not-allowed'
+                d.disabled && d.blocked ? 'text-red-300 cursor-not-allowed bg-red-50/50'
+                  : d.disabled ? 'text-gray-300 cursor-not-allowed'
                   : d.date === today ? 'bg-primary-500 text-white font-bold hover:bg-primary-600'
                   : free > 0 ? 'text-gray-700 hover:bg-primary-100 font-medium' : 'text-gray-400 line-through'
               }`}>
               {d.day}
-              {!d.disabled && free > 0 && <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-green-400 rounded-full" />}
+              {d.blocked && <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-red-400 rounded-full" />}
+              {!d.disabled && !d.blocked && free > 0 && <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-green-400 rounded-full" />}
             </button>
           );
         })}
       </div>
       <div className="flex items-center gap-3 mt-2 text-[10px] text-gray-400">
         <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-green-400 rounded-full" /> Disponível</span>
+        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-red-400 rounded-full" /> Bloqueado</span>
         <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 bg-gray-300 rounded-full" /> Indisponível</span>
       </div>
     </div>

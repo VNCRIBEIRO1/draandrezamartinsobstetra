@@ -13,6 +13,7 @@ import {
   STATUS_PAGAMENTO_CONFIG, FORMAS_PAGAMENTO, CONVENIOS, TIPOS_SANGUINEO,
   VALORES_CONSULTA, ESTADOS_CIVIS, MEDICO_CONFIG, CIDS_COMUNS, PREPARO_EXAME,
   calcularIdade, calcularIMC, formatarMoeda, formatDateBR, toISO, LS_KEYS,
+  type UserRole,
 } from '@/lib/admin-types';
 import {
   imprimirSolicitacao, downloadSolicitacao,
@@ -98,7 +99,7 @@ type DetailTab = 'perfil' | 'prontuario' | 'exames' | 'financeiro';
 /* ═══════════════════════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════════════════════ */
-export default function PatientTab() {
+export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
   /* ── State ── */
   const [patients, setPatients] = useState<Patient[]>([]);
   const [consultations, setConsultations] = useState<Consultation[]>([]);
@@ -298,20 +299,32 @@ export default function PatientTab() {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
+                  {role === 'secretaria' && (
+                    <span className="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium border border-blue-200 flex items-center gap-1">
+                      📋 Secretária
+                    </span>
+                  )}
+                  {role === 'medica' && (
+                    <span className="px-2.5 py-1 bg-purple-50 text-purple-600 rounded-lg text-xs font-medium border border-purple-200 flex items-center gap-1">
+                      👩‍⚕️ Médica
+                    </span>
+                  )}
                   <button onClick={() => editPatient(selectedPatient)} className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-xl"><Edit3 className="w-4 h-4" /></button>
-                  <button onClick={() => deletePatient(selectedPatient.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl"><Trash2 className="w-4 h-4" /></button>
+                  {role === 'medica' && (
+                    <button onClick={() => deletePatient(selectedPatient.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-xl"><Trash2 className="w-4 h-4" /></button>
+                  )}
                 </div>
               </div>
 
               {/* Sub-tabs */}
               <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-6 overflow-x-auto">
                 {([
-                  { key: 'perfil' as DetailTab, icon: User, label: 'Perfil', count: 0 },
-                  { key: 'prontuario' as DetailTab, icon: ClipboardList, label: 'Prontuário', count: patientConsults.length },
-                  { key: 'exames' as DetailTab, icon: FileText, label: 'Exames', count: patientExams.length },
-                  { key: 'financeiro' as DetailTab, icon: Activity, label: 'Financeiro', count: patientPayments.length },
-                ]).map(t => (
+                  { key: 'perfil' as DetailTab, icon: User, label: 'Ficha / Cadastro', count: 0, roles: ['medica', 'secretaria'] },
+                  { key: 'prontuario' as DetailTab, icon: ClipboardList, label: 'Prontuário', count: patientConsults.length, roles: ['medica', 'secretaria'] },
+                  { key: 'exames' as DetailTab, icon: FileText, label: 'Exames', count: patientExams.length, roles: ['medica', 'secretaria'] },
+                  { key: 'financeiro' as DetailTab, icon: Activity, label: 'Financeiro', count: patientPayments.length, roles: ['medica', 'secretaria'] },
+                ] as const).filter(t => (t.roles as readonly string[]).includes(role)).map(t => (
                   <button key={t.key} onClick={() => setDetailTab(t.key)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${detailTab === t.key ? 'bg-white text-primary-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
                     <t.icon className="w-4 h-4" /> {t.label}
@@ -403,15 +416,25 @@ export default function PatientTab() {
               {/* ── PRONTUÁRIO TAB ── */}
               {detailTab === 'prontuario' && (
                 <>
+                  {role === 'secretaria' && (
+                    <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                      <p className="text-xs text-blue-700 flex items-center gap-2">
+                        <ShieldCheck className="w-4 h-4" />
+                        <strong>Modo Leitura:</strong> Somente a Dra. pode registrar e editar consultas no prontuário.
+                      </p>
+                    </div>
+                  )}
+                  {role === 'medica' && (
                   <div className="flex gap-3 mb-6">
                     <button onClick={() => { resetCForm(); setShowCForm(true); }}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600">
                       <Plus className="w-4 h-4" /> Nova Consulta
                     </button>
                   </div>
+                  )}
 
                   {/* Consultation Form */}
-                  {showCForm && (
+                  {showCForm && role === 'medica' && (
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-6">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="font-bold text-gray-900">{editingC ? 'Editar Consulta' : 'Nova Consulta'}</h3>
@@ -516,8 +539,12 @@ export default function PatientTab() {
                               </div>
                               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-2">
                                 <button onClick={() => setViewConsult(viewConsult?.id === c.id ? null : c)} className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg"><Eye className="w-4 h-4" /></button>
+                                {role === 'medica' && (
+                                  <>
                                 <button onClick={() => editConsultation(c)} className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg"><Edit3 className="w-4 h-4" /></button>
                                 <button onClick={() => deleteConsultation(c.id)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
+                                  </>
+                                )}
                               </div>
                             </div>
                             {(c.pesoKg || c.pressaoArterial) && (
@@ -555,10 +582,17 @@ export default function PatientTab() {
               {detailTab === 'exames' && (
                 <>
                   <div className="flex flex-wrap gap-3 mb-4">
+                    {role === 'medica' && (
                     <button onClick={() => { resetEForm(); setShowEForm(true); }}
                       className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600">
                       <Plus className="w-4 h-4" /> Solicitar Exame
                     </button>
+                    )}
+                    {role === 'secretaria' && (
+                      <div className="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 text-blue-700 rounded-xl text-xs font-medium">
+                        <ShieldCheck className="w-4 h-4" /> Você pode anexar laudos e atualizar status dos exames
+                      </div>
+                    )}
                     {patientExams.length > 0 && (
                       <>
                         <button onClick={selectAllExams}
@@ -592,7 +626,7 @@ export default function PatientTab() {
                   </div>
 
                   {/* Exam Form */}
-                  {showEForm && (
+                  {showEForm && role === 'medica' && (
                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-6">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="font-bold text-gray-900">{editingE ? 'Editar Exame' : 'Solicitar Exame'}</h3>
@@ -739,8 +773,10 @@ export default function PatientTab() {
                                     <option value="laudo_disponivel">Laudo Disponível</option>
                                   </select>
                                   <button onClick={() => setViewExam(isExpanded ? null : ex)} className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg"><Eye className="w-4 h-4" /></button>
-                                  <button onClick={() => editExam(ex)} className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg"><Edit3 className="w-4 h-4" /></button>
-                                  {/* Print & Download */}
+                                  {role === 'medica' && (
+                                    <button onClick={() => editExam(ex)} className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg"><Edit3 className="w-4 h-4" /></button>
+                                  )}
+                                  {/* Print & Download - both roles */}
                                   <button onClick={() => selectedPatient && imprimirSolicitacao(ex, selectedPatient)}
                                     className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg" title="Imprimir Solicitação">
                                     <Printer className="w-4 h-4" />
@@ -749,11 +785,14 @@ export default function PatientTab() {
                                     className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg" title="Baixar Documento">
                                     <Download className="w-4 h-4" />
                                   </button>
+                                  {/* Upload laudo - both roles */}
                                   <label className="p-1.5 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg cursor-pointer" title="Anexar laudo">
                                     <Upload className="w-4 h-4" />
                                     <input type="file" className="hidden" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onChange={e => handleFileUpload(ex.id, e)} />
                                   </label>
-                                  <button onClick={() => deleteExam(ex.id)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
+                                  {role === 'medica' && (
+                                    <button onClick={() => deleteExam(ex.id)} className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4" /></button>
+                                  )}
                                 </div>
                               </div>
                             </div>

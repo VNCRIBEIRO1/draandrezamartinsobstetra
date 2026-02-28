@@ -111,6 +111,22 @@ export default function AdminLoginPage() {
         <p className="text-center text-xs text-gray-400 mt-6">
           Acesso restrito para a equipe do consultório.
         </p>
+
+        <div className="mt-4 bg-white/80 backdrop-blur p-4 rounded-2xl border border-primary-100 shadow-sm">
+          <p className="text-xs font-medium text-gray-600 mb-2 text-center">Credenciais de Acesso</p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
+              <p className="text-[10px] font-bold text-purple-700 mb-1">👩‍⚕️ Dra. Andresa</p>
+              <p className="text-[10px] text-purple-600">admin@draandresa.com</p>
+              <p className="text-[10px] text-purple-500">Prontuário • Exames • Prescrições</p>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
+              <p className="text-[10px] font-bold text-blue-700 mb-1">📋 Secretária</p>
+              <p className="text-[10px] text-blue-600">secretaria@draandresa.com</p>
+              <p className="text-[10px] text-blue-500">Cadastro • Agenda • Financeiro</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

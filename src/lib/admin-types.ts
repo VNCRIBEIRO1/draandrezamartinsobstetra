@@ -104,6 +104,38 @@ export interface Payment {
   criadoEm: string;
 }
 
+/* ═══ ROLE SYSTEM ═══ */
+export type UserRole = 'medica' | 'secretaria';
+
+export const ROLE_CONFIG: Record<UserRole, { label: string; description: string; color: string }> = {
+  medica: { label: 'Dra. Andresa', description: 'Prontuário, exames, prescrições, gestão completa', color: 'purple' },
+  secretaria: { label: 'Secretária', description: 'Cadastro, agendamentos, financeiro, uploads', color: 'blue' },
+};
+
+/* ═══ SCHEDULE BLOCKING ═══ */
+export interface BlockedDate {
+  id: string;
+  dataInicio: string; // YYYY-MM-DD
+  dataFim: string;    // YYYY-MM-DD
+  tipo: 'dia_inteiro' | 'manha' | 'tarde' | 'horarios';
+  horariosEspecificos?: string[];
+  motivo: string;
+  criadoEm: string;
+}
+
+export const BLOCK_TYPE_LABELS: Record<string, string> = {
+  dia_inteiro: 'Dia Inteiro',
+  manha: 'Manhã (até 12h)',
+  tarde: 'Tarde (a partir de 13h)',
+  horarios: 'Horários Específicos',
+};
+
+export const MOTIVOS_BLOQUEIO = [
+  'Folga', 'Congresso/Evento', 'Feriado', 'Férias',
+  'Cirurgia/Procedimento', 'Compromisso Pessoal',
+  'Manutenção Consultório', 'Outro',
+];
+
 /* ═══ CONSTANTS ═══ */
 export const TIPOS_CONSULTA = [
   'Consulta Ginecológica', 'Pré-natal', 'Menopausa',
@@ -248,4 +280,23 @@ export const LS_KEYS = {
   exams: 'dra_exams',
   payments: 'dra_payments',
   appointments: 'dra_appointments',
+  blockedDates: 'dra_blocked_dates',
+  userRole: 'dra_user_role',
 };
+
+/* ═══ SCHEDULE HELPERS ═══ */
+export function isDateBlocked(dateStr: string, horario: string, blockedDates: BlockedDate[]): BlockedDate | null {
+  for (const bd of blockedDates) {
+    if (dateStr >= bd.dataInicio && dateStr <= bd.dataFim) {
+      if (bd.tipo === 'dia_inteiro') return bd;
+      if (bd.tipo === 'manha' && parseInt(horario) < 12) return bd;
+      if (bd.tipo === 'tarde' && parseInt(horario) >= 13) return bd;
+      if (bd.tipo === 'horarios' && bd.horariosEspecificos?.includes(horario)) return bd;
+    }
+  }
+  return null;
+}
+
+export function isDateFullyBlocked(dateStr: string, blockedDates: BlockedDate[]): boolean {
+  return blockedDates.some(bd => dateStr >= bd.dataInicio && dateStr <= bd.dataFim && bd.tipo === 'dia_inteiro');
+}

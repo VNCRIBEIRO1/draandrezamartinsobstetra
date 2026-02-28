@@ -6,12 +6,18 @@ import {
   Calendar, Clock, Users, FileText, LogOut, Plus, Trash2,
   ChevronLeft, ChevronRight, Heart, Menu, Home, Eye, EyeOff,
   Video, Save, X, Edit3, Search, Filter, Phone, CheckCircle2,
-  AlertCircle, XCircle, CalendarDays, LayoutGrid, List, Bell, Wallet
+  AlertCircle, XCircle, CalendarDays, LayoutGrid, List, Bell, Wallet,
+  Lock, Unlock, Ban, ShieldCheck, Stethoscope
 } from 'lucide-react';
 import Link from 'next/link';
 import { articles } from '@/lib/articles';
 import PatientTab from '@/components/admin/PatientTab';
 import FinanceTab from '@/components/admin/FinanceTab';
+import {
+  type UserRole, type BlockedDate,
+  BLOCK_TYPE_LABELS, MOTIVOS_BLOQUEIO, isDateBlocked, isDateFullyBlocked,
+  LS_KEYS as TYPE_LS_KEYS,
+} from '@/lib/admin-types';
 
 /* ═══════════ TYPES ═══════════ */
 interface Appointment {
@@ -114,6 +120,16 @@ export default function DashboardPage() {
   /* ── Horários State ── */
   const [slots, setSlots] = useState<AvailableSlot[]>([]);
 
+  /* ── Role & Blocked Dates State ── */
+  const [userRole, setUserRole] = useState<UserRole>('medica');
+  const [userName, setUserName] = useState('Dra. Andresa');
+  const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([]);
+  const [showBlockForm, setShowBlockForm] = useState(false);
+  const [blockForm, setBlockForm] = useState({
+    dataInicio: '', dataFim: '', tipo: 'dia_inteiro' as BlockedDate['tipo'],
+    horariosEspecificos: [] as string[], motivo: MOTIVOS_BLOQUEIO[0],
+  });
+
   /* ── Blog State ── */
   const [blogArticles, setBlogArticles] = useState<BlogArticle[]>([]);
   const [editingArticle, setEditingArticle] = useState<BlogArticle | null>(null);
@@ -141,6 +157,9 @@ export default function DashboardPage() {
       try {
         const res = await fetch('/api/auth/check');
         if (!res.ok) { router.push('/admin'); return; }
+        const data = await res.json();
+        if (data.role) setUserRole(data.role as UserRole);
+        if (data.userName) setUserName(data.userName);
       } catch { router.push('/admin'); return; }
       setLoading(false);
     })();
@@ -178,6 +197,15 @@ export default function DashboardPage() {
   useEffect(() => { localStorage.setItem('dra_appointments', JSON.stringify(appointments)); }, [appointments]);
   useEffect(() => { if (slots.length > 0) localStorage.setItem('dra_slots', JSON.stringify(slots)); }, [slots]);
   useEffect(() => { localStorage.setItem('dra_blog_articles', JSON.stringify(blogArticles)); }, [blogArticles]);
+
+  /* ── Load/Save Blocked Dates ── */
+  useEffect(() => {
+    const bd = localStorage.getItem(TYPE_LS_KEYS.blockedDates);
+    if (bd) try { setBlockedDates(JSON.parse(bd)); } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    localStorage.setItem(TYPE_LS_KEYS.blockedDates, JSON.stringify(blockedDates));
+  }, [blockedDates]);
 
   /* ── Data Refresh (sync with ChatBot in real-time) ── */
   useEffect(() => {
@@ -263,11 +291,11 @@ export default function DashboardPage() {
       const dateStr = toISO(day);
       if (!dayName) return;
       HORARIOS.forEach(h => {
-        if (isSlotEnabled(dayName, h) && !getSlotAppointment(dateStr, h)) count++;
+        if (isSlotEnabled(dayName, h) && !getSlotAppointment(dateStr, h) && !isDateBlocked(dateStr, h, blockedDates)) count++;
       });
     });
     return count;
-  }, [horarioWeekDays, isSlotEnabled, getSlotAppointment]);
+  }, [horarioWeekDays, isSlotEnabled, getSlotAppointment, blockedDates]);
 
   const weekOccupancyRate = useMemo(() => {
     let total = 0, occupied = 0;
@@ -276,14 +304,14 @@ export default function DashboardPage() {
       const dateStr = toISO(day);
       if (!dayName) return;
       HORARIOS.forEach(h => {
-        if (isSlotEnabled(dayName, h)) {
+        if (isSlotEnabled(dayName, h) && !isDateBlocked(dateStr, h, blockedDates)) {
           total++;
           if (getSlotAppointment(dateStr, h)) occupied++;
         }
       });
     });
     return total > 0 ? Math.round((occupied / total) * 100) : 0;
-  }, [horarioWeekDays, isSlotEnabled, getSlotAppointment]);
+  }, [horarioWeekDays, isSlotEnabled, getSlotAppointment, blockedDates]);
 
   const bookFromHorarios = (date: string, horario: string) => {
     if (!quickBookData.paciente) return;
@@ -296,6 +324,42 @@ export default function DashboardPage() {
     }]);
     setSlotDetail(null);
     setQuickBookData({ paciente: '', telefone: '', tipo: TIPOS[0], observacoes: '' });
+  };
+
+  /* ── Blocked Dates Helpers ── */
+  const getSlotBlock = useCallback((dateStr: string, horario: string) => {
+    return isDateBlocked(dateStr, horario, blockedDates);
+  }, [blockedDates]);
+
+  const saveBlock = () => {
+    if (!blockForm.dataInicio) return;
+    const newBlock: BlockedDate = {
+      id: Date.now().toString(),
+      dataInicio: blockForm.dataInicio,
+      dataFim: blockForm.dataFim || blockForm.dataInicio,
+      tipo: blockForm.tipo,
+      horariosEspecificos: blockForm.tipo === 'horarios' ? blockForm.horariosEspecificos : undefined,
+      motivo: blockForm.motivo,
+      criadoEm: new Date().toISOString(),
+    };
+    setBlockedDates(prev => [...prev, newBlock]);
+    setBlockForm({ dataInicio: '', dataFim: '', tipo: 'dia_inteiro', horariosEspecificos: [], motivo: MOTIVOS_BLOQUEIO[0] });
+    setShowBlockForm(false);
+  };
+
+  const deleteBlock = (id: string) => {
+    setBlockedDates(prev => prev.filter(b => b.id !== id));
+  };
+
+  const quickBlockDate = (dateStr: string, tipo: BlockedDate['tipo']) => {
+    setBlockedDates(prev => [...prev, {
+      id: Date.now().toString(), dataInicio: dateStr, dataFim: dateStr,
+      tipo, motivo: 'Bloqueio rápido', criadoEm: new Date().toISOString(),
+    }]);
+  };
+
+  const unblockDate = (dateStr: string) => {
+    setBlockedDates(prev => prev.filter(b => !(dateStr >= b.dataInicio && dateStr <= b.dataFim)));
   };
 
   /* ── Appointment Actions ── */
@@ -436,12 +500,14 @@ export default function DashboardPage() {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform lg:translate-x-0 lg:static lg:inset-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-accent-500 rounded-full flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" />
+            <div className={`w-10 h-10 bg-gradient-to-br ${userRole === 'medica' ? 'from-primary-400 to-accent-500' : 'from-blue-400 to-cyan-500'} rounded-full flex items-center justify-center`}>
+              {userRole === 'medica' ? <Stethoscope className="w-5 h-5 text-white" /> : <Heart className="w-5 h-5 text-white" />}
             </div>
             <div>
-              <h2 className="font-bold text-gray-900 text-sm">Dra. Andresa</h2>
-              <p className="text-xs text-gray-500">Painel Admin</p>
+              <h2 className="font-bold text-gray-900 text-sm">{userName}</h2>
+              <p className={`text-xs ${userRole === 'medica' ? 'text-purple-500' : 'text-blue-500'}`}>
+                {userRole === 'medica' ? '👩‍⚕️ Médica' : '📋 Secretária'}
+              </p>
             </div>
           </div>
         </div>
@@ -818,6 +884,104 @@ export default function DashboardPage() {
 
               {/* Schedule Grid */}
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
+                {/* Block Form Header */}
+                <div className="p-4 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-gray-500" />
+                    <span className="font-bold text-gray-900 text-sm">Grade de Horários</span>
+                  </div>
+                  {userRole === 'medica' && (
+                    <button onClick={() => setShowBlockForm(!showBlockForm)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-medium hover:bg-red-100 border border-red-200 transition-colors">
+                      <Ban className="w-3.5 h-3.5" /> {showBlockForm ? 'Fechar' : 'Bloquear Horários'}
+                    </button>
+                  )}
+                </div>
+
+                {/* Block Form */}
+                {showBlockForm && userRole === 'medica' && (
+                  <div className="p-4 bg-red-50/50 border-b border-red-100">
+                    <h4 className="font-bold text-red-800 text-sm mb-3 flex items-center gap-2"><Lock className="w-4 h-4" /> Bloquear Horários</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+                      <div>
+                        <label className="text-xs text-gray-600 mb-1 block">Data Início *</label>
+                        <input type="date" value={blockForm.dataInicio} onChange={e => setBlockForm(f => ({ ...f, dataInicio: e.target.value, dataFim: f.dataFim || e.target.value }))}
+                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-300" />
+                      </div>
+                      <div>
+                        <label className="text-xs text-gray-600 mb-1 block">Data Fim</label>
+                        <input type="date" value={blockForm.dataFim} onChange={e => setBlockForm(f => ({ ...f, dataFim: e.target.value }))}
+                          min={blockForm.dataInicio}
+                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-300" />
+                      </div>
+                      <div>
+                        <label className="text-xs text-gray-600 mb-1 block">Tipo de Bloqueio</label>
+                        <select value={blockForm.tipo} onChange={e => setBlockForm(f => ({ ...f, tipo: e.target.value as BlockedDate['tipo'] }))}
+                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-300">
+                          {Object.entries(BLOCK_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-xs text-gray-600 mb-1 block">Motivo</label>
+                        <select value={blockForm.motivo} onChange={e => setBlockForm(f => ({ ...f, motivo: e.target.value }))}
+                          className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-300">
+                          {MOTIVOS_BLOQUEIO.map(m => <option key={m}>{m}</option>)}
+                        </select>
+                      </div>
+                    </div>
+                    {blockForm.tipo === 'horarios' && (
+                      <div className="mb-3">
+                        <label className="text-xs text-gray-600 mb-1 block">Selecione os horários a bloquear</label>
+                        <div className="flex flex-wrap gap-1.5">
+                          {HORARIOS.map(h => (
+                            <button key={h} onClick={() => setBlockForm(f => ({
+                              ...f,
+                              horariosEspecificos: f.horariosEspecificos.includes(h)
+                                ? f.horariosEspecificos.filter(x => x !== h)
+                                : [...f.horariosEspecificos, h],
+                            }))}
+                              className={`px-2 py-1 rounded text-xs font-medium transition-all ${
+                                blockForm.horariosEspecificos.includes(h) ? 'bg-red-500 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-red-50'
+                              }`}>
+                              {h}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <button onClick={saveBlock} disabled={!blockForm.dataInicio}
+                        className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-xl hover:bg-red-600 disabled:opacity-50 inline-flex items-center gap-1.5">
+                        <Lock className="w-3.5 h-3.5" /> Bloquear
+                      </button>
+                      <button onClick={() => setShowBlockForm(false)} className="px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-xl hover:bg-gray-200">Cancelar</button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Active Blocks List */}
+                {blockedDates.length > 0 && (
+                  <div className="p-4 bg-orange-50/50 border-b border-orange-100">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="text-xs font-bold text-orange-800 flex items-center gap-1.5"><Ban className="w-3.5 h-3.5" /> Horários Bloqueados ({blockedDates.length})</h4>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {blockedDates.sort((a, b) => a.dataInicio.localeCompare(b.dataInicio)).map(bd => (
+                        <div key={bd.id} className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg border border-orange-200 text-xs shadow-sm">
+                          <Lock className="w-3 h-3 text-red-500" />
+                          <div>
+                            <span className="font-medium text-gray-800">{formatDateBR(bd.dataInicio)}{bd.dataFim !== bd.dataInicio ? ` a ${formatDateBR(bd.dataFim)}` : ''}</span>
+                            <span className="text-gray-500 ml-1">• {BLOCK_TYPE_LABELS[bd.tipo]} • {bd.motivo}</span>
+                          </div>
+                          {userRole === 'medica' && (
+                            <button onClick={() => deleteBlock(bd.id)} className="p-0.5 text-red-400 hover:text-red-600"><X className="w-3 h-3" /></button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
@@ -847,6 +1011,7 @@ export default function DashboardPage() {
                             const dayName = getDayNameFromDate(day);
                             const enabled = isSlotEnabled(dayName, hora);
                             const appt = getSlotAppointment(dateStr, hora);
+                            const blocked = getSlotBlock(dateStr, hora);
                             const isToday = dateStr === toISO(new Date());
 
                             if (!dayName) {
@@ -857,6 +1022,20 @@ export default function DashboardPage() {
                               return (
                                 <td key={di} className={`p-0.5 ${isToday ? 'bg-primary-50/30' : 'bg-gray-50'}`}>
                                   <div className="w-full p-1.5 rounded text-center text-[10px] text-gray-300">—</div>
+                                </td>
+                              );
+                            }
+
+                            if (blocked && !appt) {
+                              return (
+                                <td key={di} className={`p-0.5 ${isToday ? 'bg-primary-50/30' : ''}`}>
+                                  <button
+                                    onClick={() => userRole === 'medica' ? setSlotDetail({ date: dateStr, horario: hora }) : undefined}
+                                    className="w-full p-1.5 rounded-lg bg-red-50 text-red-400 text-[10px] font-medium transition-all border border-red-200 cursor-pointer hover:bg-red-100"
+                                    title={`Bloqueado: ${blocked.motivo}`}>
+                                    <div className="flex items-center justify-center gap-0.5"><Lock className="w-2.5 h-2.5" /> Bloq.</div>
+                                    <div className="text-[8px] opacity-70 truncate">{blocked.motivo}</div>
+                                  </button>
                                 </td>
                               );
                             }
@@ -902,6 +1081,7 @@ export default function DashboardPage() {
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-green-100 border border-green-300" /> Confirmado</span>
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-blue-100 border border-blue-200" /> Realizado</span>
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-red-100 border border-red-200" /> Cancelado</span>
+                <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-red-50 border border-red-300" /> <Lock className="w-3 h-3 text-red-400" /> Bloqueado</span>
                 <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-gray-50 border border-gray-200" /> Desativado</span>
               </div>
 
@@ -983,9 +1163,42 @@ export default function DashboardPage() {
                     ) : (
                       <>
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="font-bold text-gray-900">Agendar Horário</h3>
+                          <h3 className="font-bold text-gray-900">
+                            {getSlotBlock(slotDetail.date, slotDetail.horario) ? '🔒 Horário Bloqueado' : 'Agendar Horário'}
+                          </h3>
                           <button onClick={() => { setSlotDetail(null); setQuickBookData({ paciente: '', telefone: '', tipo: TIPOS[0], observacoes: '' }); }} className="p-1 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5 text-gray-400" /></button>
                         </div>
+
+                        {(() => {
+                          const block = getSlotBlock(slotDetail.date, slotDetail.horario);
+                          if (block) {
+                            return (
+                              <div className="space-y-3">
+                                <div className="p-3 bg-red-50 rounded-xl border border-red-200">
+                                  <p className="text-sm text-red-700 font-medium flex items-center gap-2"><Lock className="w-4 h-4" /> {formatDateBR(slotDetail.date)} às {slotDetail.horario}</p>
+                                  <p className="text-xs text-red-600 mt-1">Motivo: {block.motivo}</p>
+                                  <p className="text-xs text-red-500 mt-0.5">Tipo: {BLOCK_TYPE_LABELS[block.tipo]}</p>
+                                  {block.dataInicio !== block.dataFim && (
+                                    <p className="text-xs text-red-500 mt-0.5">Período: {formatDateBR(block.dataInicio)} a {formatDateBR(block.dataFim)}</p>
+                                  )}
+                                </div>
+                                {userRole === 'medica' && (
+                                  <div className="flex gap-2">
+                                    <button onClick={() => { unblockDate(slotDetail.date); setSlotDetail(null); }}
+                                      className="flex-1 px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-xl hover:bg-green-600 inline-flex items-center justify-center gap-2">
+                                      <Unlock className="w-4 h-4" /> Desbloquear Data
+                                    </button>
+                                    <button onClick={() => { deleteBlock(block.id); setSlotDetail(null); }}
+                                      className="px-4 py-2 bg-red-50 text-red-600 text-sm font-medium rounded-xl hover:bg-red-100 inline-flex items-center gap-2">
+                                      <Trash2 className="w-4 h-4" /> Remover Bloqueio
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                          return (
+                            <>
                         <div className="p-3 bg-green-50 rounded-xl mb-4">
                           <p className="text-sm text-green-700 font-medium">📅 {formatDateBR(slotDetail.date)} às {slotDetail.horario}</p>
                           <p className="text-xs text-green-600">Horário disponível para agendamento</p>
@@ -1018,7 +1231,29 @@ export default function DashboardPage() {
                             className="w-full px-4 py-2.5 bg-primary-500 text-white text-sm font-medium rounded-xl hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2">
                             <Plus className="w-4 h-4" /> Agendar Consulta
                           </button>
+                          {userRole === 'medica' && (
+                            <div className="border-t border-gray-100 pt-3 mt-1">
+                              <p className="text-[10px] text-gray-400 mb-2 font-medium uppercase tracking-wider">Bloquear este horário</p>
+                              <div className="flex gap-1.5">
+                                <button onClick={() => { quickBlockDate(slotDetail.date, 'dia_inteiro'); setSlotDetail(null); }}
+                                  className="flex-1 px-2 py-1.5 bg-red-50 text-red-600 text-[10px] font-medium rounded-lg hover:bg-red-100 border border-red-200">
+                                  Dia Inteiro
+                                </button>
+                                <button onClick={() => { quickBlockDate(slotDetail.date, 'manha'); setSlotDetail(null); }}
+                                  className="flex-1 px-2 py-1.5 bg-orange-50 text-orange-600 text-[10px] font-medium rounded-lg hover:bg-orange-100 border border-orange-200">
+                                  Manhã
+                                </button>
+                                <button onClick={() => { quickBlockDate(slotDetail.date, 'tarde'); setSlotDetail(null); }}
+                                  className="flex-1 px-2 py-1.5 bg-yellow-50 text-yellow-700 text-[10px] font-medium rounded-lg hover:bg-yellow-100 border border-yellow-200">
+                                  Tarde
+                                </button>
+                              </div>
+                            </div>
+                          )}
                         </div>
+                            </>
+                          );
+                        })()}
                       </>
                     )}
                   </div>
@@ -1103,7 +1338,7 @@ export default function DashboardPage() {
 
               <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
                 <p className="text-sm text-primary-700 leading-relaxed">
-                  💡 <strong>Mapa de Horários:</strong> Esta visualização mostra todos os horários da semana selecionada. Clique em um horário <span className="text-green-600 font-medium">livre</span> para agendar uma consulta diretamente, ou em um horário <span className="text-red-600 font-medium">ocupado</span> para ver detalhes, editar ou alterar o status. As configurações de disponibilidade geral (acima) definem quais horários ficam disponíveis para o ChatBot e agendamento online.
+                  💡 <strong>Mapa de Horários:</strong> Esta visualização mostra todos os horários da semana selecionada. Clique em um horário <span className="text-green-600 font-medium">livre</span> para agendar uma consulta diretamente, ou em um horário <span className="text-red-600 font-medium">ocupado</span> para ver detalhes, editar ou alterar o status. Use o botão <span className="text-red-600 font-medium">Bloquear Horários</span> para fechar dias ou períodos quando a Dra. não estiver disponível (folgas, eventos, férias). As configurações de disponibilidade geral (acima) definem quais horários ficam disponíveis para o ChatBot e agendamento online. <span className="text-red-500 font-medium">🔒 Bloqueios</span> são refletidos no ChatBot automaticamente.
                 </p>
               </div>
             </>
@@ -1229,7 +1464,7 @@ export default function DashboardPage() {
             </>
           )}
 
-          {activeTab === 'pacientes' && <PatientTab />}
+          {activeTab === 'pacientes' && <PatientTab role={userRole} />}
           {activeTab === 'financeiro' && <FinanceTab />}
         </div>
       </main>
