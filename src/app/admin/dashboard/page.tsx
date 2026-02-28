@@ -6,10 +6,12 @@ import {
   Calendar, Clock, Users, FileText, LogOut, Plus, Trash2,
   ChevronLeft, ChevronRight, Heart, Menu, Home, Eye, EyeOff,
   Video, Save, X, Edit3, Search, Filter, Phone, CheckCircle2,
-  AlertCircle, XCircle, CalendarDays, LayoutGrid, List, Bell
+  AlertCircle, XCircle, CalendarDays, LayoutGrid, List, Bell, Wallet
 } from 'lucide-react';
 import Link from 'next/link';
 import { articles } from '@/lib/articles';
+import PatientTab from '@/components/admin/PatientTab';
+import FinanceTab from '@/components/admin/FinanceTab';
 
 /* ═══════════ TYPES ═══════════ */
 interface Appointment {
@@ -44,7 +46,7 @@ interface BlogArticle {
   published: boolean;
 }
 
-type Tab = 'agendamentos' | 'horarios' | 'blog';
+type Tab = 'agendamentos' | 'horarios' | 'blog' | 'pacientes' | 'financeiro';
 type CalendarView = 'month' | 'week' | 'day';
 
 /* ═══════════ CONSTANTS ═══════════ */
@@ -446,6 +448,8 @@ export default function DashboardPage() {
         <nav className="p-4 space-y-1">
           {([
             { tab: 'agendamentos' as Tab, icon: Calendar, label: 'Agendamentos', badge: pendingCount },
+            { tab: 'pacientes' as Tab, icon: Users, label: 'Pacientes', badge: 0 },
+            { tab: 'financeiro' as Tab, icon: Wallet, label: 'Financeiro', badge: 0 },
             { tab: 'horarios' as Tab, icon: Clock, label: 'Horários' },
             { tab: 'blog' as Tab, icon: FileText, label: 'Blog / Artigos' },
           ]).map(item => (
@@ -472,7 +476,7 @@ export default function DashboardPage() {
       <main className="flex-1 min-h-screen overflow-auto">
         <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-4 sticky top-0 z-30">
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden"><Menu className="w-6 h-6 text-gray-600" /></button>
-          <h1 className="text-xl font-bold text-gray-900">{activeTab === 'horarios' ? 'Horários Disponíveis' : activeTab === 'blog' ? 'Blog / Artigos' : 'Agendamentos'}</h1>
+          <h1 className="text-xl font-bold text-gray-900">{activeTab === 'pacientes' ? 'Cadastro de Pacientes' : activeTab === 'financeiro' ? 'Gestão Financeira' : activeTab === 'horarios' ? 'Horários Disponíveis' : activeTab === 'blog' ? 'Blog / Artigos' : 'Agendamentos'}</h1>
         </header>
 
         <div className="p-4 md:p-6 max-w-[1400px]">
@@ -1224,6 +1228,9 @@ export default function DashboardPage() {
               </div>
             </>
           )}
+
+          {activeTab === 'pacientes' && <PatientTab />}
+          {activeTab === 'financeiro' && <FinanceTab />}
         </div>
       </main>
     </div>
