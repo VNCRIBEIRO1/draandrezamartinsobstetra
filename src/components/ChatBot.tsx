@@ -198,7 +198,7 @@ function MiniCalendar({ year, month, onSelectDate, onNav }: {
 }
 
 /* ─────────────────── Time Slots View ─────────────────── */
-function TimeSlotsView({ date, slots, onSelect }: { date: string; slots: string[]; onSelect: (t: string) => void }) {
+function TimeSlotsView({ date, slots, onSelect, onBack }: { date: string; slots: string[]; onSelect: (t: string) => void; onBack?: () => void }) {
   const dateObj = new Date(date + 'T12:00');
   const label = dateObj.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
   const morning = slots.filter(s => parseInt(s) < 12);
@@ -232,6 +232,12 @@ function TimeSlotsView({ date, slots, onSelect }: { date: string; slots: string[
             </div>
           )}
         </>
+      )}
+      {onBack && (
+        <button onClick={onBack}
+          className="mt-2 w-full flex items-center justify-center gap-1.5 text-[11px] py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-primary-600 transition-all font-medium">
+          <ChevronLeft className="w-3.5 h-3.5" /> Escolher outra data
+        </button>
       )}
     </div>
   );
@@ -318,17 +324,25 @@ export default function ChatBot() {
     });
   }, [collectingData]);
 
+  const handleBackToCalendar = useCallback(async () => {
+    addMessage('← Escolher outra data', 'user');
+    const calYear = collectingData.calYear || new Date().getFullYear();
+    const calMonth = collectingData.calMonth ?? new Date().getMonth();
+    setCollectingData(prev => ({ ...prev, step: 'calendar', data: undefined, horario: undefined }));
+    await simulateTyping('📅 Escolha uma nova data no calendário:', undefined, { calendarView: { year: calYear, month: calMonth } });
+  }, [addMessage, simulateTyping, collectingData]);
+
   const handleCalendarSelectDate = useCallback(async (dateStr: string) => {
     const dateObj = new Date(dateStr + 'T12:00');
     const label = dateObj.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
     addMessage(label, 'user');
     const freeSlots = getFreeSlots(dateStr);
-    setCollectingData(prev => ({ ...prev, data: dateStr, step: 'timeslot' }));
+    setCollectingData(prev => ({ ...prev, data: dateStr, step: 'timeslot', calYear: dateObj.getFullYear(), calMonth: dateObj.getMonth() }));
     if (freeSlots.length === 0) {
       await simulateTyping('😔 Sem horários disponíveis neste dia. Escolha outra data:', undefined, { calendarView: { year: dateObj.getFullYear(), month: dateObj.getMonth() } });
       setCollectingData(prev => ({ ...prev, step: 'calendar', calYear: dateObj.getFullYear(), calMonth: dateObj.getMonth() }));
     } else {
-      await simulateTyping(`⏰ Horários disponíveis para **${label}**:\n\nSelecione um horário:`, undefined, { timeSlotsView: { date: dateStr, slots: freeSlots } });
+      await simulateTyping(`⏰ Horários disponíveis para **${label}**:\n\nSelecione um horário ou escolha outra data:`, undefined, { timeSlotsView: { date: dateStr, slots: freeSlots } });
     }
   }, [addMessage, simulateTyping]);
 
@@ -518,7 +532,7 @@ export default function ChatBot() {
                     )}
 
                     {msg.timeSlotsView && collectingData.step === 'timeslot' && (
-                      <TimeSlotsView date={msg.timeSlotsView.date} slots={msg.timeSlotsView.slots} onSelect={handleTimeSlotSelect} />
+                      <TimeSlotsView date={msg.timeSlotsView.date} slots={msg.timeSlotsView.slots} onSelect={handleTimeSlotSelect} onBack={handleBackToCalendar} />
                     )}
 
                     {msg.whatsappLink && (

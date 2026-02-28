@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import WhatsAppButton from '@/components/WhatsAppButton';
-import ChatBot from '@/components/ChatBot';
-import CookieBanner from '@/components/CookieBanner';
+import LayoutShell from '@/components/LayoutShell';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], display: 'swap', variable: '--font-playfair' });
@@ -53,12 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#ec4899" />
       </head>
       <body className="min-h-screen flex flex-col font-sans">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <ChatBot />
-        <WhatsAppButton />
-        <CookieBanner />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );

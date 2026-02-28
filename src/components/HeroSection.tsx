@@ -52,15 +52,13 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta%20com%20a%20Dra.%20Andresa."
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/agendar"
                 className="btn-primary text-base"
               >
                 Agende sua Consulta
                 <ArrowRight className="w-5 h-5 ml-2" />
-              </a>
+              </Link>
               <Link
                 href="/areas-de-atuacao"
                 className="btn-outline text-base"
