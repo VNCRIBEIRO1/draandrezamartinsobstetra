@@ -512,6 +512,7 @@ export default function DashboardPage() {
                                 <p className="font-medium text-sm">{a.horario} — {a.paciente}</p>
                                 <p className="text-xs opacity-70 mt-0.5">{a.tipo}</p>
                                 {a.telefone && <p className="text-xs opacity-70 flex items-center gap-1 mt-0.5"><Phone className="w-3 h-3" />{a.telefone}</p>}
+                                {a.origem && <span className={`inline-block text-[9px] mt-1 px-1.5 py-0.5 rounded font-medium ${a.origem === 'chatbot' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-500'}`}>{a.origem === 'chatbot' ? '🤖 ChatBot' : '✍️ Manual'}</span>}
                                 {a.observacoes && <p className="text-xs opacity-60 mt-1 italic">{a.observacoes}</p>}
                               </div>
                               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -591,32 +592,100 @@ export default function DashboardPage() {
           {/* ═══════════════════════════════════════════ */}
           {activeTab === 'horarios' && (
             <>
-              <p className="text-gray-500 text-sm mb-6">
-                Clique nos horários para ativar/desativar. Horários desativados não aparecerão como disponíveis.
-              </p>
+              <div className="flex flex-wrap gap-3 mb-6 items-center">
+                <p className="text-gray-500 text-sm flex-1">
+                  Gerencie os horários disponíveis para agendamento. Clique nos horários para ativar/desativar.
+                </p>
+                <div className="flex gap-2">
+                  <button onClick={() => setSlots(prev => prev.map(s => ({ ...s, ativo: true })))}
+                    className="text-xs px-3 py-1.5 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 font-medium border border-green-200">
+                    ✓ Ativar Todos
+                  </button>
+                  <button onClick={() => setSlots(prev => prev.map(s => ({ ...s, ativo: false })))}
+                    className="text-xs px-3 py-1.5 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 font-medium border border-red-200">
+                    ✗ Desativar Todos
+                  </button>
+                </div>
+              </div>
+
+              {/* Summary Stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
+                  <p className="text-2xl font-bold text-green-600">{slots.filter(s => s.ativo).length}</p>
+                  <p className="text-xs text-gray-500">Horários Ativos</p>
+                </div>
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
+                  <p className="text-2xl font-bold text-gray-400">{slots.filter(s => !s.ativo).length}</p>
+                  <p className="text-xs text-gray-500">Desativados</p>
+                </div>
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
+                  <p className="text-2xl font-bold text-primary-600">{DIAS_SEMANA_FULL.filter(d => slots.some(s => s.dia === d && s.ativo)).length}</p>
+                  <p className="text-xs text-gray-500">Dias com Atendimento</p>
+                </div>
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
+                  <p className="text-2xl font-bold text-purple-600">{slots.length}</p>
+                  <p className="text-xs text-gray-500">Total de Slots</p>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {DIAS_SEMANA_FULL.map(dia => {
                   const diaSlots = slots.filter(s => s.dia === dia);
                   const activeCount = diaSlots.filter(s => s.ativo).length;
+                  const morning = diaSlots.filter(s => parseInt(s.horario) < 12);
+                  const afternoon = diaSlots.filter(s => parseInt(s.horario) >= 12);
+                  const allActive = diaSlots.every(s => s.ativo);
                   return (
                     <div key={dia} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                      <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center justify-between mb-1">
                         <h3 className="font-bold text-gray-900">{dia}</h3>
-                        <span className="text-xs text-gray-400">{activeCount}/{diaSlots.length} ativos</span>
+                        <button onClick={() => setSlots(prev => prev.map(s => s.dia === dia ? { ...s, ativo: !allActive } : s))}
+                          className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${allActive ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}>
+                          {allActive ? 'Desativar dia' : 'Ativar dia'}
+                        </button>
                       </div>
-                      <div className="grid grid-cols-3 gap-2">
-                        {diaSlots.map(slot => (
-                          <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
-                            className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                              slot.ativo ? 'bg-primary-100 text-primary-700 hover:bg-primary-200' : 'bg-gray-100 text-gray-400 line-through hover:bg-gray-200'
-                            }`}>
-                            {slot.horario}
-                          </button>
-                        ))}
-                      </div>
+                      <p className="text-xs text-gray-400 mb-3">{activeCount}/{diaSlots.length} ativos</p>
+
+                      {morning.length > 0 && (
+                        <div className="mb-3">
+                          <p className="text-[10px] text-gray-500 font-medium mb-1.5 uppercase tracking-wider">☀️ Manhã</p>
+                          <div className="grid grid-cols-3 gap-1.5">
+                            {morning.map(slot => (
+                              <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
+                                className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                                  slot.ativo ? 'bg-primary-100 text-primary-700 hover:bg-primary-200 border border-primary-200' : 'bg-gray-50 text-gray-400 line-through hover:bg-gray-100 border border-gray-100'
+                                }`}>
+                                {slot.horario}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {afternoon.length > 0 && (
+                        <div>
+                          <p className="text-[10px] text-gray-500 font-medium mb-1.5 uppercase tracking-wider">🌙 Tarde</p>
+                          <div className="grid grid-cols-3 gap-1.5">
+                            {afternoon.map(slot => (
+                              <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
+                                className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                                  slot.ativo ? 'bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200' : 'bg-gray-50 text-gray-400 line-through hover:bg-gray-100 border border-gray-100'
+                                }`}>
+                                {slot.horario}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
+              </div>
+
+              <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
+                <p className="text-sm text-primary-700 leading-relaxed">
+                  💡 <strong>Sincronizado com o ChatBot:</strong> Os horários que você ativar/desativar aqui serão refletidos automaticamente no agendamento online do assistente virtual.
+                  Pacientes verão apenas os horários ativos ao agendar pelo site.
+                </p>
               </div>
             </>
           )}
@@ -729,9 +798,14 @@ export default function DashboardPage() {
 
               <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
                 <p className="text-sm text-primary-700 leading-relaxed">
-                  💡 <strong>Dica:</strong> Para adicionar vídeos do Instagram, copie o link do Reel e cole no campo &ldquo;URL do Vídeo&rdquo;.
-                  Para YouTube, use o formato de embed: <code className="bg-primary-100 px-1 rounded text-xs">https://www.youtube.com/embed/VIDEO_ID</code>
+                  💡 <strong>Dica sobre vídeos:</strong> Cole a URL completa do vídeo — funciona com YouTube (qualquer formato de link) e Instagram Reels.
+                  O vídeo aparecerá automaticamente na página do artigo com um player integrado. Exemplos aceitos:
                 </p>
+                <ul className="text-xs text-primary-600 mt-2 space-y-1 ml-4">
+                  <li>• <code className="bg-primary-100 px-1 rounded">https://www.youtube.com/watch?v=VIDEO_ID</code></li>
+                  <li>• <code className="bg-primary-100 px-1 rounded">https://youtu.be/VIDEO_ID</code></li>
+                  <li>• <code className="bg-primary-100 px-1 rounded">https://www.instagram.com/reel/CODE/</code></li>
+                </ul>
               </div>
             </>
           )}

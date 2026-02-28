@@ -1,9 +1,6 @@
 import Link from 'next/link';
 import AnimatedSection from '@/components/AnimatedSection';
-import SectionHeader from '@/components/SectionHeader';
-import BlogCard from '@/components/BlogCard';
-import { articlesList } from '@/lib/articles';
-import { getArticleImage } from '@/lib/images';
+import BlogListClient from '@/components/BlogListClient';
 
 export const metadata = {
   title: 'Blog Saúde da Mulher | Dra. Andresa Martin Louzada',
@@ -33,21 +30,7 @@ export default function BlogPage() {
       {/* Artigos */}
       <section className="py-20 bg-white">
         <div className="container-custom">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articlesList.map((article, index) => (
-              <BlogCard
-                key={article.slug}
-                title={article.title}
-                excerpt={article.excerpt}
-                date={article.date}
-                readTime={article.readTime}
-                slug={article.slug}
-                category={article.category}
-                image={getArticleImage(article.slug)}
-                delay={index * 0.05}
-              />
-            ))}
-          </div>
+          <BlogListClient />
         </div>
       </section>
 
@@ -61,14 +44,10 @@ export default function BlogPage() {
             <p className="text-primary-100 mb-8 max-w-xl mx-auto">
               Agende uma consulta e converse pessoalmente com a Dra. Andresa.
             </p>
-            <a
-              href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
-            >
+            <Link href="/agendar"
+              className="inline-flex items-center px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
               Agendar Consulta
-            </a>
+            </Link>
           </AnimatedSection>
         </div>
       </section>

@@ -11,6 +11,7 @@ const navigation = [
   { name: 'Áreas de Atuação', href: '/areas-de-atuacao' },
   { name: 'Blog', href: '/blog' },
   { name: 'Contato', href: '/contato' },
+  { name: 'Agendar', href: '/agendar' },
 ];
 
 export default function Header() {
@@ -83,15 +84,13 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <a
-              href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/agendar"
               className="ml-4 inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300 hover:-translate-y-0.5"
             >
               Agendar Consulta
               <ChevronRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -125,14 +124,13 @@ export default function Header() {
                   {item.name}
                 </Link>
               ))}
-              <a
-                href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/agendar"
+                onClick={() => setIsOpen(false)}
                 className="block text-center mt-4 btn-primary"
               >
                 Agendar Consulta
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}
