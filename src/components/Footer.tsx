@@ -20,25 +20,25 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-primary-900 to-primary-950 text-primary-100">
+    <footer className="bg-gradient-to-b from-primary-800 to-primary-950 text-primary-100">
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Column 1 */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-accent-400 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-serif font-bold text-lg">A</span>
               </div>
               <div>
                 <h3 className="text-white font-serif font-bold text-lg">Dra. Andresa Martin</h3>
-                <p className="text-xs tracking-wider uppercase text-primary-300">Ginecologista e Obstetra</p>
+                <p className="text-xs tracking-wider uppercase text-primary-300">Ginecologia e Obstetrícia</p>
               </div>
             </div>
             <p className="text-primary-300 text-sm leading-relaxed mb-4">
               Ginecologia e Obstetrícia humanizada no Espaço Humanizare.
               Acolhendo a mulher em todas as fases da vida em Presidente Prudente e região.
             </p>
-            <p className="text-primary-400 text-sm font-medium">CRM/SP • Espaço Humanizare</p>
+            <p className="text-primary-400 text-sm font-medium">CRM/SP 207702 • RQE 135096</p>
           </div>
 
           {/* Column 2 */}

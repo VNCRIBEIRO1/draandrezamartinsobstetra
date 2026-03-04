@@ -80,7 +80,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-12 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+      <section className="pt-32 pb-12 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
             <Link href="/blog" className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-6 transition-colors">
@@ -149,7 +149,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
             </article>
 
             {/* Autor */}
-            <div className="mt-12 p-6 bg-gradient-to-r from-primary-50 to-purple-50 rounded-2xl border border-primary-100 flex flex-col sm:flex-row gap-5 items-center sm:items-start">
+            <div className="mt-12 p-6 bg-gradient-to-r from-primary-50 to-baby-cream rounded-2xl border border-primary-100 flex flex-col sm:flex-row gap-5 items-center sm:items-start">
               <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 ring-4 ring-primary-200 shadow-lg">
                 <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada" width={80} height={80} className="object-cover w-full h-full" />
               </div>
@@ -164,7 +164,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
             </div>
 
             {/* CTA */}
-            <div className="mt-10 p-8 bg-gradient-to-r from-primary-500 via-purple-500 to-accent-500 rounded-2xl text-center text-white shadow-xl">
+            <div className="mt-10 p-8 bg-gradient-to-r from-primary-500 via-primary-600 to-primary-700 rounded-2xl text-center text-white shadow-xl">
               <h3 className="text-2xl font-serif font-bold mb-3">Ficou com alguma dúvida?</h3>
               <p className="text-white/80 mb-6">Agende uma consulta e converse pessoalmente com a Dra. Andresa.</p>
               <Link href="/agendar" className="inline-flex items-center px-6 py-3 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
@@ -176,7 +176,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
       </section>
 
       {/* Artigos Relacionados */}
-      <section className="py-16 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+      <section className="py-16 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
         <div className="container-custom">
           <h2 className="text-2xl font-serif font-bold text-gray-900 mb-8 text-center">Artigos Relacionados</h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">

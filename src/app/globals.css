@@ -18,7 +18,7 @@
   }
 
   ::selection {
-    @apply bg-primary-300 text-white;
+    @apply bg-rose-300 text-white;
   }
 }
 
@@ -29,25 +29,25 @@
 
   .btn-primary {
     @apply inline-flex items-center justify-center px-6 py-3 
-           bg-primary-500 text-white font-medium rounded-full
-           hover:bg-primary-600 transition-all duration-300
-           focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2
-           shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 hover:-translate-y-0.5;
+           bg-gradient-to-r from-primary-500 to-rose-400 text-white font-medium rounded-full
+           hover:from-primary-600 hover:to-rose-500 transition-all duration-300
+           focus:outline-none focus:ring-2 focus:ring-rose-300 focus:ring-offset-2
+           shadow-lg shadow-rose-400/25 hover:shadow-rose-400/40 hover:-translate-y-0.5;
   }
 
   .btn-outline {
     @apply inline-flex items-center justify-center px-6 py-3
-           border-2 border-primary-500 text-primary-500 font-medium rounded-full
+           border-2 border-primary-500 text-primary-600 font-medium rounded-full
            hover:bg-primary-500 hover:text-white transition-all duration-300
            focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2;
   }
 
   .btn-accent {
     @apply inline-flex items-center justify-center px-6 py-3
-           bg-accent-500 text-white font-medium rounded-full
-           hover:bg-accent-600 transition-all duration-300
-           focus:outline-none focus:ring-2 focus:ring-accent-400 focus:ring-offset-2
-           shadow-lg shadow-accent-500/25 hover:shadow-accent-500/40 hover:-translate-y-0.5;
+           bg-rose-400 text-white font-medium rounded-full
+           hover:bg-rose-500 transition-all duration-300
+           focus:outline-none focus:ring-2 focus:ring-rose-300 focus:ring-offset-2
+           shadow-lg shadow-rose-400/25 hover:shadow-rose-400/40 hover:-translate-y-0.5;
   }
 
   .btn-whatsapp {
@@ -73,12 +73,12 @@
   .card-elevated {
     @apply bg-white rounded-2xl shadow-lg hover:shadow-2xl
            transition-all duration-300 overflow-hidden
-           border border-primary-100;
+           border border-secondary-200 hover:border-rose-200;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-xl
-           focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500
+    @apply w-full px-4 py-3 border border-secondary-300 rounded-xl
+           focus:outline-none focus:ring-2 focus:ring-rose-200 focus:border-rose-400
            transition-all duration-200 text-gray-800 placeholder:text-gray-400;
   }
 }
@@ -88,11 +88,15 @@
     text-wrap: balance;
   }
   
-  .gradient-pink {
-    @apply bg-gradient-to-r from-primary-400 via-primary-500 to-accent-500;
+  .gradient-sage {
+    @apply bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600;
   }
 
   .gradient-hero {
-    @apply bg-gradient-to-br from-primary-50 via-baby-lilac to-baby-pink;
+    @apply bg-gradient-to-br from-baby-sage via-baby-cream to-baby-pink;
+  }
+
+  .gradient-warm {
+    @apply bg-gradient-to-br from-secondary-50 via-baby-cream to-baby-pink;
   }
 }

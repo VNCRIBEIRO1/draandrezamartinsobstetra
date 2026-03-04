@@ -23,7 +23,7 @@ const areas = [
     title: 'Obstetrícia',
     description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para a mãe e o bebê, do planejamento ao puerpério.',
     items: ['Parto humanizado', 'Gestação de alto risco', 'Ultrassom obstétrico', 'Orientações sobre amamentação', 'Acompanhamento pós-parto', 'Planejamento da gestação'],
-    color: 'from-purple-400 to-purple-600',
+    color: 'from-primary-400 to-primary-600',
     image: '/images/dra-andresa-extra-1.jpeg',
   },
   {
@@ -64,7 +64,7 @@ export default function AreasPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
         <div className="container-custom text-center">
           <AnimatedSection>
             <span className="inline-block text-sm font-medium text-primary-600 bg-primary-100 px-4 py-1.5 rounded-full mb-4">
@@ -141,7 +141,7 @@ export default function AreasPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-primary-500 to-accent-500">
+      <section className="py-16 bg-gradient-to-r from-primary-500 to-primary-700">
         <div className="container-custom text-center">
           <AnimatedSection>
             <h2 className="text-3xl font-serif font-bold text-white mb-4">

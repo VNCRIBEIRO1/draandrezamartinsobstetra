@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50 p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -102,7 +102,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-60"
+            className="w-full mt-6 py-3 bg-gradient-to-r from-primary-500 to-primary-700 text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-60"
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
@@ -115,10 +115,10 @@ export default function AdminLoginPage() {
         <div className="mt-4 bg-white/80 backdrop-blur p-4 rounded-2xl border border-primary-100 shadow-sm">
           <p className="text-xs font-medium text-gray-600 mb-2 text-center">Credenciais de Acesso</p>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
-              <p className="text-[10px] font-bold text-purple-700 mb-1">👩‍⚕️ Dra. Andresa</p>
-              <p className="text-[10px] text-purple-600">admin@draandresa.com</p>
-              <p className="text-[10px] text-purple-500">Prontuário • Exames • Prescrições</p>
+            <div className="p-3 bg-baby-cream rounded-xl border border-secondary-100">
+              <p className="text-[10px] font-bold text-primary-700 mb-1">👩‍⚕️ Dra. Andresa</p>
+              <p className="text-[10px] text-primary-600">admin@draandresa.com</p>
+              <p className="text-[10px] text-primary-600">Prontuário • Exames • Prescrições</p>
             </div>
             <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
               <p className="text-[10px] font-bold text-blue-700 mb-1">📋 Secretária</p>

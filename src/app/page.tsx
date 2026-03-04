@@ -4,9 +4,9 @@ import { ArrowRight, CheckCircle2, MapPin, Star, Heart, Baby, Stethoscope, Micro
 import HeroSection from '@/components/HeroSection';
 import SectionHeader from '@/components/SectionHeader';
 import AreaCard from '@/components/AreaCard';
-import TestimonialCard from '@/components/TestimonialCard';
 import BlogCard from '@/components/BlogCard';
 import AnimatedSection from '@/components/AnimatedSection';
+import GoogleReviews from '@/components/GoogleReviews';
 import { IMAGES, getArticleImage } from '@/lib/images';
 
 const areas = [
@@ -16,13 +16,6 @@ const areas = [
   { iconName: 'Flower2', title: 'Menopausa', description: 'Tratamento personalizado para os sintomas da menopausa, reposição hormonal e cuidados com a saúde óssea e cardiovascular.' },
   { iconName: 'Sparkles', title: 'Ginecologia Regenerativa', description: 'Procedimentos inovadores para restauração e rejuvenescimento íntimo com tecnologias de ponta.' },
   { iconName: 'Microscope', title: 'Microscopia Vaginal', description: 'Diagnóstico imediato durante a consulta com análise microscópica do conteúdo vaginal — resultado na hora!' },
-];
-
-const testimonials = [
-  { text: 'A Dra. Andresa é maravilhosa! Muito atenciosa, paciente e cuidadosa. Me senti muito acolhida durante todo o pré-natal. O ambiente é lindo e super confortável.', author: 'Camila R.', role: 'Paciente - Pré-natal' },
-  { text: 'Consultório lindo, ambiente super acolhedor. A Dra. Andresa é extremamente competente e humana. Faz toda a diferença ter uma médica que realmente escuta e cuida.', author: 'Fernanda S.', role: 'Paciente - Ginecologia' },
-  { text: 'Melhor ginecologista que já consultei! Explica tudo com muita paciência, o consultório é impecável e o atendimento é humanizado de verdade.', author: 'Juliana M.', role: 'Paciente - Ginecologia' },
-  { text: 'Excelente profissional! Fiz meu pré-natal inteiro com ela e foi uma experiência incrível. Super recomendo para todas as mulheres.', author: 'Patrícia L.', role: 'Paciente - Obstetrícia' },
 ];
 
 const blogPosts = [
@@ -60,7 +53,7 @@ export default function HomePage() {
       </section>
 
       {/* Sobre - Preview */}
-      <section className="py-20 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-pink">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
@@ -68,14 +61,14 @@ export default function HomePage() {
                 <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl relative">
                   <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada no Espaço Humanizare" fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" priority />
                 </div>
-                <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-primary-500 to-accent-500 text-white p-6 rounded-2xl shadow-xl">
+                <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-primary-500 to-rose-400 text-white p-6 rounded-2xl shadow-xl">
                   <div className="flex items-center gap-1 mb-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-white text-white" />
                     ))}
                   </div>
                   <p className="text-sm font-medium">5.0 no Google</p>
-                  <p className="text-xs opacity-80">50+ avaliações</p>
+                  <p className="text-xs opacity-80">1 avaliação</p>
                 </div>
               </div>
             </AnimatedSection>
@@ -112,7 +105,7 @@ export default function HomePage() {
       </section>
 
       {/* Microscopia Destaque */}
-      <section className="py-16 bg-gradient-to-r from-primary-500 via-primary-400 to-accent-500 relative overflow-hidden">
+      <section className="py-16 bg-gradient-to-r from-primary-600 via-primary-500 to-rose-400 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
@@ -127,7 +120,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { number: '5.0', label: 'Avaliação Google', hasStar: true },
-              { number: '50+', label: 'Avaliações de Pacientes' },
+              { number: '1', label: 'Avaliação de Paciente' },
               { number: '6', label: 'Especialidades' },
               { number: '100%', label: 'Atendimento Humanizado' },
             ].map((stat, index) => (
@@ -143,26 +136,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Depoimentos */}
-      <section className="py-20 bg-white">
-        <div className="container-custom">
-          <AnimatedSection>
-            <SectionHeader
-              badge="Depoimentos"
-              title="O Que Dizem Nossas Pacientes"
-              subtitle="A satisfação de quem confiou no nosso cuidado é o que nos motiva a cada dia."
-            />
-          </AnimatedSection>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {testimonials.map((t, i) => (
-              <TestimonialCard key={t.author} text={t.text} author={t.author} role={t.role} delay={i * 0.1} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Google Reviews em tempo real */}
+      <GoogleReviews />
 
       {/* Blog Preview */}
-      <section className="py-20 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-pink">
         <div className="container-custom">
           <AnimatedSection>
             <SectionHeader
@@ -185,10 +163,10 @@ export default function HomePage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 via-primary-500 to-accent-600 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-primary-700 via-primary-500 to-rose-400 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 left-10 w-96 h-96 bg-accent-300 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-rose-300 rounded-full blur-3xl" />
         </div>
         <div className="container-custom relative z-10 text-center">
           <AnimatedSection>
@@ -217,7 +195,7 @@ export default function HomePage() {
             </div>
             <div className="flex items-center justify-center gap-2 mt-8 text-primary-200 text-sm">
               <MapPin className="w-4 h-4" />
-              Espaço Humanizare • Presidente Prudente, SP
+              Av. Mathias Mendes Cardoso, 460 - Central Park Residence, Pres. Prudente - SP
             </div>
           </AnimatedSection>
         </div>

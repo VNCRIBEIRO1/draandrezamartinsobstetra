@@ -283,7 +283,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                 <button onClick={() => setSelectedId(null)} className="p-2 hover:bg-gray-100 rounded-xl"><ArrowLeft className="w-5 h-5 text-gray-600" /></button>
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-accent-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
                       {selectedPatient.nome.charAt(0)}
                     </div>
                     <div>
@@ -306,7 +306,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                     </span>
                   )}
                   {role === 'medica' && (
-                    <span className="px-2.5 py-1 bg-purple-50 text-purple-600 rounded-lg text-xs font-medium border border-purple-200 flex items-center gap-1">
+                    <span className="px-2.5 py-1 bg-baby-cream text-primary-600 rounded-lg text-xs font-medium border border-secondary-200 flex items-center gap-1">
                       👩‍⚕️ Médica
                     </span>
                   )}
@@ -382,7 +382,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                     {selectedPatient.alergias && <div className="mt-3"><p className="text-xs text-gray-500 mb-1">⚠️ Alergias</p><p className="text-sm text-red-600 bg-red-50 p-2 rounded-lg">{selectedPatient.alergias}</p></div>}
                     {selectedPatient.medicamentosEmUso && <div className="mt-3"><p className="text-xs text-gray-500 mb-1">💊 Medicamentos em Uso</p><p className="text-sm text-gray-700 bg-blue-50 p-2 rounded-lg">{selectedPatient.medicamentosEmUso}</p></div>}
                     {selectedPatient.historicoMedico && <div className="mt-3"><p className="text-xs text-gray-500 mb-1">📋 Histórico Médico</p><p className="text-sm text-gray-700 bg-gray-50 p-2 rounded-lg whitespace-pre-wrap">{selectedPatient.historicoMedico}</p></div>}
-                    {selectedPatient.antecedentesGineco && <div className="mt-3"><p className="text-xs text-gray-500 mb-1">🩺 Antecedentes Ginecológicos</p><p className="text-sm text-gray-700 bg-purple-50 p-2 rounded-lg whitespace-pre-wrap">{selectedPatient.antecedentesGineco}</p></div>}
+                    {selectedPatient.antecedentesGineco && <div className="mt-3"><p className="text-xs text-gray-500 mb-1">🩺 Antecedentes Ginecológicos</p><p className="text-sm text-gray-700 bg-baby-cream p-2 rounded-lg whitespace-pre-wrap">{selectedPatient.antecedentesGineco}</p></div>}
                   </div>
 
                   {selectedPatient.observacoes && (
@@ -398,7 +398,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                       <p className="text-xs text-gray-500">Consultas</p>
                     </div>
                     <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
-                      <p className="text-2xl font-bold text-purple-600">{patientExams.length}</p>
+                      <p className="text-2xl font-bold text-primary-600">{patientExams.length}</p>
                       <p className="text-xs text-gray-500">Exames</p>
                     </div>
                     <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
@@ -448,15 +448,15 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                       </div>
 
                       {/* Sinais Vitais */}
-                      <div className="mt-4 p-3 bg-purple-50 rounded-xl">
-                        <p className="text-xs text-purple-700 font-medium mb-2">📊 Sinais Vitais</p>
+                      <div className="mt-4 p-3 bg-baby-cream rounded-xl">
+                        <p className="text-xs text-primary-700 font-medium mb-2">📊 Sinais Vitais</p>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                           <FInput label="Peso (kg)" value={cForm.pesoKg || ''} onChange={v => setCForm(f => ({ ...f, pesoKg: v }))} placeholder="65.0" />
                           <FInput label="Altura (m)" value={cForm.alturaM || ''} onChange={v => setCForm(f => ({ ...f, alturaM: v }))} placeholder="1.65" />
                           <FInput label="PA (mmHg)" value={cForm.pressaoArterial || ''} onChange={v => setCForm(f => ({ ...f, pressaoArterial: v }))} placeholder="120/80" />
                           <FInput label="Temp. (°C)" value={cForm.temperatura || ''} onChange={v => setCForm(f => ({ ...f, temperatura: v }))} placeholder="36.5" />
                         </div>
-                        {cForm.pesoKg && cForm.alturaM && <p className="text-xs text-purple-600 mt-2">IMC: {calcularIMC(cForm.pesoKg, cForm.alturaM)}</p>}
+                        {cForm.pesoKg && cForm.alturaM && <p className="text-xs text-primary-600 mt-2">IMC: {calcularIMC(cForm.pesoKg, cForm.alturaM)}</p>}
                       </div>
 
                       {/* Dados Obstétricos */}
@@ -758,8 +758,8 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                                   {ex.indicacaoClinica && <p className="text-xs text-gray-500 mt-1"><strong>Indicação:</strong> {ex.indicacaoClinica}</p>}
                                   {ex.arquivoNome && (
                                     <div className="flex items-center gap-2 mt-2">
-                                      <Paperclip className="w-3 h-3 text-purple-500" />
-                                      <a href={ex.arquivoBase64} download={ex.arquivoNome} className="text-xs text-purple-600 hover:underline font-medium">{ex.arquivoNome}</a>
+                                      <Paperclip className="w-3 h-3 text-primary-600" />
+                                      <a href={ex.arquivoBase64} download={ex.arquivoNome} className="text-xs text-primary-600 hover:underline font-medium">{ex.arquivoNome}</a>
                                     </div>
                                   )}
                                 </div>
@@ -786,7 +786,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                                     <Download className="w-4 h-4" />
                                   </button>
                                   {/* Upload laudo - both roles */}
-                                  <label className="p-1.5 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg cursor-pointer" title="Anexar laudo">
+                                  <label className="p-1.5 text-gray-400 hover:text-primary-600 hover:bg-baby-cream rounded-lg cursor-pointer" title="Anexar laudo">
                                     <Upload className="w-4 h-4" />
                                     <input type="file" className="hidden" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onChange={e => handleFileUpload(ex.id, e)} />
                                   </label>
@@ -825,7 +825,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                         🖨️ <strong>Imprimir / Baixar:</strong> Use <Printer className="w-3 h-3 inline" /> para imprimir a solicitação individual ou selecione vários exames e use &quot;Imprimir Selecionados&quot; para gerar um documento único. Use <Download className="w-3 h-3 inline" /> para baixar o arquivo.
                       </p>
                     </div>
-                    <div className="p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
+                    <div className="p-4 bg-gradient-to-r from-primary-50 to-baby-cream rounded-xl border border-primary-100">
                       <p className="text-sm text-primary-700">
                         📎 <strong>Laudos e Resultados:</strong> Use <Upload className="w-3 h-3 inline" /> para anexar arquivos (PDF, imagens, documentos — máx. 5MB). Ou expanda com <Eye className="w-3 h-3 inline" /> para digitar o resultado.
                       </p>
@@ -908,7 +908,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
             {[
               { n: stats.total, label: 'Total Pacientes', icon: Users, bg: 'bg-primary-100', text: 'text-primary-600' },
-              { n: stats.gestantes, label: 'Gestantes', icon: Baby, bg: 'bg-purple-100', text: 'text-purple-600' },
+              { n: stats.gestantes, label: 'Gestantes', icon: Baby, bg: 'bg-primary-100', text: 'text-primary-600' },
               { n: stats.atencao, label: 'Atenção', icon: Activity, bg: 'bg-yellow-100', text: 'text-yellow-600' },
               { n: stats.comConvenio, label: 'Com Convênio', icon: Heart, bg: 'bg-blue-100', text: 'text-blue-600' },
             ].map(s => (
@@ -967,7 +967,7 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                   <button key={p.id} onClick={() => selectPatient(p.id)}
                     className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:border-primary-300 hover:shadow-md transition-all text-left group">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-accent-500 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                         {p.nome.charAt(0)}
                       </div>
                       <div className="flex-1 min-w-0">

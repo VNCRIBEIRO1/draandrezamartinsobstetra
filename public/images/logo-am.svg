@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" fill="none">
+  <!-- Monograma AM - Dra Andresa Martin Louzada -->
+  <g fill="#5C5C5C">
+    <!-- Letra A -->
+    <path d="M60 150 L100 20 L108 20 L80 150 L72 150 Z" />
+    <path d="M92 150 L132 20 L140 20 L100 150 Z" />
+    <!-- Barra do A -->
+    <path d="M72 105 L120 105 L120 112 L72 112 Z" />
+    <!-- Letra M -->
+    <path d="M88 150 L88 40 L96 40 L96 150 Z" />
+    <path d="M88 40 L120 90 L128 86 L96 36 Z" />
+    <path d="M120 90 L152 36 L160 40 L128 90 Z" />
+    <path d="M152 40 L152 150 L160 150 L160 40 Z" />
+  </g>
+</svg>

@@ -154,14 +154,14 @@ export const STATUS_SAUDE_CONFIG: Record<string, { label: string; bg: string; do
   estavel: { label: 'Estável', bg: 'bg-green-100 text-green-700 border-green-200', dot: 'bg-green-500' },
   atencao: { label: 'Atenção', bg: 'bg-yellow-100 text-yellow-700 border-yellow-200', dot: 'bg-yellow-500' },
   acompanhamento: { label: 'Acompanhamento', bg: 'bg-blue-100 text-blue-700 border-blue-200', dot: 'bg-blue-500' },
-  gestante: { label: 'Gestante', bg: 'bg-purple-100 text-purple-700 border-purple-200', dot: 'bg-purple-500' },
+  gestante: { label: 'Gestante', bg: 'bg-primary-100 text-primary-700 border-secondary-200', dot: 'bg-baby-cream0' },
 };
 
 export const STATUS_EXAME_CONFIG: Record<string, { label: string; bg: string }> = {
   solicitado: { label: 'Solicitado', bg: 'bg-yellow-100 text-yellow-700' },
   agendado: { label: 'Agendado', bg: 'bg-blue-100 text-blue-700' },
   realizado: { label: 'Realizado', bg: 'bg-green-100 text-green-700' },
-  laudo_disponivel: { label: 'Laudo Disponível', bg: 'bg-purple-100 text-purple-700' },
+  laudo_disponivel: { label: 'Laudo Disponível', bg: 'bg-primary-100 text-primary-700' },
 };
 
 export const STATUS_PAGAMENTO_CONFIG: Record<string, { label: string; bg: string }> = {

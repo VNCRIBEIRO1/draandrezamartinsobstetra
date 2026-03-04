@@ -172,15 +172,15 @@ export default function FinanceTab() {
           <p className="text-xl font-bold text-blue-700">{formatarMoeda(stats.convenioMes)}</p>
           <p className="text-[10px] text-blue-500 mt-1">coberto no mês</p>
         </div>
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-4 rounded-2xl border border-purple-200">
+        <div className="bg-gradient-to-br from-baby-cream to-primary-100/50 p-4 rounded-2xl border border-secondary-200">
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 bg-purple-200 rounded-lg flex items-center justify-center">
-              <DollarSign className="w-4 h-4 text-purple-700" />
+            <div className="w-8 h-8 bg-primary-200 rounded-lg flex items-center justify-center">
+              <DollarSign className="w-4 h-4 text-primary-700" />
             </div>
-            <span className="text-xs text-purple-600 font-medium">Particular</span>
+            <span className="text-xs text-primary-600 font-medium">Particular</span>
           </div>
-          <p className="text-xl font-bold text-purple-700">{formatarMoeda(stats.particularMes)}</p>
-          <p className="text-[10px] text-purple-500 mt-1">recebido particular</p>
+          <p className="text-xl font-bold text-primary-700">{formatarMoeda(stats.particularMes)}</p>
+          <p className="text-[10px] text-primary-600 mt-1">recebido particular</p>
         </div>
       </div>
 
@@ -342,7 +342,7 @@ export default function FinanceTab() {
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-500">Paciente paga</p>
-                    <p className="font-bold text-purple-700">{formatarMoeda(form.valorParticular || 0)}</p>
+                    <p className="font-bold text-primary-700">{formatarMoeda(form.valorParticular || 0)}</p>
                   </div>
                 </div>
               </div>

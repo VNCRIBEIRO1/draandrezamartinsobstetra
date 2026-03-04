@@ -31,7 +31,7 @@ export default function BlogCard({ title, excerpt, date, readTime, slug, categor
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-primary-100 to-accent-100" />
+              <div className="w-full h-full bg-gradient-to-br from-primary-100 to-rose-100" />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             <span className="absolute top-4 left-4 text-xs font-medium text-primary-700 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">

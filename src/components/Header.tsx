@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, Phone, ChevronRight, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,7 +29,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg shadow-primary-500/5 border-b border-primary-100'
+          ? 'bg-white/95 backdrop-blur-md shadow-lg shadow-primary-500/5 border-b border-secondary-200'
           : 'bg-white/70 backdrop-blur-sm'
       }`}
     >
@@ -38,7 +39,7 @@ export default function Header() {
           scrolled ? 'max-h-0 opacity-0' : 'max-h-12 opacity-100'
         }`}
       >
-        <div className="bg-gradient-to-r from-primary-500 via-primary-400 to-accent-500">
+        <div className="bg-gradient-to-r from-primary-600 via-primary-500 to-rose-400">
           <div className="container-custom py-1.5 flex justify-between items-center text-xs">
             <span className="text-white/90 font-medium tracking-wide">
               <Heart className="w-3 h-3 inline mr-1" />
@@ -58,17 +59,22 @@ export default function Header() {
       {/* Main nav */}
       <nav className="container-custom">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
+          {/* Logo AM */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-400 to-accent-500 rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-white font-serif font-bold text-lg">A</span>
-            </div>
+            <Image
+              src="/images/logo-am.svg"
+              alt="Logo Dra. Andresa Martin Louzada"
+              width={48}
+              height={44}
+              className="transition-transform group-hover:scale-105"
+              priority
+            />
             <div className="hidden sm:block">
               <p className="text-primary-800 font-serif font-bold text-sm leading-tight">
                 Dra. Andresa Martin
               </p>
-              <p className="text-gray-400 text-[10px] uppercase tracking-widest">
-                Ginecologista e Obstetra
+              <p className="text-secondary-400 text-[10px] uppercase tracking-widest">
+                Ginecologia e Obstetrícia
               </p>
             </div>
           </Link>
@@ -79,14 +85,14 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="relative text-sm font-medium px-4 py-2 rounded-full transition-all duration-300 text-gray-600 hover:text-primary-600 hover:bg-primary-50 group"
+                className="relative text-sm font-medium px-4 py-2 rounded-full transition-all duration-300 text-gray-600 hover:text-primary-700 hover:bg-primary-50 group"
               >
                 {item.name}
               </Link>
             ))}
             <Link
               href="/agendar"
-              className="ml-4 inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all duration-300 hover:-translate-y-0.5"
+              className="ml-4 inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-rose-400 text-white shadow-lg shadow-rose-400/25 hover:shadow-rose-400/40 transition-all duration-300 hover:-translate-y-0.5"
             >
               Agendar Consulta
               <ChevronRight className="w-4 h-4" />
@@ -96,7 +102,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-xl text-gray-600 hover:text-primary-500 hover:bg-primary-50 transition-colors"
+            className="md:hidden p-2 rounded-xl text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-colors"
             aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -111,7 +117,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-primary-100 overflow-hidden"
+            className="md:hidden bg-white border-t border-secondary-200 overflow-hidden"
           >
             <div className="container-custom py-4 space-y-2">
               {navigation.map((item) => (
@@ -119,7 +125,7 @@ export default function Header() {
                   key={item.name}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="block px-4 py-3 rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-600 font-medium transition-colors"
+                  className="block px-4 py-3 rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-700 font-medium transition-colors"
                 >
                   {item.name}
                 </Link>

@@ -527,7 +527,7 @@ export default function ChatBot() {
       <AnimatePresence>
         {!isOpen && (
           <motion.button initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} onClick={openChat}
-            className="fixed bottom-24 right-6 z-40 w-14 h-14 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center transition-shadow group"
+            className="fixed bottom-24 right-6 z-40 w-14 h-14 bg-gradient-to-r from-primary-500 to-primary-700 text-white rounded-full shadow-xl hover:shadow-2xl flex items-center justify-center transition-shadow group"
             aria-label="Abrir assistente virtual">
             <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
             <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse" />
@@ -540,7 +540,7 @@ export default function ChatBot() {
           <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.95 }}
             className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[min(640px,calc(100vh-2rem))] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-primary-100">
             {/* Header */}
-            <div className="bg-gradient-to-r from-primary-500 to-accent-500 p-4 flex items-center gap-3 flex-shrink-0">
+            <div className="bg-gradient-to-r from-primary-500 to-primary-700 p-4 flex items-center gap-3 flex-shrink-0">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><Bot className="w-5 h-5 text-white" /></div>
               <div className="flex-1">
                 <h3 className="text-white font-semibold text-sm">Assistente Virtual</h3>

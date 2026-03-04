@@ -15,10 +15,10 @@ export default function SobrePage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50 relative overflow-hidden">
+      <section className="pt-32 pb-20 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 right-20 w-96 h-96 bg-primary-300 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-accent-300 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-rose-300 rounded-full blur-3xl" />
         </div>
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -107,7 +107,7 @@ export default function SobrePage() {
       </section>
 
       {/* Diferenciais */}
-      <section className="py-20 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50">
+      <section className="py-20 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
         <div className="container-custom">
           <AnimatedSection>
             <SectionHeader
@@ -179,7 +179,7 @@ export default function SobrePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-primary-500 to-accent-500">
+      <section className="py-16 bg-gradient-to-r from-primary-500 to-primary-700">
         <div className="container-custom text-center">
           <AnimatedSection>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">

@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="theme-color" content="#ec4899" />
+        <meta name="theme-color" content="#8a9b80" />
       </head>
       <body className="min-h-screen flex flex-col font-sans">
         <LayoutShell>{children}</LayoutShell>

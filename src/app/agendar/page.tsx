@@ -18,10 +18,10 @@ export default function AgendarPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-primary-50 via-white to-accent-50 pt-32 pb-16 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary-50 via-white to-rose-50 pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 left-10 w-72 h-72 bg-primary-300 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-accent-300 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-rose-300 rounded-full blur-3xl" />
         </div>
 
         <div className="container-custom relative z-10">
@@ -32,7 +32,7 @@ export default function AgendarPage() {
                 Agendamento de Consultas
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
-                Agende sua <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-accent-500">Consulta</span>
+                Agende sua <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-700">Consulta</span>
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 Escolha a forma mais prática para você agendar. Nosso atendimento é humanizado e personalizado.
@@ -48,11 +48,11 @@ export default function AgendarPage() {
           <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
             {/* Opção 1: ChatBot / Triagem */}
             <AnimatedSection delay={0.1}>
-              <motion.div whileHover={{ y: -4 }} className="relative bg-gradient-to-br from-primary-50 to-accent-50 rounded-3xl p-8 border-2 border-primary-200 shadow-lg shadow-primary-100/50 h-full flex flex-col">
-                <div className="absolute -top-3 left-6 bg-gradient-to-r from-primary-500 to-accent-500 text-white text-xs font-bold px-4 py-1 rounded-full">
+              <motion.div whileHover={{ y: -4 }} className="relative bg-gradient-to-br from-primary-50 to-rose-50 rounded-3xl p-8 border-2 border-primary-200 shadow-lg shadow-primary-100/50 h-full flex flex-col">
+                <div className="absolute -top-3 left-6 bg-gradient-to-r from-primary-500 to-primary-700 text-white text-xs font-bold px-4 py-1 rounded-full">
                   ⭐ Recomendado
                 </div>
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-accent-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                   <Bot className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Agendar pelo Assistente Virtual</h3>
@@ -66,7 +66,7 @@ export default function AgendarPage() {
                   <li className="flex items-start gap-2"><span className="text-primary-500 mt-0.5">✓</span> Confirmação via WhatsApp</li>
                 </ul>
                 <button onClick={handleOpenChatBot}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-2xl font-semibold hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:-translate-y-0.5">
+                  className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-primary-500 to-primary-700 text-white rounded-2xl font-semibold hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:-translate-y-0.5">
                   <MessageCircle className="w-5 h-5" />
                   Iniciar Agendamento Online
                   <ChevronRight className="w-5 h-5" />
@@ -114,7 +114,7 @@ export default function AgendarPage() {
       </section>
 
       {/* Info Bar */}
-      <section className="py-12 bg-gradient-to-r from-primary-50 to-accent-50">
+      <section className="py-12 bg-gradient-to-r from-primary-50 to-rose-50">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto grid gap-6 sm:grid-cols-3">
             <AnimatedSection delay={0.1}>

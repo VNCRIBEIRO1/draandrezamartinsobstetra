@@ -500,12 +500,12 @@ export default function DashboardPage() {
       <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform lg:translate-x-0 lg:static lg:inset-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 bg-gradient-to-br ${userRole === 'medica' ? 'from-primary-400 to-accent-500' : 'from-blue-400 to-cyan-500'} rounded-full flex items-center justify-center`}>
+            <div className={`w-10 h-10 bg-gradient-to-br ${userRole === 'medica' ? 'from-primary-400 to-primary-600' : 'from-blue-400 to-cyan-500'} rounded-full flex items-center justify-center`}>
               {userRole === 'medica' ? <Stethoscope className="w-5 h-5 text-white" /> : <Heart className="w-5 h-5 text-white" />}
             </div>
             <div>
               <h2 className="font-bold text-gray-900 text-sm">{userName}</h2>
-              <p className={`text-xs ${userRole === 'medica' ? 'text-purple-500' : 'text-blue-500'}`}>
+              <p className={`text-xs ${userRole === 'medica' ? 'text-primary-600' : 'text-blue-500'}`}>
                 {userRole === 'medica' ? '👩‍⚕️ Médica' : '📋 Secretária'}
               </p>
             </div>
@@ -576,21 +576,21 @@ export default function DashboardPage() {
 
               {/* ChatBot Notification Banner */}
               {chatbotPending.length > 0 && (
-                <div className="mb-6 bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 border-2 border-purple-200 rounded-2xl p-5 shadow-sm">
+                <div className="mb-6 bg-gradient-to-r from-baby-cream via-pink-50 to-baby-cream border-2 border-secondary-200 rounded-2xl p-5 shadow-sm">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-11 h-11 bg-purple-100 rounded-xl flex items-center justify-center animate-bounce">
-                      <Bell className="w-5 h-5 text-purple-600" />
+                    <div className="w-11 h-11 bg-primary-100 rounded-xl flex items-center justify-center animate-bounce">
+                      <Bell className="w-5 h-5 text-primary-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-purple-900 text-sm">
+                      <h3 className="font-bold text-primary-900 text-sm">
                         🤖 {chatbotPending.length} agendamento{chatbotPending.length !== 1 ? 's' : ''} pelo ChatBot aguardando confirmação
                       </h3>
-                      <p className="text-xs text-purple-600">Confirme manualmente após contato via WhatsApp com a paciente</p>
+                      <p className="text-xs text-primary-600">Confirme manualmente após contato via WhatsApp com a paciente</p>
                     </div>
                   </div>
                   <div className="space-y-2">
                     {chatbotPending.slice(0, 5).map(a => (
-                      <div key={a.id} className="flex items-center justify-between bg-white p-3 rounded-xl border border-purple-100 shadow-sm">
+                      <div key={a.id} className="flex items-center justify-between bg-white p-3 rounded-xl border border-secondary-100 shadow-sm">
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-sm text-gray-900">{a.paciente}</p>
                           <p className="text-xs text-gray-500">
@@ -611,7 +611,7 @@ export default function DashboardPage() {
                       </div>
                     ))}
                     {chatbotPending.length > 5 && (
-                      <p className="text-xs text-purple-500 text-center pt-1">+ {chatbotPending.length - 5} mais agendamentos pendentes</p>
+                      <p className="text-xs text-primary-600 text-center pt-1">+ {chatbotPending.length - 5} mais agendamentos pendentes</p>
                     )}
                   </div>
                 </div>
@@ -743,7 +743,7 @@ export default function DashboardPage() {
 
                 {/* Selected Day Detail */}
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-primary-50 to-purple-50">
+                  <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-primary-50 to-baby-cream">
                     <h3 className="font-bold text-gray-900 text-sm flex items-center gap-2">
                       <CalendarDays className="w-4 h-4 text-primary-500" />
                       {new Date(selectedDay + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}
@@ -768,7 +768,7 @@ export default function DashboardPage() {
                                 <p className="font-medium text-sm">{a.horario} — {a.paciente}</p>
                                 <p className="text-xs opacity-70 mt-0.5">{a.tipo}</p>
                                 {a.telefone && <p className="text-xs opacity-70 flex items-center gap-1 mt-0.5"><Phone className="w-3 h-3" />{a.telefone}</p>}
-                                {a.origem && <span className={`inline-block text-[9px] mt-1 px-1.5 py-0.5 rounded font-medium ${a.origem === 'chatbot' ? 'bg-purple-100 text-purple-600' : 'bg-gray-100 text-gray-500'}`}>{a.origem === 'chatbot' ? '🤖 ChatBot' : '✍️ Manual'}</span>}
+                                {a.origem && <span className={`inline-block text-[9px] mt-1 px-1.5 py-0.5 rounded font-medium ${a.origem === 'chatbot' ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-500'}`}>{a.origem === 'chatbot' ? '🤖 ChatBot' : '✍️ Manual'}</span>}
                                 {a.observacoes && <p className="text-xs opacity-60 mt-1 italic">{a.observacoes}</p>}
                               </div>
                               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -873,7 +873,7 @@ export default function DashboardPage() {
                   <p className="text-xs text-gray-500">Horários Livres</p>
                 </div>
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
-                  <p className="text-2xl font-bold text-purple-600">{weekOccupancyRate}%</p>
+                  <p className="text-2xl font-bold text-primary-600">{weekOccupancyRate}%</p>
                   <p className="text-xs text-gray-500">Taxa de Ocupação</p>
                 </div>
                 <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm text-center">
@@ -1050,7 +1050,7 @@ export default function DashboardPage() {
                                   >
                                     <div className="font-semibold truncate">{appt.paciente.split(' ')[0]}</div>
                                     <div className="opacity-70 truncate">{appt.tipo.split(' ').slice(0, 2).join(' ')}</div>
-                                    {appt.origem === 'chatbot' && <span className="inline-block mt-0.5 text-[8px] bg-purple-200 text-purple-700 px-1 rounded">🤖</span>}
+                                    {appt.origem === 'chatbot' && <span className="inline-block mt-0.5 text-[8px] bg-primary-200 text-primary-700 px-1 rounded">🤖</span>}
                                   </button>
                                 </td>
                               );
@@ -1122,7 +1122,7 @@ export default function DashboardPage() {
                           )}
                           <div className="p-3 bg-gray-50 rounded-xl">
                             <p className="text-xs text-gray-500 mb-1">Origem</p>
-                            <span className={`inline-block text-xs px-2 py-0.5 rounded font-medium ${slotDetail.appointment.origem === 'chatbot' ? 'bg-purple-100 text-purple-600' : 'bg-gray-200 text-gray-600'}`}>
+                            <span className={`inline-block text-xs px-2 py-0.5 rounded font-medium ${slotDetail.appointment.origem === 'chatbot' ? 'bg-primary-100 text-primary-600' : 'bg-gray-200 text-gray-600'}`}>
                               {slotDetail.appointment.origem === 'chatbot' ? '🤖 ChatBot' : '✍️ Manual'}
                             </span>
                           </div>
@@ -1321,7 +1321,7 @@ export default function DashboardPage() {
                                 <div className="grid grid-cols-3 gap-1">
                                   {afternoon.map(slot => (
                                     <button key={slot.id} onClick={() => setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, ativo: !s.ativo } : s))}
-                                      className={`px-1.5 py-1 rounded text-xs font-medium transition-all ${slot.ativo ? 'bg-purple-100 text-purple-700 border border-purple-200' : 'bg-gray-50 text-gray-400 line-through border border-gray-100'}`}>
+                                      className={`px-1.5 py-1 rounded text-xs font-medium transition-all ${slot.ativo ? 'bg-primary-100 text-primary-700 border border-secondary-200' : 'bg-gray-50 text-gray-400 line-through border border-gray-100'}`}>
                                       {slot.horario}
                                     </button>
                                   ))}
@@ -1336,7 +1336,7 @@ export default function DashboardPage() {
                 )}
               </div>
 
-              <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
+              <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-baby-cream rounded-xl border border-primary-100">
                 <p className="text-sm text-primary-700 leading-relaxed">
                   💡 <strong>Mapa de Horários:</strong> Esta visualização mostra todos os horários da semana selecionada. Clique em um horário <span className="text-green-600 font-medium">livre</span> para agendar uma consulta diretamente, ou em um horário <span className="text-red-600 font-medium">ocupado</span> para ver detalhes, editar ou alterar o status. Use o botão <span className="text-red-600 font-medium">Bloquear Horários</span> para fechar dias ou períodos quando a Dra. não estiver disponível (folgas, eventos, férias). As configurações de disponibilidade geral (acima) definem quais horários ficam disponíveis para o ChatBot e agendamento online. <span className="text-red-500 font-medium">🔒 Bloqueios</span> são refletidos no ChatBot automaticamente.
                 </p>
@@ -1425,7 +1425,7 @@ export default function DashboardPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <h4 className="font-medium text-gray-900 text-sm truncate">{a.title}</h4>
-                          {a.videoUrl && <Video className="w-3.5 h-3.5 text-purple-500 flex-shrink-0" aria-label="Com vídeo" />}
+                          {a.videoUrl && <Video className="w-3.5 h-3.5 text-primary-600 flex-shrink-0" aria-label="Com vídeo" />}
                         </div>
                         <div className="flex items-center gap-3 text-xs text-gray-400">
                           <span className="text-primary-600 bg-primary-50 px-2 py-0.5 rounded font-medium">{a.category}</span>
@@ -1450,7 +1450,7 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-purple-50 rounded-xl border border-primary-100">
+              <div className="mt-6 p-4 bg-gradient-to-r from-primary-50 to-baby-cream rounded-xl border border-primary-100">
                 <p className="text-sm text-primary-700 leading-relaxed">
                   💡 <strong>Dica sobre vídeos:</strong> Cole a URL completa do vídeo — funciona com YouTube (qualquer formato de link) e Instagram Reels.
                   O vídeo aparecerá automaticamente na página do artigo com um player integrado. Exemplos aceitos:
