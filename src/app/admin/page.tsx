@@ -113,18 +113,9 @@ export default function AdminLoginPage() {
         </p>
 
         <div className="mt-4 bg-white/80 backdrop-blur p-4 rounded-2xl border border-primary-100 shadow-sm">
-          <p className="text-xs font-medium text-gray-600 mb-2 text-center">Credenciais de Acesso</p>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-baby-cream rounded-xl border border-secondary-100">
-              <p className="text-[10px] font-bold text-primary-700 mb-1">👩‍⚕️ Dra. Andresa</p>
-              <p className="text-[10px] text-primary-600">admin@draandresa.com</p>
-              <p className="text-[10px] text-primary-600">Prontuário • Exames • Prescrições</p>
-            </div>
-            <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
-              <p className="text-[10px] font-bold text-blue-700 mb-1">📋 Secretária</p>
-              <p className="text-[10px] text-blue-600">secretaria@draandresa.com</p>
-              <p className="text-[10px] text-blue-500">Cadastro • Agenda • Financeiro</p>
-            </div>
+          <div className="flex items-center gap-2 justify-center text-gray-500">
+            <Lock className="w-4 h-4" />
+            <p className="text-xs">Ambiente protegido • Dados criptografados</p>
           </div>
         </div>
       </div>

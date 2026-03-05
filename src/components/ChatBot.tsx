@@ -389,8 +389,11 @@ export default function ChatBot() {
   const handleTimeSlotSelect = useCallback(async (time: string) => {
     addMessage(time, 'user');
     setCollectingData(prev => ({ ...prev, horario: time, step: 'nome' }));
-    setWaitingForInput(true);
-    await simulateTyping('Perfeito! ✨\n\nAgora, qual é o seu **nome completo**?');
+    setWaitingForInput(false);
+    await simulateTyping('Perfeito! ✨\n\nPara prosseguir, precisamos de seus dados pessoais (nome e telefone) para o agendamento.\n\n🔒 Seus dados são protegidos pela **LGPD** (Lei 13.709/2018) e usados **exclusivamente** para contato sobre sua consulta. Veja nossa [Política de Privacidade](/politica-privacidade).', [
+      { label: '✅ Concordo e quero continuar', value: 'lgpd_aceito', icon: <CheckCircle2 className="w-4 h-4" /> },
+      { label: '❌ Não concordo', value: 'lgpd_recusado', icon: <ArrowLeft className="w-4 h-4" /> },
+    ]);
   }, [addMessage, simulateTyping]);
 
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -444,11 +447,26 @@ export default function ChatBot() {
         await simulateTyping(`✅ **${lbl}** selecionada!\n\nEscolha a **data** no calendário:`, undefined, { calendarView: { year: now.getFullYear(), month: now.getMonth() } });
         break;
       }
+      case 'lgpd_aceito':
+        setCollectingData(prev => ({ ...prev, step: 'nome' }));
+        setWaitingForInput(true);
+        await simulateTyping('Obrigada! 🔒\n\nAgora, qual é o seu **nome completo**?');
+        break;
+      case 'lgpd_recusado':
+        setCollectingData({ step: null });
+        await simulateTyping('Sem problemas! 😊\n\nVocê pode agendar diretamente pelo WhatsApp, sem necessidade de fornecer dados aqui:', undefined, {
+          whatsappLink: 'https://wa.me/5518998207964?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta.',
+        });
+        setTimeout(() => addMessage('Posso ajudar em mais alguma coisa?', 'bot', [
+          { label: 'Sim, tenho outra dúvida', value: 'inicio', icon: <Heart className="w-4 h-4" /> },
+          { label: 'Não, obrigada!', value: 'encerrar' },
+        ]), 1500);
+        break;
       case 'confirmar_sim': {
         try {
           const stored = localStorage.getItem('dra_appointments');
           const appts = stored ? JSON.parse(stored) : [];
-          appts.push({ id: Date.now().toString(), paciente: collectingData.nome || '', telefone: collectingData.telefone || '', tipo: collectingData.tipoLabel || 'Consulta', data: collectingData.data || '', horario: collectingData.horario || '', status: 'pendente', criadoEm: new Date().toISOString(), origem: 'chatbot' });
+          appts.push({ id: Date.now().toString(), paciente: collectingData.nome || '', telefone: collectingData.telefone || '', tipo: collectingData.tipoLabel || 'Consulta', data: collectingData.data || '', horario: collectingData.horario || '', status: 'pendente', criadoEm: new Date().toISOString(), origem: 'chatbot', consentimentoLgpd: true, consentimentoEm: new Date().toISOString() });
           localStorage.setItem('dra_appointments', JSON.stringify(appts));
         } catch { /* ignore */ }
         const link = buildWhatsAppLink(collectingData);

@@ -499,7 +499,19 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                        <FTextArea label="Prescrição" value={cForm.prescricao || ''} onChange={v => setCForm(f => ({ ...f, prescricao: v }))} placeholder="Medicamentos, posologia" />
+                        <div>
+                          <FTextArea label="Prescrição" value={cForm.prescricao || ''} onChange={v => setCForm(f => ({ ...f, prescricao: v }))} placeholder="Medicamentos, posologia" />
+                          {cForm.prescricao && selectedPatient?.alergias && selectedPatient.alergias.trim() !== '' && (
+                            <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-xl">
+                              <div className="flex items-center gap-2 text-red-700 text-xs font-bold mb-1">
+                                <AlertTriangle className="w-4 h-4" />
+                                ⚠️ ATENÇÃO — Alergias registradas:
+                              </div>
+                              <p className="text-red-600 text-xs font-medium">{selectedPatient.alergias}</p>
+                              <p className="text-red-500 text-[10px] mt-1">Verifique interações antes de prescrever.</p>
+                            </div>
+                          )}
+                        </div>
                         <FTextArea label="Exames Solicitados" value={cForm.examesSolicitados || ''} onChange={v => setCForm(f => ({ ...f, examesSolicitados: v }))} placeholder="Exames a solicitar nesta consulta" />
                         <FTextArea label="Encaminhamento" value={cForm.encaminhamento || ''} onChange={v => setCForm(f => ({ ...f, encaminhamento: v }))} placeholder="Encaminhamento para especialista, se houver" />
                         <FTextArea label="Observações" value={cForm.observacoes || ''} onChange={v => setCForm(f => ({ ...f, observacoes: v }))} />

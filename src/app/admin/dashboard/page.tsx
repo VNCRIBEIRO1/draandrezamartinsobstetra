@@ -547,6 +547,43 @@ export default function DashboardPage() {
 
         <div className="p-4 md:p-6 max-w-[1400px]">
 
+          {/* Aviso de Segurança — Backup e LGPD */}
+          {userRole === 'medica' && !localStorage.getItem('dra_backup_dismissed') && (
+            <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
+              <ShieldCheck className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-sm font-bold text-amber-800">⚠️ Dados armazenados localmente</p>
+                <p className="text-xs text-amber-700 mt-1">
+                  Os dados de pacientes e consultas estão salvos no navegador (localStorage). 
+                  Limpar o cache apagará tudo. Recomendamos <strong>exportar regularmente</strong> seus dados como backup.
+                  Em conformidade com a LGPD, dados de saúde devem ser armazenados em servidor seguro.
+                </p>
+                <div className="flex gap-2 mt-3">
+                  <button onClick={() => {
+                    const data = {
+                      exportadoEm: new Date().toISOString(),
+                      pacientes: JSON.parse(localStorage.getItem('dra_patients') || '[]'),
+                      consultas: JSON.parse(localStorage.getItem('dra_consultations') || '[]'),
+                      exames: JSON.parse(localStorage.getItem('dra_exams') || '[]'),
+                      pagamentos: JSON.parse(localStorage.getItem('dra_payments') || '[]'),
+                      agendamentos: JSON.parse(localStorage.getItem('dra_appointments') || '[]'),
+                    };
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = `backup-draandresa-${new Date().toISOString().split('T')[0]}.json`;
+                    a.click(); URL.revokeObjectURL(url);
+                  }} className="px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded-lg hover:bg-amber-600">
+                    📥 Exportar Backup JSON
+                  </button>
+                  <button onClick={() => { localStorage.setItem('dra_backup_dismissed', 'true'); window.location.reload(); }}
+                    className="px-3 py-1.5 bg-white text-amber-700 text-xs font-medium rounded-lg border border-amber-300 hover:bg-amber-50">
+                    Entendi, não mostrar novamente
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           {/* ═══════════════════════════════════════════ */}
           {/* ═══ TAB: AGENDAMENTOS ═══ */}
           {/* ═══════════════════════════════════════════ */}
@@ -830,8 +867,18 @@ export default function DashboardPage() {
                               </select>
                             </td>
                             <td className="px-4 py-3 flex gap-1">
-                              <button onClick={() => startEdit(a)} className="p-1 text-gray-400 hover:text-primary-600"><Edit3 className="w-4 h-4" /></button>
-                              <button onClick={() => setAppointments(prev => prev.filter(x => x.id !== a.id))} className="p-1 text-gray-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                              <button onClick={() => startEdit(a)} className="p-1 text-gray-400 hover:text-primary-600" title="Editar"><Edit3 className="w-4 h-4" /></button>
+                              <button onClick={() => {
+                                const tel = a.telefone?.replace(/\D/g, '') || '';
+                                const telFmt = tel.startsWith('55') ? tel : `55${tel}`;
+                                const [y,m,d] = (a.data||'').split('-');
+                                const dt = new Date(parseInt(y),parseInt(m)-1,parseInt(d));
+                                const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+                                const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+                                const msg = `Olá, ${a.paciente}! 🌸\n\nLembrete da sua consulta:\n\n🏥 *${a.tipo}*\n📅 *${dias[dt.getDay()]}, ${d} de ${meses[parseInt(m)-1]} de ${y}*\n⏰ *${a.horario}*\n📍 Espaço Humanizare\n\nConfirme sua presença respondendo esta mensagem.\n\nDra. Andresa Martin Louzada\nCRM/SP 207702`;
+                                window.open(`https://wa.me/${telFmt}?text=${encodeURIComponent(msg)}`, '_blank');
+                              }} className="p-1 text-gray-400 hover:text-green-600" title="Enviar lembrete WhatsApp"><Phone className="w-4 h-4" /></button>
+                              <button onClick={() => setAppointments(prev => prev.filter(x => x.id !== a.id))} className="p-1 text-gray-400 hover:text-red-600" title="Excluir"><Trash2 className="w-4 h-4" /></button>
                             </td>
                           </tr>
                         ))}
