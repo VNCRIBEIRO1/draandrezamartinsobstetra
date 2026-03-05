@@ -53,7 +53,7 @@ export default function HomePage() {
       </section>
 
       {/* Sobre - Preview */}
-      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-pink">
+      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-beige">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
@@ -61,7 +61,7 @@ export default function HomePage() {
                 <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl relative">
                   <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada no Espaço Humanizare" fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" priority />
                 </div>
-                <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-primary-500 to-rose-400 text-white p-6 rounded-2xl shadow-xl">
+                <div className="absolute -bottom-6 -right-6 bg-primary-600 text-white p-6 rounded-2xl shadow-xl">
                   <div className="flex items-center gap-1 mb-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-white text-white" />
@@ -105,7 +105,7 @@ export default function HomePage() {
       </section>
 
       {/* Microscopia Destaque */}
-      <section className="py-16 bg-gradient-to-r from-primary-600 via-primary-500 to-rose-400 relative overflow-hidden">
+      <section className="py-16 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
@@ -140,7 +140,7 @@ export default function HomePage() {
       <GoogleReviews />
 
       {/* Blog Preview */}
-      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-pink">
+      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-beige">
         <div className="container-custom">
           <AnimatedSection>
             <SectionHeader
@@ -163,10 +163,10 @@ export default function HomePage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 bg-gradient-to-br from-primary-700 via-primary-500 to-rose-400 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-primary-700 via-primary-600 to-primary-500 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 left-10 w-96 h-96 bg-rose-300 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-primary-300 rounded-full blur-3xl" />
         </div>
         <div className="container-custom relative z-10 text-center">
           <AnimatedSection>

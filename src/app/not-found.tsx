@@ -3,7 +3,7 @@ import { Home, ArrowLeft, Heart } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
       <div className="text-center px-4">
         <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-8">
           <Heart className="w-10 h-10 text-primary-500" />

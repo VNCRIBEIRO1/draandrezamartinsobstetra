@@ -18,10 +18,10 @@ export default function AgendarPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-primary-50 via-white to-rose-50 pt-32 pb-16 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-10 left-10 w-72 h-72 bg-primary-300 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-rose-300 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary-300 rounded-full blur-3xl" />
         </div>
 
         <div className="container-custom relative z-10">
@@ -48,7 +48,7 @@ export default function AgendarPage() {
           <div className="max-w-4xl mx-auto grid gap-8 md:grid-cols-2">
             {/* Opção 1: ChatBot / Triagem */}
             <AnimatedSection delay={0.1}>
-              <motion.div whileHover={{ y: -4 }} className="relative bg-gradient-to-br from-primary-50 to-rose-50 rounded-3xl p-8 border-2 border-primary-200 shadow-lg shadow-primary-100/50 h-full flex flex-col">
+              <motion.div whileHover={{ y: -4 }} className="relative bg-gradient-to-br from-primary-50 to-secondary-50 rounded-3xl p-8 border-2 border-primary-200 shadow-lg shadow-primary-100/50 h-full flex flex-col">
                 <div className="absolute -top-3 left-6 bg-gradient-to-r from-primary-500 to-primary-700 text-white text-xs font-bold px-4 py-1 rounded-full">
                   ⭐ Recomendado
                 </div>
@@ -114,7 +114,7 @@ export default function AgendarPage() {
       </section>
 
       {/* Info Bar */}
-      <section className="py-12 bg-gradient-to-r from-primary-50 to-rose-50">
+      <section className="py-12 bg-gradient-to-r from-primary-50 to-secondary-50">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto grid gap-6 sm:grid-cols-3">
             <AnimatedSection delay={0.1}>

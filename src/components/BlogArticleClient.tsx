@@ -80,7 +80,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-12 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
+      <section className="pt-32 pb-12 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
             <Link href="/blog" className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-6 transition-colors">
@@ -128,7 +128,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
               </div>
             )}
 
-            <article className="prose prose-lg prose-pink max-w-none">
+            <article className="prose prose-lg prose-stone max-w-none">
               {article.content.map((paragraph, i) => {
                 if (paragraph.startsWith('## ')) {
                   return <h2 key={i} className="text-2xl font-serif font-bold text-gray-900 mt-10 mb-4">{paragraph.replace('## ', '')}</h2>;
@@ -176,7 +176,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
       </section>
 
       {/* Artigos Relacionados */}
-      <section className="py-16 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
+      <section className="py-16 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
         <div className="container-custom">
           <h2 className="text-2xl font-serif font-bold text-gray-900 mb-8 text-center">Artigos Relacionados</h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">

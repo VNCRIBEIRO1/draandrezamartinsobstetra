@@ -8,7 +8,7 @@ import { IMAGES } from '@/lib/images';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-baby-sage via-baby-cream to-baby-pink overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-baby-sage via-baby-cream to-baby-beige overflow-hidden">
       {/* Background Photo */}
       <div className="absolute inset-0">
         <Image
@@ -23,9 +23,9 @@ export default function HeroSection() {
 
       {/* Decorative blobs */}
       <div className="absolute top-20 right-10 w-72 h-72 bg-primary-300/20 rounded-full blur-3xl animate-pulse-soft" />
-      <div className="absolute bottom-20 left-10 w-96 h-96 bg-rose-300/25 rounded-full blur-3xl animate-pulse-soft" />
+      <div className="absolute bottom-20 left-10 w-96 h-96 bg-secondary-200/20 rounded-full blur-3xl animate-pulse-soft" />
       <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-secondary-200/20 rounded-full blur-3xl" />
-      <div className="absolute top-40 left-2/3 w-48 h-48 bg-rose-200/20 rounded-full blur-2xl" />
+      <div className="absolute top-40 left-2/3 w-48 h-48 bg-primary-200/15 rounded-full blur-2xl" />
 
       <div className="container-custom relative z-10 pt-32 pb-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -110,15 +110,15 @@ export default function HeroSection() {
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.15 }}
                 className={`backdrop-blur-sm rounded-2xl p-5 border transition-all duration-300 hover:shadow-lg ${
                   item.highlight
-                    ? 'bg-rose-50/80 border-rose-200 hover:border-rose-300 ring-1 ring-rose-100'
+                    ? 'bg-primary-50/80 border-primary-200 hover:border-primary-300 ring-1 ring-primary-100'
                     : 'bg-white/80 border-secondary-200 hover:border-primary-300'
                 }`}
               >
                 <div className="flex items-start gap-4">
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    item.highlight ? 'bg-rose-100' : 'bg-primary-100'
+                    item.highlight ? 'bg-primary-100' : 'bg-primary-100'
                   }`}>
-                    <item.icon className={`w-5 h-5 ${item.highlight ? 'text-rose-500' : 'text-primary-600'}`} />
+                    <item.icon className={`w-5 h-5 ${item.highlight ? 'text-primary-600' : 'text-primary-600'}`} />
                   </div>
                   <div>
                     <h3 className="text-gray-900 font-serif font-bold text-sm mb-1">

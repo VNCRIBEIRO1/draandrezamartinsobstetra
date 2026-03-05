@@ -101,8 +101,8 @@ export default function GoogleReviews() {
     <section className="py-20 bg-gradient-to-br from-baby-sage via-white to-baby-cream relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-10 right-10 w-40 h-40 bg-primary-200/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 left-10 w-56 h-56 bg-rose-200/25 rounded-full blur-3xl" />
-      <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-rose-100/30 rounded-full blur-2xl" />
+      <div className="absolute bottom-10 left-10 w-56 h-56 bg-secondary-200/20 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-primary-100/25 rounded-full blur-2xl" />
 
       <div className="container-custom relative z-10">
         <AnimatedSection>
@@ -162,7 +162,7 @@ export default function GoogleReviews() {
               <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-secondary-100 h-full flex flex-col">
                 {/* Author */}
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-rose-100 flex items-center justify-center text-primary-700 font-serif font-bold text-sm">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center text-primary-700 font-serif font-bold text-sm">
                     {review.author_name.charAt(0)}
                   </div>
                   <div>

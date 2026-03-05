@@ -19,7 +19,7 @@ export default function PoliticaPrivacidadePage() {
             </p>
           </div>
 
-          <div className="prose prose-lg prose-pink max-w-none space-y-8">
+          <div className="prose prose-lg prose-stone max-w-none space-y-8">
             <div>
               <h2 className="text-2xl font-serif font-bold text-gray-900 mb-4">1. Controladora dos Dados</h2>
               <p className="text-gray-600 leading-relaxed">
@@ -115,8 +115,8 @@ export default function PoliticaPrivacidadePage() {
                 <li><strong>Revogação</strong> — retirar o consentimento a qualquer momento</li>
                 <li><strong>Oposição</strong> — se opor ao tratamento quando aplicável</li>
               </ul>
-              <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 mt-4">
-                <p className="text-sm text-rose-700">
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-4">
+                <p className="text-sm text-amber-700">
                   📧 Para exercer qualquer direito, envie um e-mail para <a href={`mailto:${siteConfig.email}`} className="font-semibold underline">{siteConfig.email}</a> ou 
                   entre em contato pelo telefone {siteConfig.telefone}. Responderemos em até 15 dias.
                 </p>

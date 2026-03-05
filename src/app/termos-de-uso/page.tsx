@@ -14,7 +14,7 @@ export default function TermosDeUsoPage() {
           <h1 className="text-4xl font-serif font-bold text-gray-900 mb-8">Termos de Uso</h1>
           <p className="text-sm text-gray-400 mb-10">Última atualização: Fevereiro de 2026</p>
 
-          <div className="prose prose-lg prose-pink max-w-none space-y-8">
+          <div className="prose prose-lg prose-stone max-w-none space-y-8">
             <div>
               <h2 className="text-2xl font-serif font-bold text-gray-900 mb-4">1. Aceitação dos Termos</h2>
               <p className="text-gray-600 leading-relaxed">

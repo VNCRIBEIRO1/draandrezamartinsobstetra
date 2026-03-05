@@ -15,7 +15,7 @@ const areas = [
     title: 'Ginecologia',
     description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher. Prevenção, diagnóstico e tratamento com cuidado e acolhimento.',
     items: ['Consulta ginecológica de rotina', 'Papanicolau e colposcopia', 'Infecções e corrimentos', 'Endometriose e miomas', 'Planejamento reprodutivo', 'Métodos contraceptivos'],
-    color: 'from-pink-400 to-pink-600',
+    color: 'from-primary-400 to-primary-600',
     image: '/images/dra-andresa-consultorio-1.jpeg',
   },
   {
@@ -31,7 +31,7 @@ const areas = [
     title: 'Pré-natal',
     description: 'Pré-natal completo e humanizado com acompanhamento individualizado. Cada gestação é única e merece atenção especial.',
     items: ['Consultas mensais/quinzenais/semanais', 'Exames laboratoriais completos', 'Ultrassonografias de rotina', 'Acompanhamento nutricional', 'Orientação sobre parto', 'Vacinação na gestação'],
-    color: 'from-rose-400 to-rose-600',
+    color: 'from-secondary-400 to-secondary-600',
     image: '/images/dra-andresa-extra-2.jpeg',
   },
   {
@@ -47,7 +47,7 @@ const areas = [
     title: 'Ginecologia Regenerativa',
     description: 'Procedimentos inovadores com tecnologias de ponta para restauração e rejuvenescimento íntimo feminino.',
     items: ['Laser íntimo', 'Bioestimuladores de colágeno', 'Ácido hialurônico íntimo', 'Tratamento de incontinência urinária leve', 'Rejuvenescimento vulvovaginal', 'Síndrome geniturinária da menopausa'],
-    color: 'from-fuchsia-400 to-fuchsia-600',
+    color: 'from-teal-400 to-teal-600',
     image: '/images/dra-andresa-consultorio-5.jpeg',
   },
   {
@@ -55,7 +55,7 @@ const areas = [
     title: 'Microscopia Vaginal',
     description: 'Diagnóstico imediato durante a consulta — análise microscópica do conteúdo vaginal com resultado na hora, sem necessidade de aguardar exames laboratoriais.',
     items: ['Resultado na hora da consulta', 'Diagnóstico preciso de infecções', 'Candidíase, vaginose, tricomoníase', 'Tratamento iniciado imediatamente', 'Sem custos adicionais de lab', 'Acompanhamento microscópico'],
-    color: 'from-pink-500 to-primary-500',
+    color: 'from-emerald-500 to-primary-600',
     image: '/images/dra-andresa-consultorio-7.jpeg',
   },
 ];
@@ -64,7 +64,7 @@ export default function AreasPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
         <div className="container-custom text-center">
           <AnimatedSection>
             <span className="inline-block text-sm font-medium text-primary-600 bg-primary-100 px-4 py-1.5 rounded-full mb-4">

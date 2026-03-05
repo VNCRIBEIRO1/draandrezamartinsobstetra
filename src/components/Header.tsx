@@ -39,7 +39,7 @@ export default function Header() {
           scrolled ? 'max-h-0 opacity-0' : 'max-h-12 opacity-100'
         }`}
       >
-        <div className="bg-gradient-to-r from-primary-600 via-primary-500 to-rose-400">
+        <div className="bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400">
           <div className="container-custom py-1.5 flex justify-between items-center text-xs">
             <span className="text-white/90 font-medium tracking-wide">
               <Heart className="w-3 h-3 inline mr-1" />
@@ -92,7 +92,7 @@ export default function Header() {
             ))}
             <Link
               href="/agendar"
-              className="ml-4 inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-500 to-rose-400 text-white shadow-lg shadow-rose-400/25 hover:shadow-rose-400/40 transition-all duration-300 hover:-translate-y-0.5"
+              className="ml-4 inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-full bg-primary-500 text-white shadow-lg shadow-primary-500/25 hover:bg-primary-600 hover:shadow-primary-500/40 transition-all duration-300 hover:-translate-y-0.5"
             >
               Agendar Consulta
               <ChevronRight className="w-4 h-4" />

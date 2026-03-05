@@ -11,7 +11,7 @@ export default function BlogPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-pink-50">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
         <div className="container-custom text-center">
           <AnimatedSection>
             <span className="inline-block text-sm font-medium text-primary-600 bg-primary-100 px-4 py-1.5 rounded-full mb-4">
