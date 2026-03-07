@@ -4,6 +4,8 @@ export const IMAGES = {
   doutora: '/images/homepage.jpg',
   /* Foto sobre — parto (usada na página Sobre) */
   doutoraSobre: '/images/fotosobre.jpg',
+  /* Hero — foto profissional da doutora para o hero */
+  heroPhoto: '/images/dra-andresa-hero.jpg',
   /* Hero background */
   hero: '/images/dra-andresa-consultorio-1.jpeg',
   /* Consultório genérico */
