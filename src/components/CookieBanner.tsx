@@ -31,14 +31,14 @@ export default function CookieBanner() {
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl border border-primary-100 p-6">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center">
-            <Shield className="w-5 h-5 text-primary-500" />
+            <Shield className="w-5 h-5 text-secondary-500" />
           </div>
           <div className="flex-1">
             <h3 className="text-sm font-bold text-gray-900 mb-1">Privacidade e Cookies</h3>
             <p className="text-sm text-gray-600 mb-3">
               Utilizamos cookies essenciais para o funcionamento do site e cookies de autenticação para o painel administrativo. 
               Seus dados são protegidos conforme a{' '}
-              <Link href="/politica-privacidade" className="text-primary-500 underline font-medium">
+              <Link href="/politica-privacidade" className="text-secondary-500 underline font-medium">
                 LGPD (Lei 13.709/2018)
               </Link>. 
               Não utilizamos cookies de rastreamento ou publicidade.
@@ -50,7 +50,7 @@ export default function CookieBanner() {
               <button onClick={refuse} className="text-sm px-6 py-2 border border-gray-200 rounded-full text-gray-600 hover:bg-gray-50 transition-colors">
                 Apenas essenciais
               </button>
-              <Link href="/politica-privacidade" className="text-sm px-6 py-2 text-primary-600 hover:text-primary-700 font-medium text-center">
+              <Link href="/politica-privacidade" className="text-sm px-6 py-2 text-secondary-600 hover:text-secondary-700 font-medium text-center">
                 Saiba mais
               </Link>
             </div>

@@ -25,7 +25,7 @@ export default function TestimonialCard({ text, author, role, delay = 0 }: Testi
         </p>
         <div className="mt-auto">
           <p className="font-serif font-bold text-gray-900">{author}</p>
-          <p className="text-primary-500 text-xs">{role}</p>
+          <p className="text-secondary-500 text-xs">{role}</p>
         </div>
       </div>
     </AnimatedSection>

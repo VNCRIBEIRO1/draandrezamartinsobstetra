@@ -15,19 +15,19 @@ export default function SobrePage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50 relative overflow-hidden">
+      <section className="pt-32 pb-20 bg-gradient-to-br from-primary-50 via-baby-cream to-sage-50 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-primary-300 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-secondary-300 rounded-full blur-3xl" />
+          <div className="absolute top-20 right-20 w-96 h-96 bg-secondary-300 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-sage-300 rounded-full blur-3xl" />
         </div>
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
-              <span className="inline-block text-sm font-medium text-primary-600 bg-primary-100 px-4 py-1.5 rounded-full mb-6">
+              <span className="inline-block text-sm font-medium text-secondary-600 bg-secondary-100 px-4 py-1.5 rounded-full mb-6">
                 Sobre a Dra. Andresa
               </span>
               <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6 leading-tight">
-                Cuidando da Mulher com <span className="text-primary-500">Amor e Competência</span>
+                Cuidando da Mulher com <span className="text-secondary-500">Amor e Competência</span>
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed mb-8">
                 A Dra. Andresa Martin Louzada é Ginecologista e Obstetra, formada pela UNOESTE, com residência
@@ -54,10 +54,10 @@ export default function SobrePage() {
                 <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
                   <Image src={IMAGES.doutoraSobre} alt="Dra. Andresa Martin Louzada - Parto Humanizado" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
                 </div>
-                <div className="absolute -bottom-4 -left-4 bg-white p-5 rounded-2xl shadow-xl border border-primary-100">
+                <div className="absolute -bottom-4 -left-4 bg-white p-5 rounded-2xl shadow-xl border border-secondary-100">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                      <Stethoscope className="w-6 h-6 text-primary-600" />
+                    <div className="w-12 h-12 bg-secondary-100 rounded-full flex items-center justify-center">
+                      <Stethoscope className="w-6 h-6 text-secondary-600" />
                     </div>
                     <div>
                       <p className="font-bold text-gray-900">CRM/SP</p>
@@ -87,15 +87,15 @@ export default function SobrePage() {
               <AnimatedSection key={index} delay={index * 0.1}>
                 <div className="flex gap-6 mb-8 relative">
                   <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <GraduationCap className="w-6 h-6 text-primary-600" />
+                    <div className="w-12 h-12 bg-secondary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <GraduationCap className="w-6 h-6 text-secondary-600" />
                     </div>
                     {index < siteConfig.formacao.length - 1 && (
-                      <div className="w-0.5 h-full bg-primary-200 mt-2" />
+                      <div className="w-0.5 h-full bg-secondary-200 mt-2" />
                     )}
                   </div>
                   <div className="pb-8">
-                    <span className="text-sm font-semibold text-primary-500">{item.ano}</span>
+                    <span className="text-sm font-semibold text-gold-500">{item.ano}</span>
                     <h3 className="text-xl font-bold text-gray-900 mt-1">{item.titulo}</h3>
                     <p className="text-gray-600 mt-2">{item.descricao}</p>
                   </div>
@@ -107,7 +107,7 @@ export default function SobrePage() {
       </section>
 
       {/* Diferenciais */}
-      <section className="py-20 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
+      <section className="py-20 bg-gradient-to-br from-primary-50 via-baby-cream to-sage-50">
         <div className="container-custom">
           <AnimatedSection>
             <SectionHeader
@@ -127,9 +127,9 @@ export default function SobrePage() {
               { icon: MapPin, title: 'Localização Central', desc: 'Central Park Residence, Presidente Prudente, com fácil acesso e estacionamento.' },
             ].map((item, i) => (
               <AnimatedSection key={item.title} delay={i * 0.1}>
-                <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 border border-primary-100">
-                  <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center mb-5">
-                    <item.icon className="w-7 h-7 text-primary-600" />
+                <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 border border-secondary-100">
+                  <div className="w-14 h-14 bg-secondary-100 rounded-2xl flex items-center justify-center mb-5">
+                    <item.icon className="w-7 h-7 text-secondary-600" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-3">{item.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{item.desc}</p>
@@ -179,20 +179,20 @@ export default function SobrePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-primary-500 to-primary-700">
+      <section className="py-16 bg-gradient-to-r from-secondary-600 to-secondary-800">
         <div className="container-custom text-center">
           <AnimatedSection>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
               Pronta Para Cuidar de Você
             </h2>
-            <p className="text-primary-100 text-lg max-w-xl mx-auto mb-8">
+            <p className="text-secondary-100 text-lg max-w-xl mx-auto mb-8">
               Agende sua consulta e descubra como é ser atendida com carinho e competência.
             </p>
             <a
               href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center px-8 py-3.5 bg-white text-secondary-700 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
             >
               Agendar Consulta via WhatsApp
             </a>

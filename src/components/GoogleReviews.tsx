@@ -141,7 +141,7 @@ export default function GoogleReviews() {
               <button
                 onClick={fetchReviews}
                 disabled={loading}
-                className="inline-flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700 transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 text-xs text-secondary-600 hover:text-secondary-700 transition-colors disabled:opacity-50"
               >
                 <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
                 Atualizar

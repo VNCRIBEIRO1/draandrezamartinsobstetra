@@ -80,14 +80,14 @@ export default function AreasPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-sage-50">
         <div className="container-custom text-center">
           <AnimatedSection>
-            <span className="inline-block text-sm font-medium text-primary-600 bg-primary-100 px-4 py-1.5 rounded-full mb-4">
+            <span className="inline-block text-sm font-medium text-secondary-600 bg-secondary-100 px-4 py-1.5 rounded-full mb-4">
               Especialidades
             </span>
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-6">
-              Áreas de <span className="text-primary-500">Atuação</span>
+              Áreas de <span className="text-secondary-500">Atuação</span>
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Atendimento especializado e humanizado em diversas áreas da saúde feminina,
@@ -115,7 +115,7 @@ export default function AreasPage() {
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                       {area.items.map((item) => (
                         <li key={item} className="flex items-center gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
+                          <CheckCircle2 className="w-5 h-5 text-secondary-500 flex-shrink-0" />
                           <span className="text-gray-700 text-sm">{item}</span>
                         </li>
                       ))}
@@ -157,7 +157,7 @@ export default function AreasPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-gradient-to-r from-primary-500 to-primary-700">
+      <section className="py-16 bg-gradient-to-r from-secondary-600 to-secondary-800">
         <div className="container-custom text-center">
           <AnimatedSection>
             <h2 className="text-3xl font-serif font-bold text-white mb-4">
@@ -168,7 +168,7 @@ export default function AreasPage() {
             </p>
             <Link
               href="/agendar"
-              className="inline-flex items-center px-8 py-3.5 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+              className="inline-flex items-center px-8 py-3.5 bg-white text-secondary-700 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
             >
               Agendar Consulta
             </Link>

@@ -37,7 +37,7 @@ export default function VideoEmbed({ url, title, className = '' }: VideoEmbedPro
             <img src={parsed.thumbnail} alt={title || 'Vídeo'} className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity" />
           )}
           <div className="relative z-10 flex flex-col items-center gap-3">
-            <div className="w-16 h-16 rounded-full bg-primary-500/90 flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 rounded-full bg-secondary-500/90 flex items-center justify-center shadow-lg shadow-secondary-500/30 group-hover:scale-110 transition-transform">
               <Play className="w-7 h-7 text-white ml-1" fill="white" />
             </div>
             {title && <p className="text-white text-sm font-medium drop-shadow-lg">{title}</p>}

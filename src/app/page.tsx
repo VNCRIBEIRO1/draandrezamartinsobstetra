@@ -63,7 +63,7 @@ export default function HomePage() {
                 <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl relative">
                   <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada no Espaço Humanizare" fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" priority />
                 </div>
-                <div className="absolute -bottom-6 -right-6 bg-primary-600 text-white p-6 rounded-2xl shadow-xl">
+                <div className="absolute -bottom-6 -right-6 bg-secondary-600 text-white p-6 rounded-2xl shadow-xl">
                   <div className="flex items-center gap-1 mb-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star key={i} className="w-4 h-4 fill-white text-white" />
@@ -76,7 +76,7 @@ export default function HomePage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
-              <span className="inline-block text-sm font-medium text-primary-600 bg-primary-50 px-4 py-1.5 rounded-full mb-4">
+              <span className="inline-block text-sm font-medium text-secondary-600 bg-primary-50 px-4 py-1.5 rounded-full mb-4">
                 Sobre a Dra. Andresa
               </span>
               <h2 className="section-title">Cuidado Humanizado em Todas as Fases da Vida</h2>
@@ -93,7 +93,7 @@ export default function HomePage() {
                   'Ambiente moderno e confortável',
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
+                    <CheckCircle2 className="w-5 h-5 text-secondary-500 flex-shrink-0" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
@@ -107,7 +107,7 @@ export default function HomePage() {
       </section>
 
       {/* Microscopia Destaque */}
-      <section className="py-16 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-400 relative overflow-hidden">
+      <section className="py-16 bg-gradient-to-r from-secondary-700 via-secondary-600 to-gold-500 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
@@ -165,17 +165,17 @@ export default function HomePage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 bg-gradient-to-br from-primary-700 via-primary-600 to-primary-500 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-secondary-800 via-secondary-700 to-secondary-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 left-10 w-96 h-96 bg-primary-300 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-gold-300 rounded-full blur-3xl" />
         </div>
         <div className="container-custom relative z-10 text-center">
           <AnimatedSection>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-6">
               Cuide da Sua Saúde com Quem Cuida de Verdade
             </h2>
-            <p className="text-primary-100 text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-secondary-100 text-lg max-w-2xl mx-auto mb-8">
               Agende sua consulta com a Dra. Andresa Martin Louzada e
               descubra como é ser atendida com acolhimento e competência.
             </p>
@@ -184,7 +184,7 @@ export default function HomePage() {
                 href="https://wa.me/5518998207964?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 bg-white text-primary-600 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                className="inline-flex items-center justify-center px-6 py-3 bg-white text-secondary-700 font-semibold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
               >
                 Agende pelo WhatsApp <ArrowRight className="w-5 h-5 ml-2" />
               </a>
@@ -195,7 +195,7 @@ export default function HomePage() {
                 Fale Conosco
               </Link>
             </div>
-            <div className="flex items-center justify-center gap-2 mt-8 text-primary-200 text-sm">
+            <div className="flex items-center justify-center gap-2 mt-8 text-secondary-200 text-sm">
               <MapPin className="w-4 h-4" />
               Av. Mathias Mendes Cardoso, 460 - Central Park Residence, Pres. Prudente - SP
             </div>
