@@ -9,19 +9,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Paleta: Calça de Linho + Estrada Velha + Ouro + Sage Tropical */
+        /* Paleta: Verde Sage #A4AD96 (primária) + Estrada Velha + Ouro */
         primary: {
-          50: '#f7f6f1',
-          100: '#edeadf',
-          200: '#ddd8c8',
-          300: '#c9bb8e',   /* Calça de Linho - Suvinil */
-          400: '#b8a574',
-          500: '#a6905e',
-          600: '#8f7a4e',
-          700: '#766441',
-          800: '#5e5035',
-          900: '#4a3f2b',
-          950: '#302919',
+          50: '#f4f5f2',
+          100: '#e6e9e2',
+          200: '#cfd5c8',
+          300: '#b5bea9',
+          400: '#A4AD96',   /* Verde Sage - cor principal */
+          500: '#8d9880',
+          600: '#74806a',
+          700: '#5e6856',
+          800: '#4c5446',
+          900: '#3f4539',
+          950: '#272c24',
         },
         secondary: {
           50: '#faf7f4',
