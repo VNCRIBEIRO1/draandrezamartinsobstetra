@@ -50,29 +50,29 @@ export const IMAGES = {
 
 /* ─── Blog article images mapped by slug ─── */
 export const ARTICLE_IMAGES: Record<string, string> = {
-  'importancia-pre-natal': IMAGES.post1,
-  'microscopia-vaginal-diagnostico': IMAGES.extra3,
-  'menopausa-qualidade-vida': IMAGES.extra5,
-  'exames-ginecologicos-rotina': IMAGES.extra2,
-  'cheiro-intimo-normal-anormal': IMAGES.blog3,
-  'pilula-do-dia-seguinte': IMAGES.blog4,
-  'vsr-recem-nascido': IMAGES.post2,
-  'cuidar-voce-amor-proprio': IMAGES.extra6,
-  'nao-faria-sendo-ginecologista': IMAGES.extra7,
+  'importancia-pre-natal': '/images/generated/importancia-pre-natal.jpg',
+  'microscopia-vaginal-diagnostico': '/images/generated/microscopia-vaginal-diagnostico.jpg',
+  'menopausa-qualidade-vida': '/images/generated/menopausa-qualidade-vida.jpg',
+  'exames-ginecologicos-rotina': '/images/generated/exames-ginecologicos-rotina.jpg',
+  'cheiro-intimo-normal-anormal': '/images/generated/cheiro-intimo-normal-anormal.jpg',
+  'pilula-do-dia-seguinte': '/images/generated/pilula-do-dia-seguinte.jpg',
+  'vsr-recem-nascido': '/images/generated/vsr-recem-nascido.jpg',
+  'cuidar-voce-amor-proprio': '/images/generated/cuidar-voce-amor-proprio.jpg',
+  'nao-faria-sendo-ginecologista': '/images/generated/nao-faria-sendo-ginecologista.jpg',
 };
 
-/* ─── Area images (Unsplash fallbacks for specialty banners) ─── */
+/* ─── Area images (imagens abstratas geradas) ─── */
 export const AREA_IMAGES: Record<string, string> = {
-  'Ginecologia': IMAGES.extra2,
-  'Obstetrícia': IMAGES.post2,
-  'Pré-natal': IMAGES.post1,
-  'Menopausa': IMAGES.extra5,
-  'Microscopia Vaginal': IMAGES.extra3,
-  'Anticoncepcional': IMAGES.blog5,
-  'DIU': IMAGES.extra4,
-  'Implanon': IMAGES.blog4,
-  'Saúde da Mulher': IMAGES.blog1,
-  'Contracepção': IMAGES.blog5,
+  'Ginecologia': '/images/generated/area-ginecologia.jpg',
+  'Obstetrícia': '/images/generated/area-obstetricia.jpg',
+  'Pré-natal': '/images/generated/area-prenatal.jpg',
+  'Menopausa': '/images/generated/area-menopausa.jpg',
+  'Microscopia Vaginal': '/images/generated/area-microscopia.jpg',
+  'Anticoncepcional': '/images/generated/area-anticoncepcional.jpg',
+  'DIU': '/images/generated/area-diu.jpg',
+  'Implanon': '/images/generated/area-implanon.jpg',
+  'Saúde da Mulher': '/images/generated/area-ginecologia.jpg',
+  'Contracepção': '/images/generated/area-anticoncepcional.jpg',
 };
 
 export const BLOG_IMAGES: Record<string, string> = {
