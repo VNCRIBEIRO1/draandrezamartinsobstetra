@@ -10,8 +10,8 @@ import GoogleReviews from '@/components/GoogleReviews';
 import { IMAGES, getArticleImage } from '@/lib/images';
 
 const areas = [
-  { iconName: 'Heart',      title: 'Ginecologia',         href: '/areas-de-atuacao', description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher, com exames de rotina, prevenção e tratamento de doenças.' },
-  { iconName: 'Baby',       title: 'Obstetrícia',          href: '/areas-de-atuacao', description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para mãe e bebê.' },
+  { iconName: 'Heart',      title: 'Ginecologia',         href: '/blog/ginecologia-geral-saude-feminina', description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher, com exames de rotina, prevenção e tratamento de doenças.' },
+  { iconName: 'Baby',       title: 'Obstetrícia',          href: '/blog/obstetricia-parto-humanizado',     description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para mãe e bebê.' },
   { iconName: 'Stethoscope',title: 'Pré-natal',            href: '/blog/importancia-pre-natal',          description: 'Pré-natal completo e humanizado com acompanhamento individualizado, exames e orientações em cada etapa da gestação.' },
   { iconName: 'Flower2',    title: 'Menopausa',           href: '/blog/menopausa-qualidade-vida',       description: 'Tratamento personalizado para os sintomas da menopausa, reposição hormonal e cuidados com a saúde óssea e cardiovascular.' },
   { iconName: 'Shield',     title: 'Anticoncepcional',    href: '/blog/anticoncepcional-guia-jovem',    description: 'Orientação personalizada sobre o método contraceptivo ideal para você, com acompanhamento e ajustes conforme sua necessidade.' },

@@ -64,6 +64,8 @@ export const ARTICLE_IMAGES: Record<string, string> = {
   'vsr-recem-nascido': '/images/generated/vsr-recem-nascido.jpg',
   'cuidar-voce-amor-proprio': '/images/generated/cuidar-voce-amor-proprio.jpg',
   'nao-faria-sendo-ginecologista': '/images/generated/nao-faria-sendo-ginecologista.jpg',
+  'ginecologia-geral-saude-feminina': '/images/generated/ginecologia-geral-saude-feminina.jpg',
+  'obstetricia-parto-humanizado': '/images/generated/obstetricia-parto-humanizado.jpg',
 };
 
 /* ─── Area images (imagens abstratas geradas) ─── */

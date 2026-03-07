@@ -385,6 +385,74 @@ export const articles: Record<string, Article> = {
       'Pequenas mudanças de hábito podem fazer grande diferença na sua saúde íntima. Cuide de você e procure sempre orientação profissional. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
+
+  'ginecologia-geral-saude-feminina': {
+    title: 'Ginecologia: O Guia Completo do Cuidado com a Saúde Feminina',
+    category: 'Ginecologia',
+    date: '04 Mar 2026',
+    readTime: '8 min',
+    content: [
+      'A ginecologia é a especialidade médica dedicada à saúde do sistema reprodutor feminino — abrangendo útero, ovários, trompas e vagina. Mais do que tratar doenças, a ginecologista acompanha a mulher em todas as fases da vida: da adolescência à menopausa, passando pela vida reprodutiva, gestação e pós-menopausa. Entender o que essa especialidade oferece é o primeiro passo para cuidar bem de você.',
+
+      '## Quando Ir à Ginecologista',
+      'O acompanhamento ginecológico regular deve começar quando a menina inicia a puberdade ou se tornar sexualmente ativa, em geral entre 13 e 15 anos. A partir daí, consultas anuais são recomendadas mesmo na ausência de sintomas — o chamado check-up ginecológico de rotina. Situações que pedem avaliação imediata incluem: dor pélvica ou abdominal, corrimento com odor ou coloração anormal, sangramento fora do período menstrual, ciclos irregulares, dificuldade para engravidar e qualquer alteração que cause preocupação.',
+
+      '## O Que Acontece na Consulta de Rotina',
+      'A consulta ginecológica de rotina inclui anamnese detalhada (histórico de saúde, medicamentos, vida sexual e reprodutiva), exame físico geral, exame ginecológico com coleta do Papanicolau (preventivo do câncer de colo do útero), palpação das mamas, solicitação de exames laboratoriais e de imagem conforme necessidade, orientações sobre contracepção, vacinação (como HPV e hepatite B) e saúde sexual.',
+
+      '## Principais Doenças Tratadas pela Ginecologia',
+      'Candidíase e vaginose bacteriana: infecções vaginais muito comuns, com tratamento eficaz quando diagnosticadas corretamente. Endometriose: tecido semelhante ao do endométrio cresce fora do útero, causando dores intensas e possível infertilidade. Síndrome dos ovários policísticos (SOP): desequilíbrio hormonal que afeta o ciclo menstrual, fertilidade e metabolismo. Miomas uterinos: tumores benignos que podem causar sangramento intenso, dor e pressão pélvica. Infecções sexualmente transmissíveis (ISTs): HPV, herpes genital, clamídia, gonorreia, entre outras. Cistos ovarianos: na maioria funcionais e transitórios, mas que merecem acompanhamento. Prolapso uterino: descida do útero em direção ao canal vaginal, mais comum após o parto ou na menopausa.',
+
+      '## Exames Ginecológicos Mais Solicitados',
+      'Papanicolau (colpocitologia oncótica): rastreia lesões pré-cancerosas no colo do útero, deve ser feito anualmente a partir da primeira relação sexual. Colposcopia: visualização ampliada do colo do útero para investigar alterações no Papanicolau. Ultrassom pélvico transvaginal: avalia útero, ovários e estruturas pélvicas. Exames hormonais (FSH, LH, estradiol, progesterona, testosterona, TSH): avaliam função ovariana e saúde hormonal. Exames de ISTs: idealmente incluídos no check-up anual de toda mulher sexualmente ativa.',
+
+      '## Saúde Ginecológica em Cada Fase da Vida',
+      'Na adolescência, a ginecologista orienta sobre menstruação, sexualidade, contracepção e vacinação. Na vida adulta, o foco é a saúde reprodutiva, prevenção de ISTs, rastreamento de câncer e manejo de doenças crônicas como endometriose e SOP. Durante a gestação, a ginecologista-obstetra conduz o pré-natal. E na perimenopausa e menopausa, cuida dos sintomas e da saúde óssea, cardiovascular e hormonal da mulher.',
+
+      '## A Importância do Atendimento Humanizado',
+      'Muitas mulheres adiam consultas ginecológicas por vergonha, medo ou falta de tempo. No Espaço Humanizare, cada consulta é conduzida com respeito, escuta ativa e atenção individualizada. A Dra. Andresa Martin Louzada acredita que quando a mulher se sente acolhida, ela cuida melhor de si mesma — e isso transforma a saúde feminina de dentro para fora.',
+
+      '## Considerações Finais',
+      'Cuidar da saúde ginecológica é um ato de amor-próprio. Não espere surgir algum sintoma para agendar sua consulta — a prevenção é sempre o melhor caminho. Este artigo tem caráter informativo e não substitui a avaliação médica individualizada.',
+    ],
+  },
+
+  'obstetricia-parto-humanizado': {
+    title: 'Obstetrícia: Tudo Sobre Gestação, Parto e Pós-Parto',
+    category: 'Obstetrícia',
+    date: '02 Mar 2026',
+    readTime: '9 min',
+    content: [
+      'A obstetrícia é a especialidade médica que cuida da mulher desde a confirmação da gravidez até o período pós-parto. Muito mais do que acompanhar o bebê, a obstetra zela pela saúde física e emocional da mãe em uma das fases mais transformadoras da sua vida. Entender como funciona esse acompanhamento ajuda a vivê-lo com mais segurança e confiança.',
+
+      '## Os Três Trimestres da Gestação',
+      'A gravidez dura em média 40 semanas e é dividida em três trimestres, cada um com características e cuidados específicos. No primeiro trimestre (até 12 semanas) ocorre a formação dos principais órgãos do bebê — é o período mais delicado, com maior risco de aborto espontâneo. Náuseas, cansaço e sensibilidade emocional são comuns. No segundo trimestre (13 a 27 semanas) a maioria das gestantes se sente melhor: a barriga cresce, os movimentos do bebê começam a ser sentidos e as ultrassonografias morfológicas são realizadas. No terceiro trimestre (28 semanas ao parto) o bebê ganha peso e se prepara para o nascimento. A gestante pode sentir desconforto, falta de ar e dificuldade para dormir.',
+
+      '## Consultas e Exames Obstétricos',
+      'O Ministério da Saúde recomenda no mínimo 6 consultas de pré-natal, mas o acompanhamento ideal é mais frequente: mensal até a 28ª semana, quinzenal entre 28ª e 36ª, e semanal a partir daí. Os exames solicitados incluem hemograma, tipagem sanguínea, glicemia, sorologias (HIV, sífilis, hepatite, toxoplasmose, rubéola), urina, ultrassonografias (1ª, morfológica do 1º trimestre com translucência nucal, morfológica do 2º trimestre e obstétrica seriada), ecocardiografia fetal e teste de tolerância à glicose (entre 24 e 28 semanas).',
+
+      '## Alimentação e Suplementação na Gestação',
+      'Uma dieta variada e nutritiva é fundamental. O ácido fólico deve ser iniciado idealmente antes da concepção e mantido até o fim do 1º trimestre para prevenir defeitos do tubo neural. Ferro é essencial para prevenir anemia, vitamina D e cálcio fortalecem os ossos de mãe e bebê, e o ômega-3 contribui para o desenvolvimento cerebral do bebê. A obstetra orienta sobre cada suplemento de acordo com as necessidades individuais da gestante.',
+
+      '## Tipos de Parto: Normal e Cesária',
+      'O parto normal (vaginal) é fisiológico e, quando há condições clínicas favoráveis, é sempre a primeira opção. Oferece recuperação mais rápida, menor risco de complicações cirúrgicas e favorece o estabelecimento do aleitamento materno. A cesária é indicada quando há contraindicações clínicas para o parto vaginal (placenta prévia, sofrimento fetal, má apresentação, entre outras) ou em situações de emergência. A decisão deve ser compartilhada entre a gestante e sua obstetra, respeitando o plano de parto.',
+
+      '## Plano de Parto: Você Tem Voz',
+      'O plano de parto é um documento elaborado pela gestante que expressa seus desejos para o momento do nascimento: presença de acompanhante, posições durante o trabalho de parto, uso de analgesia, contato pele a pele imediato, aleitamento na 1ª hora, clampeamento tardio do cordão umbilical, entre outros. Embora não seja juridicamente obrigatório, é amplamente respeitado em maternidades humanizadas. A Dra. Andresa orienta suas pacientes na construção do plano de parto desde o início do pré-natal.',
+
+      '## Parto Humanizado: O Que É e Por Que Importa',
+      'O parto humanizado é aquele conduzido com respeito à fisiologia do trabalho de parto, às escolhas da gestante e à sua dignidade. Isso inclui liberdade de movimentação, suporte emocional contínuo, uso racional de intervenções médicas e ambiente acolhedor. Estudos mostram que o suporte contínuo durante o trabalho de parto reduz o tempo de trabalho de parto, diminui o uso de analgesia e aumenta a satisfação materna com a experiência do nascimento.',
+
+      '## Puerpério: Os Cuidados Pós-Parto',
+      'O puerpério é o período após o parto, que dura aproximadamente 6 semanas. É um momento de intensa transformação física e emocional. A consulta pós-parto é fundamental para avaliar a recuperação da mãe, o aleitamento materno, o humor (identificando sinais de depressão pós-parto), a saúde do bebê e o planejamento familiar. A Dra. Andresa acompanha suas pacientes nesse período delicado com escuta ativa e cuidado integral.',
+
+      '## Sinais de Alerta na Gestação e Pós-Parto',
+      'Busque atendimento imediato se apresentar: sangramento vaginal intenso, dor abdominal severa, perda de líquido amniótico antes da 37ª semana, diminuição dos movimentos fetais, pressão arterial elevada, dor de cabeça intensa, inchaço súbito, febre, sintomas de infecção ou sinais de depressão pós-parto (tristeza intensa, choro sem motivo, dificuldade de vínculo com o bebê).',
+
+      '## Considerações Finais',
+      'A gestação é única para cada mulher. Ter uma obstetra de confiança ao seu lado faz toda a diferença para vivê-la com segurança e tranquilidade. Agende sua consulta e inicie o acompanhamento o quanto antes. Este artigo tem caráter informativo e não substitui a consulta médica individualizada.',
+    ],
+  },
 };
 
 export const defaultArticle: Article = {
