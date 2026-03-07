@@ -9,21 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        /* Paleta: Verde Sage #A4AD96 (primária) + Estrada Velha + Ouro */
+        /* Paleta: Estrada Velha (primária) + Verde Sage (secundária) + Ouro */
         primary: {
-          50: '#f4f5f2',
-          100: '#e6e9e2',
-          200: '#cfd5c8',
-          300: '#b5bea9',
-          400: '#A4AD96',   /* Verde Sage - cor principal */
-          500: '#8d9880',
-          600: '#74806a',
-          700: '#5e6856',
-          800: '#4c5446',
-          900: '#3f4539',
-          950: '#272c24',
-        },
-        secondary: {
           50: '#faf7f4',
           100: '#f3ede7',
           200: '#e6d9cc',
@@ -35,6 +22,19 @@ const config: Config = {
           800: '#6a5240',
           900: '#574436',
           950: '#3a2c22',
+        },
+        secondary: {
+          50: '#f4f5f2',
+          100: '#e6e9e2',
+          200: '#cfd5c8',
+          300: '#b5bea9',
+          400: '#A4AD96',   /* Verde Sage */
+          500: '#8d9880',
+          600: '#74806a',
+          700: '#5e6856',
+          800: '#4c5446',
+          900: '#3f4539',
+          950: '#272c24',
         },
         gold: {
           50: '#faf7f2',
