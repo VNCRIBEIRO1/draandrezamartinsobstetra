@@ -10,14 +10,14 @@ import GoogleReviews from '@/components/GoogleReviews';
 import { IMAGES, getArticleImage } from '@/lib/images';
 
 const areas = [
-  { iconName: 'Heart', title: 'Ginecologia', description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher, com exames de rotina, prevenção e tratamento de doenças.' },
-  { iconName: 'Baby', title: 'Obstetrícia', description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para mãe e bebê.' },
-  { iconName: 'Stethoscope', title: 'Pré-natal', description: 'Pré-natal completo e humanizado com acompanhamento individualizado, exames e orientações em cada etapa da gestação.' },
-  { iconName: 'Flower2', title: 'Menopausa', description: 'Tratamento personalizado para os sintomas da menopausa, reposição hormonal e cuidados com a saúde óssea e cardiovascular.' },
-  { iconName: 'Shield', title: 'Anticoncepcional', description: 'Orientação personalizada sobre o método contraceptivo ideal para você, com acompanhamento e ajustes conforme sua necessidade.' },
-  { iconName: 'CircleDot', title: 'DIU', description: 'Inserção e acompanhamento de DIU de cobre e hormonal — método seguro, prático e de longa duração.' },
-  { iconName: 'Syringe', title: 'Implanon', description: 'Implante subdérmico contraceptivo com duração de até 3 anos — praticidade e eficácia para o seu dia a dia.' },
-  { iconName: 'Microscope', title: 'Microscopia Vaginal', description: 'Diagnóstico imediato durante a consulta com análise microscópica do conteúdo vaginal — resultado na hora!' },
+  { iconName: 'Heart',      title: 'Ginecologia',         href: '/areas-de-atuacao', description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher, com exames de rotina, prevenção e tratamento de doenças.' },
+  { iconName: 'Baby',       title: 'Obstetrícia',          href: '/areas-de-atuacao', description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para mãe e bebê.' },
+  { iconName: 'Stethoscope',title: 'Pré-natal',            href: '/blog/importancia-pre-natal',          description: 'Pré-natal completo e humanizado com acompanhamento individualizado, exames e orientações em cada etapa da gestação.' },
+  { iconName: 'Flower2',    title: 'Menopausa',           href: '/blog/menopausa-qualidade-vida',       description: 'Tratamento personalizado para os sintomas da menopausa, reposição hormonal e cuidados com a saúde óssea e cardiovascular.' },
+  { iconName: 'Shield',     title: 'Anticoncepcional',    href: '/blog/anticoncepcional-guia-jovem',    description: 'Orientação personalizada sobre o método contraceptivo ideal para você, com acompanhamento e ajustes conforme sua necessidade.' },
+  { iconName: 'CircleDot',  title: 'DIU',                 href: '/blog/diu-tudo-sobre',                 description: 'Inserção e acompanhamento de DIU de cobre e hormonal — método seguro, prático e de longa duração.' },
+  { iconName: 'Syringe',    title: 'Implanon',            href: '/blog/implanon-implante-guia',          description: 'Implante subdérmico contraceptivo com duração de até 3 anos — praticidade e eficácia para o seu dia a dia.' },
+  { iconName: 'Microscope', title: 'Microscopia Vaginal', href: '/blog/microscopia-vaginal-diagnostico', description: 'Diagnóstico imediato durante a consulta com análise microscópica do conteúdo vaginal — resultado na hora!' },
 ];
 
 const blogPosts = [
@@ -43,7 +43,7 @@ export default function HomePage() {
           </AnimatedSection>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {areas.map((area, index) => (
-              <AreaCard key={area.title} iconName={area.iconName} title={area.title} description={area.description} delay={index * 0.1} />
+              <AreaCard key={area.title} iconName={area.iconName} title={area.title} description={area.description} href={area.href} delay={index * 0.1} />
             ))}
           </div>
           <AnimatedSection className="text-center mt-12">
