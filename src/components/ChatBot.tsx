@@ -114,9 +114,9 @@ const DUVIDA_RESPOSTAS: Record<string, string> = {
   duvida_microscopia: '🔬 **O que é Microscopia Vaginal?**\n\nExame feito na consulta com resultado imediato.\n\n✅ Diagnóstico preciso\n✅ Tratamento no mesmo dia\n✅ Sem custos adicionais\n\n🏥 Diferencial exclusivo!',
   duvida_menopausa: '🌸 **Sintomas da menopausa:**\n\n• Ondas de calor\n• Suores noturnos\n• Insônia e irritabilidade\n• Secura vaginal\n• Alterações de humor\n• Ganho de peso\n\n💡 Reposição hormonal pode ajudar!',
   duvida_contraceptivos: '💊 **Métodos Contraceptivos**\n\n• Pílulas anticoncepcionais\n• DIU cobre e hormonal\n• Implante subdérmico\n• Anel vaginal\n• Injeção\n• Preservativos\n\n⚠️ O melhor método é o ideal para você!',
-  duvida_anticoncepcional: '💊 **Anticoncepcional**\n\n• Pílulas, injeções, anel, adesivo\n• Orientação personalizada\n• Ajuste conforme seu corpo\n• Acompanhamento regular\n\n💡 O melhor método é o ideal para você!',
-  duvida_diu: '🔵 **DIU**\n\n• DIU de cobre: sem hormônios\n• DIU hormonal: menos cólica\n• Duração de 5 a 10 anos\n• Inserção rápida no consultório\n\n💡 Método seguro e prático!',
-  duvida_implanon: '💉 **Implanon**\n\n• Implante no braço, dura 3 anos\n• Não precisa lembrar diariamente\n• Alta eficácia (>99%)\n• Reversível quando desejar\n\n💡 Ideal para rotinas agitadas!',
+  duvida_anticoncepcional: '💊 **Anticoncepcional**\n\n• Pílulas, injeções, anel, adesivo\n• Orientação personalizada\n• Ajuste conforme seu corpo\n• Acompanhamento regular\n• Não engorda necessariamente!\n• Não causa infertilidade\n\n💡 O melhor método é o ideal para VOCÊ!\n\n📖 Leia nosso artigo completo no blog!',
+  duvida_diu: '🔵 **DIU**\n\n• DIU de cobre: sem hormônios\n• DIU hormonal: menos cólica\n• Duração de 5 a 10 anos\n• Inserção rápida no consultório\n• SIM, jovens sem filhos podem usar!\n\n💡 Método seguro e prático!\n\n📖 Leia nosso artigo completo no blog!',
+  duvida_implanon: '💉 **Implanon**\n\n• Implante no braço, dura 3 anos\n• Não precisa lembrar diariamente\n• Alta eficácia (>99,9%)\n• Reversível quando desejar\n• Ideal para rotinas agitadas\n• Inserção rápida com anestesia local\n\n💡 Cada vez mais jovens escolhem esse método!\n\n📖 Leia nosso artigo completo no blog!',
 };
 
 /* ─────────────────── Helpers ─────────────────── */

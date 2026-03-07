@@ -16,7 +16,7 @@ const areas = [
     description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher. Prevenção, diagnóstico e tratamento com cuidado e acolhimento.',
     items: ['Consulta ginecológica de rotina', 'Papanicolau e colposcopia', 'Infecções e corrimentos', 'Endometriose e miomas', 'Planejamento reprodutivo', 'Métodos contraceptivos'],
     color: 'from-primary-400 to-primary-600',
-    image: '/images/dra-andresa-consultorio-1.jpeg',
+    image: '/images/generated/area-ginecologia.jpg',
   },
   {
     icon: Baby,
@@ -24,7 +24,7 @@ const areas = [
     description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para a mãe e o bebê, do planejamento ao puerpério.',
     items: ['Parto humanizado', 'Gestação de alto risco', 'Ultrassom obstétrico', 'Orientações sobre amamentação', 'Acompanhamento pós-parto', 'Planejamento da gestação'],
     color: 'from-primary-400 to-primary-600',
-    image: '/images/dra-andresa-extra-1.jpeg',
+    image: '/images/generated/area-obstetricia.jpg',
   },
   {
     icon: Stethoscope,
@@ -32,7 +32,7 @@ const areas = [
     description: 'Pré-natal completo e humanizado com acompanhamento individualizado. Cada gestação é única e merece atenção especial.',
     items: ['Consultas mensais/quinzenais/semanais', 'Exames laboratoriais completos', 'Ultrassonografias de rotina', 'Acompanhamento nutricional', 'Orientação sobre parto', 'Vacinação na gestação'],
     color: 'from-secondary-400 to-secondary-600',
-    image: '/images/dra-andresa-extra-2.jpeg',
+    image: '/images/generated/area-prenatal.jpg',
   },
   {
     icon: Flower2,
@@ -40,7 +40,7 @@ const areas = [
     description: 'Tratamento personalizado para os sintomas da menopausa, garantindo qualidade de vida e bem-estar nessa nova fase.',
     items: ['Reposição hormonal bioidêntica', 'Tratamento de fogachos', 'Saúde óssea e cardiovascular', 'Controle de peso', 'Saúde mental e emocional', 'Sexualidade na menopausa'],
     color: 'from-violet-400 to-violet-600',
-    image: '/images/dra-andresa-consultorio-3.jpeg',
+    image: '/images/generated/area-menopausa.jpg',
   },
   {
     icon: Shield,
@@ -48,7 +48,7 @@ const areas = [
     description: 'Orientação personalizada sobre o método contraceptivo ideal para você, com acompanhamento e ajustes conforme sua necessidade.',
     items: ['Pílulas combinadas e minipílulas', 'Injeção mensal e trimestral', 'Anel vaginal', 'Adesivo hormonal', 'Orientação personalizada', 'Acompanhamento e ajuste'],
     color: 'from-pink-400 to-pink-600',
-    image: '/images/dra-andresa-consultorio-5.jpeg',
+    image: '/images/generated/area-anticoncepcional.jpg',
   },
   {
     icon: CircleDot,
@@ -56,7 +56,7 @@ const areas = [
     description: 'Inserção e acompanhamento de DIU de cobre e hormonal — método seguro, prático e de longa duração para contracepção.',
     items: ['DIU de cobre (não hormonal)', 'DIU hormonal (Mirena/Kyleena)', 'Inserção rápida e segura', 'Duração de 5 a 10 anos', 'Acompanhamento pós-inserção', 'Indicação individualizada'],
     color: 'from-sky-400 to-sky-600',
-    image: '/images/dra-andresa-consultorio-4.jpeg',
+    image: '/images/generated/area-diu.jpg',
   },
   {
     icon: Syringe,
@@ -64,7 +64,7 @@ const areas = [
     description: 'Implante subdérmico contraceptivo com duração de até 3 anos — praticidade e alta eficácia para o seu dia a dia.',
     items: ['Duração de até 3 anos', 'Inserção rápida no braço', 'Alta eficácia (>99%)', 'Reversível a qualquer momento', 'Sem necessidade de lembrar diariamente', 'Ideal para rotinas agitadas'],
     color: 'from-teal-400 to-teal-600',
-    image: '/images/dra-andresa-consultorio-6.jpeg',
+    image: '/images/generated/area-implanon.jpg',
   },
   {
     icon: Microscope,
@@ -72,7 +72,7 @@ const areas = [
     description: 'Diagnóstico imediato durante a consulta — análise microscópica do conteúdo vaginal com resultado na hora, sem necessidade de aguardar exames laboratoriais.',
     items: ['Resultado na hora da consulta', 'Diagnóstico preciso de infecções', 'Candidíase, vaginose, tricomoníase', 'Tratamento iniciado imediatamente', 'Sem custos adicionais de lab', 'Acompanhamento microscópico'],
     color: 'from-emerald-500 to-primary-600',
-    image: '/images/dra-andresa-consultorio-7.jpeg',
+    image: '/images/generated/area-microscopia.jpg',
   },
 ];
 

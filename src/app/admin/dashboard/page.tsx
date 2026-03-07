@@ -60,21 +60,23 @@ const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const DIAS_SEMANA_FULL = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
 const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 const HORARIOS = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
-const TIPOS = ['Consulta Ginecológica','Pré-natal','Menopausa','Ginecologia Regenerativa','Microscopia Vaginal','Retorno','Primeira Consulta'];
+const TIPOS = ['Consulta Ginecológica','Pré-natal','Menopausa','Anticoncepcional','DIU','Implanon','Microscopia Vaginal','Retorno','Primeira Consulta'];
 const STATUS_CONFIG = {
   confirmado: { bg: 'bg-green-100 text-green-700 border-green-200', dot: 'bg-green-500', label: 'Confirmado', icon: CheckCircle2 },
   pendente: { bg: 'bg-yellow-100 text-yellow-700 border-yellow-200', dot: 'bg-yellow-500', label: 'Pendente', icon: AlertCircle },
   cancelado: { bg: 'bg-red-100 text-red-700 border-red-200', dot: 'bg-red-500', label: 'Cancelado', icon: XCircle },
   realizado: { bg: 'bg-blue-100 text-blue-700 border-blue-200', dot: 'bg-blue-500', label: 'Realizado', icon: CheckCircle2 },
 };
-const CATEGORIES = ['Pré-natal','Microscopia Vaginal','Menopausa','Ginecologia Regenerativa','Ginecologia','Saúde da Mulher','Saúde Feminina','Contracepção'];
+const CATEGORIES = ['Pré-natal','Microscopia Vaginal','Menopausa','Anticoncepcional','DIU','Implanon','Ginecologia','Saúde da Mulher','Saúde Feminina','Contracepção'];
 
 /* ═══════════ DEFAULT ARTICLES ═══════════ */
 const DEFAULT_ARTICLES: BlogArticle[] = [
   { id: '1', slug: 'importancia-pre-natal', title: 'A Importância do Pré-Natal: Cuidando da Mãe e do Bebê', category: 'Pré-natal', date: '25 Fev 2026', readTime: '7 min', content: articles['importancia-pre-natal']?.content || [], published: true },
   { id: '2', slug: 'microscopia-vaginal-diagnostico', title: 'Microscopia Vaginal: Diagnóstico na Hora com Precisão', category: 'Microscopia Vaginal', date: '20 Fev 2026', readTime: '5 min', content: articles['microscopia-vaginal-diagnostico']?.content || [], published: true },
   { id: '3', slug: 'menopausa-qualidade-vida', title: 'Menopausa: Como Manter a Qualidade de Vida Nessa Nova Fase', category: 'Menopausa', date: '15 Fev 2026', readTime: '8 min', content: articles['menopausa-qualidade-vida']?.content || [], published: true },
-  { id: '4', slug: 'ginecologia-regenerativa', title: 'Ginecologia Regenerativa: Inovação em Saúde Feminina', category: 'Ginecologia Regenerativa', date: '10 Fev 2026', readTime: '6 min', content: articles['ginecologia-regenerativa']?.content || [], published: true },
+  { id: '4', slug: 'anticoncepcional-guia-jovem', title: 'Anticoncepcional: Guia Completo para Quem Está Começando', category: 'Anticoncepcional', date: '10 Fev 2026', readTime: '7 min', content: articles['anticoncepcional-guia-jovem']?.content || [], published: true },
+  { id: '11', slug: 'diu-tudo-sobre', title: 'DIU: Tudo Que Você Precisa Saber Antes de Colocar', category: 'DIU', date: '08 Fev 2026', readTime: '7 min', content: articles['diu-tudo-sobre']?.content || [], published: true },
+  { id: '12', slug: 'implanon-implante-guia', title: 'Implanon: O Implante Contraceptivo que Dura 3 Anos', category: 'Implanon', date: '06 Fev 2026', readTime: '6 min', content: articles['implanon-implante-guia']?.content || [], published: true },
   { id: '5', slug: 'exames-ginecologicos-rotina', title: 'Exames Ginecológicos de Rotina: Quando e Por Que Fazer', category: 'Ginecologia', date: '05 Fev 2026', readTime: '5 min', content: articles['exames-ginecologicos-rotina']?.content || [], published: true },
   { id: '6', slug: 'cheiro-intimo-normal-anormal', title: 'Cheiro Íntimo: O Que É Normal e O Que Não É?', category: 'Ginecologia', date: '01 Fev 2026', readTime: '4 min', content: articles['cheiro-intimo-normal-anormal']?.content || [], published: true },
   { id: '7', slug: 'pilula-do-dia-seguinte', title: 'Pílula do Dia Seguinte: O Que Você Precisa Saber', category: 'Contracepção', date: '28 Jan 2026', readTime: '5 min', content: articles['pilula-do-dia-seguinte']?.content || [], published: true },

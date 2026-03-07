@@ -157,7 +157,7 @@ export default function BlogArticleClient({ slug, staticArticle }: BlogArticleCl
                 <p className="font-serif font-bold text-gray-900 text-lg">Dra. Andresa Martin Louzada</p>
                 <p className="text-sm text-primary-600 font-medium">Ginecologista e Obstetra | CRM/SP</p>
                 <p className="text-sm text-gray-500 mt-2 leading-relaxed">
-                  Especialista em Ginecologia, Obstetrícia, Ginecologia Regenerativa e Microscopia Vaginal.
+                  Especialista em Ginecologia, Obstetrícia, Contracepção e Microscopia Vaginal.
                   Atuando no Espaço Humanizare em Presidente Prudente.
                 </p>
               </div>

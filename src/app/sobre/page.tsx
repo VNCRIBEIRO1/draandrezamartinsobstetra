@@ -121,7 +121,7 @@ export default function SobrePage() {
             {[
               { icon: Heart, title: 'Atendimento Humanizado', desc: 'Cada paciente é única. Oferecemos um atendimento atencioso, com escuta ativa e respeito ao tempo de cada mulher.' },
               { icon: Award, title: 'Microscopia Vaginal', desc: 'Diagnóstico imediato durante a consulta — resultado na hora para iniciar o tratamento sem espera.' },
-              { icon: BookOpen, title: 'Atualização Contínua', desc: 'Formação constante em ginecologia regenerativa, obstetrícia de alto risco e novas tecnologias.' },
+              { icon: BookOpen, title: 'Atualização Contínua', desc: 'Formação constante em contracepção moderna, obstetrícia de alto risco e novas tecnologias em saúde feminina.' },
               { icon: Clock, title: 'Consulta Sem Pressa', desc: 'Tempo dedicado para cada paciente, sem correria, para abordar todas as dúvidas e preocupações.' },
               { icon: Star, title: 'Ambiente Acolhedor', desc: 'Espaço Humanizare — um consultório moderno, confortável e pensado para o bem-estar feminino.' },
               { icon: MapPin, title: 'Localização Central', desc: 'Central Park Residence, Presidente Prudente, com fácil acesso e estacionamento.' },

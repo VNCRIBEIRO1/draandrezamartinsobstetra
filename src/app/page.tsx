@@ -21,9 +21,9 @@ const areas = [
 ];
 
 const blogPosts = [
-  { title: 'A Importância do Pré-Natal: Cuidando da Mãe e do Bebê', excerpt: 'O pré-natal é essencial para garantir a saúde da mãe e do bebê. Saiba quando iniciar, quais exames fazer e como é o pré-natal humanizado.', date: '25 Fev 2026', readTime: '7 min', slug: 'importancia-pre-natal', category: 'Pré-natal', image: getArticleImage('importancia-pre-natal') },
-  { title: 'Microscopia Vaginal: Diagnóstico na Hora com Precisão', excerpt: 'Saiba como a microscopia vaginal permite diagnóstico imediato durante a consulta, agilizando o tratamento.', date: '20 Fev 2026', readTime: '5 min', slug: 'microscopia-vaginal-diagnostico', category: 'Microscopia Vaginal', image: getArticleImage('microscopia-vaginal-diagnostico') },
-  { title: 'Menopausa: Como Manter a Qualidade de Vida', excerpt: 'Entenda os sintomas da menopausa e as opções de tratamento para viver essa fase com saúde e bem-estar.', date: '15 Fev 2026', readTime: '8 min', slug: 'menopausa-qualidade-vida', category: 'Menopausa', image: getArticleImage('menopausa-qualidade-vida') },
+  { title: 'Anticoncepcional: Guia Completo para Quem Está Começando', excerpt: 'Escolher o anticoncepcional ideal pode parecer complicado. Este guia vai te ajudar a entender cada opção e conversar com mais segurança com sua ginecologista.', date: '10 Fev 2026', readTime: '7 min', slug: 'anticoncepcional-guia-jovem', category: 'Anticoncepcional', image: getArticleImage('anticoncepcional-guia-jovem') },
+  { title: 'DIU: Tudo Que Você Precisa Saber Antes de Colocar', excerpt: 'O DIU é um dos métodos mais eficazes e práticos. Esclareça todas as suas dúvidas — desde como funciona até como é a inserção.', date: '08 Fev 2026', readTime: '7 min', slug: 'diu-tudo-sobre', category: 'DIU', image: getArticleImage('diu-tudo-sobre') },
+  { title: 'Implanon: O Implante Contraceptivo que Dura 3 Anos', excerpt: 'Com eficácia superior a 99%, o Implanon é inserido no braço e dura até 3 anos. Conheça tudo sobre esse método.', date: '06 Fev 2026', readTime: '6 min', slug: 'implanon-implante-guia', category: 'Implanon', image: getArticleImage('implanon-implante-guia') },
 ];
 
 export default function HomePage() {

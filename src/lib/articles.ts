@@ -81,9 +81,6 @@ export const articles: Record<string, Article> = {
       '## Tratamento Hormonal',
       'A terapia de reposição hormonal (TRH) é o tratamento mais eficaz para os sintomas vasomotores da menopausa. Quando indicada e acompanhada por um ginecologista, a TRH pode melhorar significativamente a qualidade de vida, proteger a saúde óssea e cardiovascular, e aliviar os sintomas desconfortáveis. A decisão pelo tratamento hormonal deve ser individualizada, considerando os riscos e benefícios para cada paciente.',
 
-      '## Ginecologia Regenerativa na Menopausa',
-      'Procedimentos de ginecologia regenerativa, como o laser íntimo e o ácido hialurônico, podem ser excelentes aliados no tratamento da atrofia vaginal e da incontinência urinária associadas à menopausa. Esses tratamentos ajudam a restaurar a hidratação, elasticidade e funcionalidade dos tecidos vaginais.',
-
       '## Cuidados com a Saúde Óssea',
       'Após a menopausa, a diminuição do estrogênio acelera a perda de massa óssea, aumentando o risco de osteoporose. A densitometria óssea deve ser realizada periodicamente, e medidas preventivas incluem: suplementação de cálcio e vitamina D, exercícios físicos regulares (especialmente musculação), e tratamento hormonal quando indicado.',
 
@@ -98,31 +95,114 @@ export const articles: Record<string, Article> = {
     ],
   },
 
-  'ginecologia-regenerativa': {
-    title: 'Ginecologia Regenerativa: Inovação no Cuidado Feminino',
-    category: 'Ginecologia Regenerativa',
+  'anticoncepcional-guia-jovem': {
+    title: 'Anticoncepcional: Guia Completo para Quem Está Começando',
+    category: 'Anticoncepcional',
     date: '10 Fev 2026',
-    readTime: '6 min',
+    readTime: '7 min',
     content: [
-      'A Ginecologia Regenerativa é uma área inovadora da medicina que utiliza técnicas avançadas para restaurar, regenerar e rejuvenescer os tecidos da região íntima feminina. Esses procedimentos oferecem soluções eficazes para queixas que afetam a qualidade de vida de muitas mulheres.',
+      'Escolher o anticoncepcional ideal pode parecer complicado com tantas opções disponíveis. Se você está iniciando a vida sexual ou pensando em começar a usar um método contraceptivo, este guia vai te ajudar a entender cada opção e conversar com mais segurança com sua ginecologista.',
 
-      '## O Que é Ginecologia Regenerativa',
-      'A ginecologia regenerativa engloba um conjunto de procedimentos minimamente invasivos que visam melhorar a saúde e a funcionalidade da região genital feminina. Utiliza tecnologias como laser, radiofrequência, ácido hialurônico e plasma rico em plaquetas (PRP) para estimular a regeneração tecidual.',
+      '## Por Que Usar Anticoncepcional?',
+      'O anticoncepcional não serve apenas para evitar gravidez. Ele também pode ajudar a regular o ciclo menstrual, reduzir cólicas intensas, diminuir o fluxo menstrual, controlar a acne hormonal e tratar a TPM. Porém, o método ideal varia para cada mulher — por isso a consulta ginecológica é essencial.',
 
-      '## Principais Indicações',
-      'Os procedimentos de ginecologia regenerativa são indicados para: atrofia vaginal (secura vaginal), incontinência urinária leve a moderada, frouxidão vaginal, disfunções sexuais, líquen escleroso, e rejuvenescimento íntimo. Essas queixas são comuns especialmente após o parto, na menopausa e em decorrência do envelhecimento natural.',
+      '## Tipos de Anticoncepcionais',
+      'Existem diversos tipos de métodos hormonais: pílula combinada (estrogênio + progestagênio), minipílula (só progestagênio), injeção mensal ou trimestral, adesivo hormonal, anel vaginal e implante subdérmico. Cada um tem vantagens, desvantagens e contraindicações específicas.',
 
-      '## Tecnologias Utilizadas',
-      'O laser íntimo (CO2 fracionado) é uma das tecnologias mais utilizadas, promovendo a regeneração do colágeno e elastina dos tecidos vaginais. A radiofrequência íntima aquece as camadas mais profundas dos tecidos, estimulando a produção de colágeno. O ácido hialurônico pode ser aplicado para hidratar e preencher os tecidos. O PRP utiliza fatores de crescimento do próprio sangue da paciente para estimular a regeneração.',
+      '## Pílula Anticoncepcional',
+      'A pílula é o método mais popular entre jovens. Deve ser tomada diariamente, no mesmo horário. Existem cartelas de 21 e 24 comprimidos, com ou sem pausa. Esquecimentos frequentes diminuem a eficácia — se isso acontece com você, vale considerar métodos de longa duração como DIU ou implante.',
 
-      '## Benefícios dos Tratamentos',
-      'Os tratamentos regenerativos proporcionam melhora da lubrificação vaginal, aumento da elasticidade dos tecidos, redução da incontinência urinária, melhora da sensibilidade e prazer sexual, e maior conforto e autoestima para a mulher.',
+      '## Injeção Contraceptiva',
+      'A injeção pode ser mensal ou trimestral. É prática para quem esquece a pílula, mas não pode ser "interrompida" facilmente. A injeção trimestral pode causar irregularidade menstrual e demora para retorno da fertilidade após suspensão.',
 
-      '## O Procedimento',
-      'Os procedimentos são realizados no próprio consultório, com duração média de 15 a 30 minutos. São minimamente invasivos, com pouco ou nenhum desconforto, e geralmente não exigem período de recuperação significativo. A paciente pode retomar suas atividades normais rapidamente.',
+      '## Como Escolher o Melhor Método',
+      'Para escolher o anticoncepcional ideal, considere: sua rotina (consegue tomar pílula todo dia?), se tem contraindicações (enxaqueca com aura, trombofilia, tabagismo), se deseja menstruar ou não, o custo-benefício, e seus planos reprodutivos. Converse com sua ginecologista — ela vai avaliar seu histórico e indicar a melhor opção.',
+
+      '## Mitos e Verdades',
+      'Anticoncepcional NÃO engorda necessariamente — alguns podem causar retenção de líquido, mas isso varia. Anticoncepcional NÃO causa infertilidade — a fertilidade retorna após a suspensão. Anticoncepcional NÃO protege contra ISTs — use preservativo sempre!',
+
+      '## Efeitos Colaterais Comuns',
+      'Nos primeiros meses, é normal sentir: náuseas leves, sensibilidade nos seios, pequenos sangramentos de escape e alterações de humor. Esses sintomas costumam melhorar com o tempo. Se persistirem, converse com sua médica sobre trocar o método.',
+
+      '## Quando Procurar a Ginecologista',
+      'Procure sua ginecologista antes de iniciar qualquer método contraceptivo, se sentir efeitos colaterais incômodos, se esquecer pílulas com frequência, ou se quiser trocar de método. Aqui no Espaço Humanizare, a Dra. Andresa oferece orientação individualizada para ajudar você a encontrar o método perfeito.',
 
       '## Considerações Finais',
-      'A ginecologia regenerativa representa um avanço significativo no cuidado da saúde feminina. Se você tem queixas relacionadas à saúde íntima, agende uma consulta para avaliar as opções de tratamento. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'Não existe o "melhor anticoncepcional" — existe o melhor para VOCÊ. O mais importante é usar o método corretamente e fazer acompanhamento ginecológico regular. Agende sua consulta e cuide da sua saúde. Este artigo tem caráter informativo e não substitui a consulta médica.',
+    ],
+  },
+
+  'diu-tudo-sobre': {
+    title: 'DIU: Tudo Que Você Precisa Saber Antes de Colocar',
+    category: 'DIU',
+    date: '08 Fev 2026',
+    readTime: '7 min',
+    content: [
+      'O DIU (Dispositivo Intrauterino) é um dos métodos contraceptivos mais eficazes e práticos que existem. Se você está pensando em colocar, provavelmente tem muitas dúvidas. Neste artigo, vamos esclarecer tudo — desde como funciona até como é a inserção.',
+
+      '## O Que é o DIU?',
+      'O DIU é um pequeno dispositivo em formato de T que é inserido dentro do útero pela ginecologista. Ele atua localmente, impedindo a gravidez por um longo período — de 5 a 10 anos, dependendo do tipo. É um dos métodos com maior taxa de eficácia (acima de 99%).',
+
+      '## Tipos de DIU',
+      'Existem dois tipos principais: o DIU de cobre (não hormonal) — que libera íons de cobre que criam um ambiente desfavorável para os espermatozoides, com duração de até 10 anos; e o DIU hormonal (Mirena ou Kyleena) — que libera progesterona localmente, afinando o endométrio e reduzindo o fluxo menstrual, com duração de 5 a 8 anos.',
+
+      '## DIU de Cobre: Vantagens e Desvantagens',
+      'Vantagens: não contém hormônios, longa duração (até 10 anos), pode ser usado por quem amamenta, não interfere na libido. Desvantagens: pode aumentar o fluxo menstrual e as cólicas, especialmente nos primeiros meses. Indicado para mulheres que não querem ou não podem usar hormônios.',
+
+      '## DIU Hormonal (Mirena/Kyleena): Vantagens e Desvantagens',
+      'Vantagens: reduz significativamente o fluxo menstrual (muitas mulheres param de menstruar), diminui cólicas, ação hormonal apenas local (pouco efeito sistêmico). Desvantagens: pode causar pequenos sangramentos de escape nos primeiros meses, e raramente efeitos hormonais leves como acne.',
+
+      '## Como é a Inserção?',
+      'A inserção do DIU é feita no consultório pela ginecologista, em um procedimento que dura poucos minutos. Pode causar uma cólica moderada durante e logo após a inserção, que melhora rapidamente. A maioria das mulheres tolera bem e retoma suas atividades normais no mesmo dia.',
+
+      '## Quem Pode Usar o DIU?',
+      'O DIU pode ser usado por mulheres de qualquer idade — incluindo jovens que nunca tiveram filhos e adolescentes. Esse é um mito muito comum! O DIU é seguro e indicado para a maioria das mulheres. As contraindicações são poucas e incluem infecções pélvicas ativas e algumas malformações uterinas.',
+
+      '## O DIU Dói? Pode Sair do Lugar?',
+      'A inserção pode causar desconforto, mas a Dra. Andresa utiliza técnicas para minimizar a dor. A expulsão espontânea do DIU é rara (cerca de 2-5% dos casos) e geralmente ocorre nos primeiros meses. O acompanhamento com ultrassom após a inserção garante que tudo está no lugar.',
+
+      '## Acompanhamento Pós-Inserção',
+      'Após colocar o DIU, é importante retornar para uma consulta de revisão (geralmente após 30 dias) para verificar o posicionamento com ultrassom. Depois, o acompanhamento segue na rotina ginecológica normal.',
+
+      '## Considerações Finais',
+      'O DIU é uma excelente opção para quem busca praticidade, eficácia e liberdade. Se você tem interesse, agende uma consulta para avaliar qual tipo é mais indicado para o seu caso. Este artigo tem caráter informativo e não substitui a consulta médica.',
+    ],
+  },
+
+  'implanon-implante-guia': {
+    title: 'Implanon: O Implante Contraceptivo que Dura 3 Anos',
+    category: 'Implanon',
+    date: '06 Fev 2026',
+    readTime: '6 min',
+    content: [
+      'O Implanon (ou implante subdérmico) é um método contraceptivo de longa duração que está conquistando cada vez mais jovens. Com uma eficácia superior a 99%, ele é inserido no braço e dura até 3 anos. Se você busca praticidade e segurança, conheça tudo sobre esse método.',
+
+      '## O Que é o Implanon?',
+      'O Implanon é um pequeno bastão flexível (do tamanho de um palito de fósforo) que é inserido sob a pele do braço. Ele libera continuamente uma pequena dose de progesterona (etonogestrel), impedindo a ovulação e prevenindo a gravidez por até 3 anos.',
+
+      '## Como é a Inserção?',
+      'A inserção é feita no consultório, com anestesia local. O procedimento dura apenas alguns minutos. Após a inserção, pode haver um pequeno hematoma no local, que desaparece em poucos dias. A paciente pode retomar suas atividades normais imediatamente.',
+
+      '## Vantagens do Implante',
+      'As principais vantagens são: altíssima eficácia (>99,9%), não precisa lembrar de tomar nada diariamente, duração de até 3 anos, reversível a qualquer momento (ao retirar, a fertilidade retorna rapidamente), discreto (fica sob a pele do braço), e pode reduzir cólicas menstruais.',
+
+      '## Para Quem é Indicado?',
+      'O implante é ideal para: jovens que esquecem de tomar a pílula, mulheres com rotina agitada, quem não pode usar estrogênio (fumantes, enxaqueca com aura), quem amamenta, e mulheres que desejam um método de longa duração sem a inserção intrauterina.',
+
+      '## Efeitos na Menstruação',
+      'O efeito mais comum do Implanon é a alteração no padrão menstrual. Cerca de 20% das mulheres param de menstruar (amenorreia), o que é seguro e pode ser até desejável. Algumas podem ter sangramentos irregulares ou de escape, especialmente nos primeiros 6 meses. Poucas mulheres mantêm um ciclo regular.',
+
+      '## Efeitos Colaterais',
+      'Além das alterações menstruais, os efeitos colaterais são geralmente leves: dor de cabeça, acne (pode melhorar ou piorar), sensibilidade mamária e variação de peso. A maioria dos efeitos melhora com o tempo.',
+
+      '## Quanto Custa?',
+      'O implante tem um custo inicial mais elevado que a pílula, mas quando dividido por 3 anos de uso, o custo mensal é semelhante ou até menor que muitos anticoncepcionais orais. É um investimento em praticidade e segurança.',
+
+      '## Remoção e Retorno da Fertilidade',
+      'A remoção é simples, feita no consultório com anestesia local, em poucos minutos. A fertilidade retorna rapidamente — geralmente no primeiro ciclo após a retirada. Se desejar continuar usando, um novo implante pode ser inserido no mesmo momento.',
+
+      '## Considerações Finais',
+      'O Implanon é uma opção moderna, segura e prática para contracepção de longa duração. Se você quer mais liberdade e menos preocupação, agende uma consulta para saber se o implante é a melhor opção para você. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 

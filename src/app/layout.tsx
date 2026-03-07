@@ -15,12 +15,14 @@ export const metadata: Metadata = {
     template: '%s | Dra. Andresa Martin - Ginecologista e Obstetra',
   },
   description:
-    'Dra. Andresa Martin Louzada — Ginecologista e Obstetra em Presidente Prudente, SP. Atendimento humanizado no Espaço Humanizare. Pré-natal, Menopausa, Ginecologia Regenerativa e Microscopia Vaginal.',
+    'Dra. Andresa Martin Louzada — Ginecologista e Obstetra em Presidente Prudente, SP. Atendimento humanizado no Espaço Humanizare. Pré-natal, Menopausa, Anticoncepcional, DIU, Implanon e Microscopia Vaginal.',
   keywords: [
     'ginecologista Presidente Prudente',
     'obstetra Presidente Prudente',
     'pré-natal humanizado',
-    'ginecologia regenerativa',
+    'anticoncepcional',
+    'DIU',
+    'Implanon',
     'microscopia vaginal',
     'Dra Andresa Martin',
     'Espaço Humanizare',
