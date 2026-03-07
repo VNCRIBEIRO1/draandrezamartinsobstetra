@@ -54,8 +54,8 @@ export async function POST(request: NextRequest) {
 
     const whatsappLink = `https://wa.me/${telFormatado}?text=${encodeURIComponent(mensagem)}`;
 
-    // Log para auditoria (em produção, salvar em banco)
-    console.log(`[LEMBRETE] ${new Date().toISOString()} | Paciente: ${paciente} | Tel: ${telefone} | Consulta: ${data} ${horario}`);
+    // Log para auditoria (sem dados PII)
+    console.log(`[LEMBRETE] ${new Date().toISOString()} | Consulta: ${data} ${horario} | Lembrete enviado`);
 
     return NextResponse.json({
       success: true,

@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dra-andresa-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET(request: NextRequest) {
   try {
+    if (!JWT_SECRET) {
+      return NextResponse.json({ error: 'Sistema não configurado' }, { status: 503 });
+    }
+
     const token = request.cookies.get('admin_token')?.value;
 
     if (!token) {
