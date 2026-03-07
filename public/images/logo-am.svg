@@ -1,15 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 180" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" fill="none">
   <!-- Monograma AM - Dra Andresa Martin Louzada -->
-  <g fill="#5C5C5C">
-    <!-- Letra A -->
-    <path d="M60 150 L100 20 L108 20 L80 150 L72 150 Z" />
-    <path d="M92 150 L132 20 L140 20 L100 150 Z" />
-    <!-- Barra do A -->
-    <path d="M72 105 L120 105 L120 112 L72 112 Z" />
-    <!-- Letra M -->
-    <path d="M88 150 L88 40 L96 40 L96 150 Z" />
-    <path d="M88 40 L120 90 L128 86 L96 36 Z" />
-    <path d="M120 90 L152 36 L160 40 L128 90 Z" />
-    <path d="M152 40 L152 150 L160 150 L160 40 Z" />
+  <!-- Estilo serif classico elegante -->
+  <g fill="#3D2222">
+    <!-- LETRA A -->
+    <!-- Haste esquerda do A -->
+    <path d="M72 210 L62 210 Q58 210 58 206 L58 204 L118 30 Q120 24 126 24 L132 24 Q134 24 134 26 L90 210 Z"/>
+    <!-- Haste direita do A -->
+    <path d="M130 24 L136 24 Q140 24 142 30 L178 204 L178 206 Q178 210 174 210 L166 210 L132 32 Z"/>
+    <!-- Serifa base esquerda A -->
+    <rect x="44" y="206" width="62" height="6" rx="2"/>
+    <!-- Serifa base direita A -->
+    <rect x="150" y="206" width="42" height="6" rx="2"/>
+    <!-- Barra curva do A -->
+    <path d="M82 148 Q86 142 94 142 L162 142 Q170 142 174 148 L170 154 Q166 150 162 150 L94 150 Q90 150 86 154 Z"/>
+
+    <!-- LETRA M -->
+    <!-- Haste esquerda M -->
+    <rect x="156" y="24" width="11" height="186" rx="1"/>
+    <!-- Haste direita M -->
+    <rect x="270" y="24" width="11" height="186" rx="1"/>
+    <!-- Diagonal esquerda M -->
+    <path d="M162 30 Q164 24 168 24 L174 24 L220 158 L216 166 Z"/>
+    <!-- Diagonal direita M -->
+    <path d="M220 158 L224 166 L274 24 L280 24 Q282 24 284 30 L224 162 Z"/>
+    <!-- Serifa topo esquerda M -->
+    <rect x="142" y="20" width="46" height="6" rx="2"/>
+    <!-- Serifa topo direita M -->
+    <rect x="258" y="20" width="38" height="6" rx="2"/>
+    <!-- Serifa base esquerda M -->
+    <rect x="142" y="206" width="42" height="6" rx="2"/>
+    <!-- Serifa base direita M -->
+    <rect x="256" y="206" width="42" height="6" rx="2"/>
   </g>
 </svg>

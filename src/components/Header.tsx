@@ -64,8 +64,8 @@ export default function Header() {
             <Image
               src="/images/logo-am.svg"
               alt="Logo Dra. Andresa Martin Louzada"
-              width={48}
-              height={44}
+              width={56}
+              height={42}
               className="transition-transform group-hover:scale-105"
               priority
             />
