@@ -52,7 +52,7 @@ export default function SobrePage() {
             <AnimatedSection delay={0.2}>
               <div className="relative">
                 <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
-                  <Image src={IMAGES.doutora} alt="Dra. Andresa Martin Louzada" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+                  <Image src={IMAGES.doutoraSobre} alt="Dra. Andresa Martin Louzada - Parto Humanizado" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
                 </div>
                 <div className="absolute -bottom-4 -left-4 bg-white p-5 rounded-2xl shadow-xl border border-primary-100">
                   <div className="flex items-center gap-3">

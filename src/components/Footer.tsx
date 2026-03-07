@@ -6,7 +6,9 @@ const areas = [
   'Obstetrícia',
   'Pré-natal',
   'Menopausa',
-  'Ginecologia Regenerativa',
+  'Anticoncepcional',
+  'DIU',
+  'Implanon',
   'Microscopia Vaginal',
 ];
 

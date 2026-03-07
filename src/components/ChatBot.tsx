@@ -60,7 +60,9 @@ const AREA_OPTIONS: Option[] = [
   { label: 'Ginecologia', value: 'ginecologia', icon: <Heart className="w-4 h-4" /> },
   { label: 'Obstetrícia / Pré-natal', value: 'obstetricia', icon: <Baby className="w-4 h-4" /> },
   { label: 'Menopausa', value: 'menopausa', icon: <Flower2 className="w-4 h-4" /> },
-  { label: 'Ginecologia Regenerativa', value: 'regenerativa', icon: <Sparkles className="w-4 h-4" /> },
+  { label: 'Anticoncepcional', value: 'anticoncepcional', icon: <Sparkles className="w-4 h-4" /> },
+  { label: 'DIU', value: 'diu', icon: <Sparkles className="w-4 h-4" /> },
+  { label: 'Implanon', value: 'implanon', icon: <Sparkles className="w-4 h-4" /> },
   { label: 'Microscopia Vaginal', value: 'microscopia', icon: <Microscope className="w-4 h-4" /> },
   { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
 ];
@@ -71,7 +73,9 @@ const DUVIDA_OPTIONS: Option[] = [
   { label: 'O que é microscopia vaginal?', value: 'duvida_microscopia' },
   { label: 'Menopausa: sintomas comuns', value: 'duvida_menopausa' },
   { label: 'Métodos contraceptivos', value: 'duvida_contraceptivos' },
-  { label: 'Ginecologia regenerativa', value: 'duvida_regenerativa' },
+  { label: 'Anticoncepcional', value: 'duvida_anticoncepcional' },
+  { label: 'DIU', value: 'duvida_diu' },
+  { label: 'Implanon', value: 'duvida_implanon' },
   { label: 'Voltar ao Início', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
 ];
 
@@ -79,7 +83,7 @@ const CONSULTA_TIPO_OPTIONS: Option[] = [
   { label: 'Consulta Ginecológica', value: 'tipo_gineco' },
   { label: 'Pré-natal', value: 'tipo_prenatal' },
   { label: 'Menopausa', value: 'tipo_menopausa' },
-  { label: 'Ginecologia Regenerativa', value: 'tipo_regenerativa' },
+  { label: 'Anticoncepcional / DIU / Implanon', value: 'tipo_contraceptivo' },
   { label: 'Microscopia Vaginal', value: 'tipo_microscopia' },
   { label: 'Primeira Consulta', value: 'tipo_primeira' },
   { label: '← Voltar', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
@@ -89,7 +93,7 @@ const TIPO_LABELS: Record<string, string> = {
   tipo_gineco: 'Consulta Ginecológica',
   tipo_prenatal: 'Pré-natal',
   tipo_menopausa: 'Menopausa',
-  tipo_regenerativa: 'Ginecologia Regenerativa',
+  tipo_contraceptivo: 'Anticoncepção (DIU / Implanon)',
   tipo_microscopia: 'Microscopia Vaginal',
   tipo_primeira: 'Primeira Consulta',
 };
@@ -98,7 +102,9 @@ const AREA_DETAILS: Record<string, string> = {
   ginecologia: '💗 **Ginecologia**\n\nA Dra. Andresa oferece acompanhamento completo:\n\n• Consulta de rotina e check-up\n• Papanicolau e colposcopia\n• Infecções e corrimentos\n• Endometriose e miomas\n• Planejamento reprodutivo\n• Métodos contraceptivos',
   obstetricia: '🤰 **Obstetrícia e Pré-natal**\n\nAcompanhamento humanizado:\n\n• Pré-natal completo e individualizado\n• Ultrassonografias de rotina\n• Gestação de alto risco\n• Parto humanizado\n• Acompanhamento pós-parto\n• Orientações sobre amamentação',
   menopausa: '🌸 **Menopausa**\n\nTratamento personalizado:\n\n• Reposição hormonal bioidêntica\n• Fogachos e sudorese\n• Saúde óssea e cardiovascular\n• Controle de peso\n• Sexualidade na menopausa',
-  regenerativa: '✨ **Ginecologia Regenerativa**\n\nProcedimentos inovadores:\n\n• Laser íntimo\n• Bioestimuladores de colágeno\n• Ácido hialurônico íntimo\n• Rejuvenescimento vulvovaginal\n• Incontinência urinária leve',
+  anticoncepcional: '💊 **Anticoncepcional**\n\nOrientação personalizada:\n\n• Pílulas combinadas e minipílulas\n• Injeção mensal e trimestral\n• Anel vaginal\n• Adesivo hormonal\n• Escolha do método ideal para você',
+  diu: '🔵 **DIU (Dispositivo Intrauterino)**\n\nMétodo de longa duração:\n\n• DIU de cobre (não hormonal)\n• DIU hormonal (Mirena/Kyleena)\n• Inserção rápida e segura\n• Duração de 5 a 10 anos\n• Acompanhamento pós-inserção',
+  implanon: '💉 **Implanon (Implante Subdérmico)**\n\nPraticidade e eficácia:\n\n• Duração de até 3 anos\n• Inserção rápida no braço\n• Alta eficácia contraceptiva\n• Reversível a qualquer momento\n• Ideal para quem esquece a pílula',
   microscopia: '🔬 **Microscopia Vaginal**\n\nDiferencial da Dra. Andresa:\n\n• Diagnóstico imediato na consulta\n• Análise microscópica precisa\n• Tratamento no mesmo dia\n• Sem custo adicional de laboratório\n\n✅ Resultado na hora!',
 };
 
@@ -108,7 +114,9 @@ const DUVIDA_RESPOSTAS: Record<string, string> = {
   duvida_microscopia: '🔬 **O que é Microscopia Vaginal?**\n\nExame feito na consulta com resultado imediato.\n\n✅ Diagnóstico preciso\n✅ Tratamento no mesmo dia\n✅ Sem custos adicionais\n\n🏥 Diferencial exclusivo!',
   duvida_menopausa: '🌸 **Sintomas da menopausa:**\n\n• Ondas de calor\n• Suores noturnos\n• Insônia e irritabilidade\n• Secura vaginal\n• Alterações de humor\n• Ganho de peso\n\n💡 Reposição hormonal pode ajudar!',
   duvida_contraceptivos: '💊 **Métodos Contraceptivos**\n\n• Pílulas anticoncepcionais\n• DIU cobre e hormonal\n• Implante subdérmico\n• Anel vaginal\n• Injeção\n• Preservativos\n\n⚠️ O melhor método é o ideal para você!',
-  duvida_regenerativa: '✨ **Ginecologia Regenerativa**\n\n• Melhorar lubrificação vaginal\n• Tratar incontinência leve\n• Rejuvenescimento íntimo\n• Melhorar satisfação sexual\n\nProcedimentos: laser, bioestimuladores e ácido hialurônico.',
+  duvida_anticoncepcional: '💊 **Anticoncepcional**\n\n• Pílulas, injeções, anel, adesivo\n• Orientação personalizada\n• Ajuste conforme seu corpo\n• Acompanhamento regular\n\n💡 O melhor método é o ideal para você!',
+  duvida_diu: '🔵 **DIU**\n\n• DIU de cobre: sem hormônios\n• DIU hormonal: menos cólica\n• Duração de 5 a 10 anos\n• Inserção rápida no consultório\n\n💡 Método seguro e prático!',
+  duvida_implanon: '💉 **Implanon**\n\n• Implante no braço, dura 3 anos\n• Não precisa lembrar diariamente\n• Alta eficácia (>99%)\n• Reversível quando desejar\n\n💡 Ideal para rotinas agitadas!',
 };
 
 /* ─────────────────── Helpers ─────────────────── */
@@ -424,7 +432,7 @@ export default function ChatBot() {
           { label: 'Voltar', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
         ]);
         break;
-      case 'ginecologia': case 'obstetricia': case 'menopausa': case 'regenerativa': case 'microscopia':
+      case 'ginecologia': case 'obstetricia': case 'menopausa': case 'anticoncepcional': case 'diu': case 'implanon': case 'microscopia':
         await simulateTyping(AREA_DETAILS[value] || '', [
           { label: 'Agendar Consulta', value: 'agendar', icon: <Calendar className="w-4 h-4" /> },
           { label: 'Outras Áreas', value: 'areas', icon: <Heart className="w-4 h-4" /> },
@@ -432,7 +440,7 @@ export default function ChatBot() {
         ]);
         break;
       case 'duvida_quando': case 'duvida_prenatal': case 'duvida_microscopia':
-      case 'duvida_menopausa': case 'duvida_contraceptivos': case 'duvida_regenerativa':
+      case 'duvida_menopausa': case 'duvida_contraceptivos': case 'duvida_anticoncepcional': case 'duvida_diu': case 'duvida_implanon':
         await simulateTyping(DUVIDA_RESPOSTAS[value] || '', [
           { label: 'Agendar Consulta', value: 'agendar', icon: <Calendar className="w-4 h-4" /> },
           { label: 'Outras Dúvidas', value: 'duvidas', icon: <Stethoscope className="w-4 h-4" /> },
@@ -440,7 +448,7 @@ export default function ChatBot() {
         ]);
         break;
       case 'tipo_gineco': case 'tipo_prenatal': case 'tipo_menopausa':
-      case 'tipo_regenerativa': case 'tipo_microscopia': case 'tipo_primeira': {
+      case 'tipo_contraceptivo': case 'tipo_microscopia': case 'tipo_primeira': {
         const lbl = TIPO_LABELS[value] || value;
         const now = new Date();
         setCollectingData({ step: 'calendar', tipo: value, tipoLabel: lbl, calYear: now.getFullYear(), calMonth: now.getMonth() });
@@ -518,8 +526,7 @@ export default function ChatBot() {
       else if (lower.match(/prénatal|pre-natal|pre natal|grávid|gestant/)) handleOption('duvida_prenatal');
       else if (lower.match(/menopausa/)) handleOption('duvida_menopausa');
       else if (lower.match(/microscop/)) handleOption('duvida_microscopia');
-      else if (lower.match(/contracep|anticoncep|pilula|diu/)) handleOption('duvida_contraceptivos');
-      else if (lower.match(/regenerat|laser|rejuvenesc/)) handleOption('duvida_regenerativa');
+      else if (lower.match(/contracep|anticoncep|pilula|diu|implanon/)) handleOption('duvida_contraceptivos');
       else if (lower.match(/^(oi|olá|ola|bom dia|boa tarde|boa noite|hey|hello)/)) await simulateTyping('Olá! 🌸 Como posso ajudar?', WELCOME_OPTIONS);
       else await simulateTyping('Para melhor atendê-la, selecione uma opção:', WELCOME_OPTIONS);
     }

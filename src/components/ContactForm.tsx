@@ -55,7 +55,9 @@ export default function ContactForm() {
           <option value="Consulta Ginecológica">Consulta Ginecológica</option>
           <option value="Pré-natal">Pré-natal</option>
           <option value="Menopausa">Menopausa</option>
-          <option value="Ginecologia Regenerativa">Ginecologia Regenerativa</option>
+          <option value="Anticoncepcional">Anticoncepcional</option>
+          <option value="DIU">DIU</option>
+          <option value="Implanon">Implanon</option>
           <option value="Microscopia Vaginal">Microscopia Vaginal</option>
           <option value="Exames de Rotina">Exames de Rotina</option>
           <option value="Outro">Outro assunto</option>

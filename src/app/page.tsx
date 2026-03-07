@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle2, MapPin, Star, Heart, Baby, Stethoscope, Microscope, Flower2, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, MapPin, Star, Heart, Baby, Stethoscope, Microscope, Flower2, Sparkles, Shield, CircleDot, Syringe } from 'lucide-react';
 import HeroSection from '@/components/HeroSection';
 import SectionHeader from '@/components/SectionHeader';
 import AreaCard from '@/components/AreaCard';
@@ -14,7 +14,9 @@ const areas = [
   { iconName: 'Baby', title: 'Obstetrícia', description: 'Acompanhamento da gestação, parto e pós-parto com cuidado humanizado para mãe e bebê.' },
   { iconName: 'Stethoscope', title: 'Pré-natal', description: 'Pré-natal completo e humanizado com acompanhamento individualizado, exames e orientações em cada etapa da gestação.' },
   { iconName: 'Flower2', title: 'Menopausa', description: 'Tratamento personalizado para os sintomas da menopausa, reposição hormonal e cuidados com a saúde óssea e cardiovascular.' },
-  { iconName: 'Sparkles', title: 'Ginecologia Regenerativa', description: 'Procedimentos inovadores para restauração e rejuvenescimento íntimo com tecnologias de ponta.' },
+  { iconName: 'Shield', title: 'Anticoncepcional', description: 'Orientação personalizada sobre o método contraceptivo ideal para você, com acompanhamento e ajustes conforme sua necessidade.' },
+  { iconName: 'CircleDot', title: 'DIU', description: 'Inserção e acompanhamento de DIU de cobre e hormonal — método seguro, prático e de longa duração.' },
+  { iconName: 'Syringe', title: 'Implanon', description: 'Implante subdérmico contraceptivo com duração de até 3 anos — praticidade e eficácia para o seu dia a dia.' },
   { iconName: 'Microscope', title: 'Microscopia Vaginal', description: 'Diagnóstico imediato durante a consulta com análise microscópica do conteúdo vaginal — resultado na hora!' },
 ];
 

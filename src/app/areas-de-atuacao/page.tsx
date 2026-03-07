@@ -1,4 +1,4 @@
-import { Heart, Baby, Stethoscope, Flower2, Microscope, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Heart, Baby, Stethoscope, Flower2, Microscope, Sparkles, Shield, CircleDot, Syringe, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -6,7 +6,7 @@ import SectionHeader from '@/components/SectionHeader';
 
 export const metadata = {
   title: 'Áreas de Atuação | Dra. Andresa Martin Louzada',
-  description: 'Conheça as áreas de atuação da Dra. Andresa: Ginecologia, Obstetrícia, Pré-natal, Menopausa, Ginecologia Regenerativa e Microscopia Vaginal.',
+  description: 'Conheça as áreas de atuação da Dra. Andresa: Ginecologia, Obstetrícia, Pré-natal, Menopausa, Anticoncepcional, DIU, Implanon e Microscopia Vaginal.',
 };
 
 const areas = [
@@ -43,12 +43,28 @@ const areas = [
     image: '/images/dra-andresa-consultorio-3.jpeg',
   },
   {
-    icon: Sparkles,
-    title: 'Ginecologia Regenerativa',
-    description: 'Procedimentos inovadores com tecnologias de ponta para restauração e rejuvenescimento íntimo feminino.',
-    items: ['Laser íntimo', 'Bioestimuladores de colágeno', 'Ácido hialurônico íntimo', 'Tratamento de incontinência urinária leve', 'Rejuvenescimento vulvovaginal', 'Síndrome geniturinária da menopausa'],
-    color: 'from-teal-400 to-teal-600',
+    icon: Shield,
+    title: 'Anticoncepcional',
+    description: 'Orientação personalizada sobre o método contraceptivo ideal para você, com acompanhamento e ajustes conforme sua necessidade.',
+    items: ['Pílulas combinadas e minipílulas', 'Injeção mensal e trimestral', 'Anel vaginal', 'Adesivo hormonal', 'Orientação personalizada', 'Acompanhamento e ajuste'],
+    color: 'from-pink-400 to-pink-600',
     image: '/images/dra-andresa-consultorio-5.jpeg',
+  },
+  {
+    icon: CircleDot,
+    title: 'DIU',
+    description: 'Inserção e acompanhamento de DIU de cobre e hormonal — método seguro, prático e de longa duração para contracepção.',
+    items: ['DIU de cobre (não hormonal)', 'DIU hormonal (Mirena/Kyleena)', 'Inserção rápida e segura', 'Duração de 5 a 10 anos', 'Acompanhamento pós-inserção', 'Indicação individualizada'],
+    color: 'from-sky-400 to-sky-600',
+    image: '/images/dra-andresa-consultorio-4.jpeg',
+  },
+  {
+    icon: Syringe,
+    title: 'Implanon',
+    description: 'Implante subdérmico contraceptivo com duração de até 3 anos — praticidade e alta eficácia para o seu dia a dia.',
+    items: ['Duração de até 3 anos', 'Inserção rápida no braço', 'Alta eficácia (>99%)', 'Reversível a qualquer momento', 'Sem necessidade de lembrar diariamente', 'Ideal para rotinas agitadas'],
+    color: 'from-teal-400 to-teal-600',
+    image: '/images/dra-andresa-consultorio-6.jpeg',
   },
   {
     icon: Microscope,

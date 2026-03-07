@@ -139,7 +139,7 @@ export const MOTIVOS_BLOQUEIO = [
 /* ═══ CONSTANTS ═══ */
 export const TIPOS_CONSULTA = [
   'Consulta Ginecológica', 'Pré-natal', 'Menopausa',
-  'Ginecologia Regenerativa', 'Microscopia Vaginal', 'Retorno', 'Primeira Consulta',
+  'Anticoncepcional', 'DIU', 'Implanon', 'Microscopia Vaginal', 'Retorno', 'Primeira Consulta',
 ];
 
 export const TIPOS_EXAME = [
@@ -186,7 +186,7 @@ export const TIPOS_SANGUINEO = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'
 
 export const VALORES_CONSULTA: Record<string, number> = {
   'Consulta Ginecológica': 350, 'Pré-natal': 300, 'Menopausa': 350,
-  'Ginecologia Regenerativa': 500, 'Microscopia Vaginal': 350,
+  'Anticoncepcional': 300, 'DIU': 400, 'Implanon': 400, 'Microscopia Vaginal': 350,
   'Retorno': 200, 'Primeira Consulta': 400,
 };
 

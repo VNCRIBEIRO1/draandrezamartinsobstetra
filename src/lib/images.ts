@@ -1,7 +1,9 @@
 /* ─── Image mappings ─── */
 export const IMAGES = {
-  /* Doutora — foto sentada no consultório com logo atrás (extra-1) */
-  doutora: '/images/dra-andresa-extra-1.jpeg',
+  /* Doutora — foto de jaleco branco (homepage) */
+  doutora: '/images/homepage.jpg',
+  /* Foto sobre — parto (usada na página Sobre) */
+  doutoraSobre: '/images/fotosobre.jpg',
   /* Hero background */
   hero: '/images/dra-andresa-consultorio-1.jpeg',
   /* Consultório genérico */
@@ -51,7 +53,6 @@ export const ARTICLE_IMAGES: Record<string, string> = {
   'importancia-pre-natal': IMAGES.post1,
   'microscopia-vaginal-diagnostico': IMAGES.extra3,
   'menopausa-qualidade-vida': IMAGES.extra5,
-  'ginecologia-regenerativa': IMAGES.extra4,
   'exames-ginecologicos-rotina': IMAGES.extra2,
   'cheiro-intimo-normal-anormal': IMAGES.blog3,
   'pilula-do-dia-seguinte': IMAGES.blog4,
@@ -66,8 +67,10 @@ export const AREA_IMAGES: Record<string, string> = {
   'Obstetrícia': IMAGES.post2,
   'Pré-natal': IMAGES.post1,
   'Menopausa': IMAGES.extra5,
-  'Ginecologia Regenerativa': IMAGES.extra4,
   'Microscopia Vaginal': IMAGES.extra3,
+  'Anticoncepcional': IMAGES.blog5,
+  'DIU': IMAGES.extra4,
+  'Implanon': IMAGES.blog4,
   'Saúde da Mulher': IMAGES.blog1,
   'Contracepção': IMAGES.blog5,
 };
