@@ -1,9 +1,12 @@
 import AnimatedSection from '@/components/AnimatedSection';
 import { siteConfig } from '@/lib/site-config';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Política de Privacidade | Dra. Andresa Martin Louzada',
-  description: 'Política de Privacidade e LGPD do site da Dra. Andresa Martin Louzada, Ginecologista e Obstetra.',
+export const metadata: Metadata = {
+  title: 'Política de Privacidade - LGPD | Dra. Andresa Martin Louzada',
+  description: 'Política de Privacidade em conformidade com a LGPD (Lei 13.709/2018) do site da Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente.',
+  alternates: { canonical: '/politica-privacidade' },
+  robots: { index: true, follow: true },
 };
 
 export default function PoliticaPrivacidadePage() {
@@ -25,7 +28,7 @@ export default function PoliticaPrivacidadePage() {
               <p className="text-gray-600 leading-relaxed">
                 <strong>Dra. Andresa Martin Louzada</strong><br />
                 CRM/SP 207702 • RQE 135096<br />
-                Espaço Humanizare — {siteConfig.endereco}, {siteConfig.cidade}<br />
+                Espaço Humanizare — {siteConfig.endereco}, {siteConfig.cidadeCompleta}<br />
                 E-mail: {siteConfig.email}<br />
                 Telefone: {siteConfig.telefone}
               </p>
@@ -170,7 +173,7 @@ export default function PoliticaPrivacidadePage() {
                 <strong>Dra. Andresa Martin Louzada</strong> (Encarregada de Dados)<br />
                 Telefone: {siteConfig.telefone}<br />
                 E-mail: {siteConfig.email}<br />
-                Endereço: {siteConfig.endereco}, {siteConfig.cidade}
+                Endereço: {siteConfig.endereco}, {siteConfig.cidadeCompleta}
               </p>
               <p className="text-gray-500 text-sm mt-4">
                 Você também pode apresentar reclamação junto à Autoridade Nacional de Proteção de Dados (ANPD) — 

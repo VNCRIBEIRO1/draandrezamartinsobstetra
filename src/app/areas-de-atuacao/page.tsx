@@ -3,10 +3,36 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeader from '@/components/SectionHeader';
+import { getBreadcrumbSchema, getServiceSchema, getMedicalWebPageSchema } from '@/lib/seo';
+import { siteConfig } from '@/lib/site-config';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Áreas de Atuação | Dra. Andresa Martin Louzada',
-  description: 'Conheça as áreas de atuação da Dra. Andresa: Ginecologia, Obstetrícia, Pré-natal, Menopausa, Anticoncepcional, DIU, Implanon e Microscopia Vaginal.',
+export const metadata: Metadata = {
+  title: 'Áreas de Atuação - Ginecologista e Obstetra em Presidente Prudente | Dra. Andresa Martin',
+  description:
+    'Serviços de Ginecologia, Obstetrícia, Pré-natal Humanizado, Menopausa, DIU, Implanon, Anticoncepcional e Microscopia Vaginal em Presidente Prudente - SP. Dra. Andresa Martin Louzada no Espaço Humanizare.',
+  keywords: [
+    'ginecologia Presidente Prudente',
+    'obstetrícia Presidente Prudente',
+    'pré-natal humanizado Presidente Prudente',
+    'DIU Presidente Prudente',
+    'Implanon Presidente Prudente',
+    'menopausa tratamento Presidente Prudente',
+    'microscopia vaginal Presidente Prudente',
+    'anticoncepcional Presidente Prudente',
+    'papanicolau Presidente Prudente',
+    'colposcopia Presidente Prudente',
+    'colocar DIU Presidente Prudente',
+    'implante contraceptivo Presidente Prudente',
+    'ginecologista Presidente Prudente',
+    'saúde da mulher Presidente Prudente',
+  ],
+  alternates: { canonical: '/areas-de-atuacao' },
+  openGraph: {
+    title: 'Áreas de Atuação | Ginecologia e Obstetrícia em Presidente Prudente',
+    description: 'Ginecologia, Obstetrícia, Pré-natal, DIU, Implanon, Menopausa e mais. Espaço Humanizare.',
+    url: '/areas-de-atuacao',
+  },
 };
 
 const areas = [
@@ -76,9 +102,33 @@ const areas = [
   },
 ];
 
+const areasSchemas = [
+  getBreadcrumbSchema([
+    { name: 'Início', url: siteConfig.url },
+    { name: 'Áreas de Atuação', url: `${siteConfig.url}/areas-de-atuacao` },
+  ]),
+  getMedicalWebPageSchema({
+    title: 'Áreas de Atuação - Ginecologia e Obstetrícia em Presidente Prudente',
+    description: 'Serviços de Ginecologia, Obstetrícia, Pré-natal, Menopausa, DIU, Implanon e Microscopia Vaginal.',
+    url: `${siteConfig.url}/areas-de-atuacao`,
+  }),
+  ...areas.map((a) =>
+    getServiceSchema({
+      name: `${a.title} em Presidente Prudente`,
+      description: a.description,
+      url: `${siteConfig.url}/areas-de-atuacao#${a.title.toLowerCase().replace(/\s/g, '-')}`,
+    })
+  ),
+];
+
 export default function AreasPage() {
   return (
     <>
+      {/* JSON-LD Structured Data */}
+      {areasSchemas.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
+
       {/* Hero */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-sage-50">
         <div className="container-custom text-center">

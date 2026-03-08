@@ -1,10 +1,29 @@
 import Link from 'next/link';
 import AnimatedSection from '@/components/AnimatedSection';
 import BlogListClient from '@/components/BlogListClient';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Blog Saúde da Mulher | Dra. Andresa Martin Louzada',
-  description: 'Artigos informativos sobre ginecologia, obstetrícia, pré-natal, menopausa e saúde feminina pela Dra. Andresa Martin Louzada.',
+export const metadata: Metadata = {
+  title: 'Blog Saúde da Mulher - Ginecologia e Obstetrícia | Dra. Andresa Martin Presidente Prudente',
+  description:
+    'Artigos sobre ginecologia, obstetrícia, pré-natal, menopausa, DIU, Implanon e saúde feminina. Conteúdo educativo pela Dra. Andresa Martin Louzada, Ginecologista em Presidente Prudente.',
+  keywords: [
+    'blog ginecologia',
+    'blog saúde da mulher',
+    'artigos obstetrícia',
+    'dicas saúde feminina',
+    'pré-natal informações',
+    'DIU informações',
+    'Implanon informações',
+    'menopausa dicas',
+    'ginecologista Presidente Prudente blog',
+  ],
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    title: 'Blog Saúde da Mulher | Dra. Andresa Martin - Ginecologista Presidente Prudente',
+    description: 'Artigos sobre saúde feminina, ginecologia e obstetrícia pela Dra. Andresa Martin Louzada.',
+    url: '/blog',
+  },
 };
 
 export default function BlogPage() {

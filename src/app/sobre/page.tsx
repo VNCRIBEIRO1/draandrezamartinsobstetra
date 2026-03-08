@@ -5,15 +5,54 @@ import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeader from '@/components/SectionHeader';
 import { IMAGES } from '@/lib/images';
 import { siteConfig } from '@/lib/site-config';
+import { getPhysicianSchema, getBreadcrumbSchema, getMedicalWebPageSchema } from '@/lib/seo';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Sobre | Dra. Andresa Martin Louzada',
-  description: 'Conheça a Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente. Formação, experiência e filosofia de cuidado humanizado.',
+export const metadata: Metadata = {
+  title: 'Sobre a Dra. Andresa Martin Louzada - Ginecologista e Obstetra Presidente Prudente',
+  description:
+    'Conheça a Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente - SP. CRM/SP 207702 | RQE 135096. Formada pela UNOESTE, atua no Espaço Humanizare com atendimento humanizado.',
+  keywords: [
+    'Dra Andresa Martin Louzada',
+    'ginecologista Presidente Prudente',
+    'obstetra Presidente Prudente',
+    'CRM 207702',
+    'Espaço Humanizare',
+    'UNOESTE medicina',
+    'médica ginecologista Presidente Prudente',
+    'saúde da mulher Presidente Prudente',
+  ],
+  alternates: { canonical: '/sobre' },
+  openGraph: {
+    title: 'Sobre a Dra. Andresa Martin Louzada | Ginecologista e Obstetra',
+    description: 'Ginecologista e Obstetra em Presidente Prudente. CRM/SP 207702. Formada pela UNOESTE, atendimento humanizado no Espaço Humanizare.',
+    url: '/sobre',
+    type: 'profile',
+    images: [{ url: '/images/doutora.jpg', width: 800, height: 1000, alt: 'Dra. Andresa Martin Louzada - Ginecologista e Obstetra em Presidente Prudente' }],
+  },
 };
+
+const sobreSchemas = [
+  getPhysicianSchema(),
+  getBreadcrumbSchema([
+    { name: 'Início', url: siteConfig.url },
+    { name: 'Sobre', url: `${siteConfig.url}/sobre` },
+  ]),
+  getMedicalWebPageSchema({
+    title: 'Sobre a Dra. Andresa Martin Louzada',
+    description: 'Ginecologista e Obstetra em Presidente Prudente - SP. CRM/SP 207702.',
+    url: `${siteConfig.url}/sobre`,
+  }),
+];
 
 export default function SobrePage() {
   return (
     <>
+      {/* JSON-LD Structured Data */}
+      {sobreSchemas.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
+
       {/* Hero */}
       <section className="pt-32 pb-20 bg-gradient-to-br from-primary-50 via-baby-cream to-sage-50 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">

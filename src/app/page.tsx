@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle2, MapPin, Star, Heart, Baby, Stethoscope, Microscope, Flower2, Sparkles, Shield, CircleDot, Syringe } from 'lucide-react';
+import { ArrowRight, CheckCircle2, MapPin, Star, Heart, Baby, Stethoscope, Microscope, Flower2, Sparkles, Shield, CircleDot, Syringe, HelpCircle } from 'lucide-react';
 import HeroSection from '@/components/HeroSection';
 import SectionHeader from '@/components/SectionHeader';
 import AreaCard from '@/components/AreaCard';
@@ -8,6 +8,25 @@ import BlogCard from '@/components/BlogCard';
 import AnimatedSection from '@/components/AnimatedSection';
 import GoogleReviews from '@/components/GoogleReviews';
 import { IMAGES, getArticleImage } from '@/lib/images';
+import { getHomePageSchemas, HOME_FAQS } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+// ---- SEO: Metadata específica da Home ----
+export const metadata: Metadata = {
+  title: 'Dra. Andresa Martin Louzada | Ginecologista e Obstetra em Presidente Prudente - SP',
+  description:
+    'Dra. Andresa Martin Louzada — Ginecologista e Obstetra em Presidente Prudente, SP. Atendimento humanizado no Espaço Humanizare. Pré-natal, DIU, Implanon, Menopausa, Microscopia Vaginal. CRM/SP 207702. Agende: (18) 99820-7964.',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Dra. Andresa Martin Louzada | Ginecologista e Obstetra em Presidente Prudente - SP',
+    description:
+      'Ginecologista e Obstetra em Presidente Prudente. Pré-natal humanizado, DIU, Implanon, Menopausa. Espaço Humanizare. Agende: (18) 99820-7964.',
+    url: '/',
+    type: 'website',
+  },
+};
 
 const areas = [
   { iconName: 'Heart',      title: 'Ginecologia',         href: '/blog/ginecologia-geral-saude-feminina', description: 'Acompanhamento ginecológico completo em todas as fases da vida da mulher, com exames de rotina, prevenção e tratamento de doenças.' },
@@ -27,8 +46,19 @@ const blogPosts = [
 ];
 
 export default function HomePage() {
+  const schemas = getHomePageSchemas();
+
   return (
     <>
+      {/* JSON-LD Structured Data */}
+      {schemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+
       <HeroSection />
 
       {/* Áreas de Atuação */}
@@ -161,6 +191,35 @@ export default function HomePage() {
               Ver Todos os Artigos <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* FAQ - SEO (Perguntas Frequentes) */}
+      <section className="py-20 bg-white" id="perguntas-frequentes">
+        <div className="container-custom">
+          <AnimatedSection>
+            <SectionHeader
+              badge="Perguntas Frequentes"
+              title="Dúvidas Sobre a Dra. Andresa Martin"
+              subtitle="Encontre respostas para as perguntas mais comuns sobre nossos serviços de ginecologia e obstetrícia em Presidente Prudente."
+            />
+          </AnimatedSection>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {HOME_FAQS.map((faq, index) => (
+              <AnimatedSection key={index} delay={index * 0.05}>
+                <details className="group bg-gradient-to-r from-primary-50 to-baby-cream rounded-2xl border border-primary-100 overflow-hidden">
+                  <summary className="flex items-center gap-3 p-5 cursor-pointer list-none font-semibold text-gray-900 hover:text-primary-600 transition-colors">
+                    <HelpCircle className="w-5 h-5 text-primary-500 flex-shrink-0" />
+                    <span className="flex-1 text-left">{faq.question}</span>
+                    <span className="text-primary-400 group-open:rotate-45 transition-transform text-xl">+</span>
+                  </summary>
+                  <div className="px-5 pb-5 pl-13 text-gray-600 leading-relaxed">
+                    {faq.answer}
+                  </div>
+                </details>
+              </AnimatedSection>
+            ))}
+          </div>
         </div>
       </section>
 

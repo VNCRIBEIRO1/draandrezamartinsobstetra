@@ -298,7 +298,7 @@ export function gerarHTMLSolicitacao(exam: ExamRecord, patient: Patient): string
       <p>${siteConfig.especialidade}</p>
       <p>${siteConfig.consultorio}</p>
       <p>${siteConfig.endereco}</p>
-      <p>${siteConfig.cidade}</p>
+      <p>${siteConfig.cidadeCompleta}</p>
     </div>
     <div class="header-right">
       <p class="crm">${exam.crm || MEDICO_CONFIG.crm}</p>
@@ -389,7 +389,7 @@ export function gerarHTMLSolicitacao(exam: ExamRecord, patient: Patient): string
 
   <!-- RODAPÉ -->
   <div class="footer">
-    <p>${siteConfig.consultorio} — ${siteConfig.endereco} — ${siteConfig.cidade}</p>
+    <p>${siteConfig.consultorio} — ${siteConfig.endereco} — ${siteConfig.cidadeCompleta}</p>
     <p>Tel: ${siteConfig.telefone} | ${siteConfig.email}</p>
     <p style="margin-top:3px;">Documento gerado eletronicamente em ${new Date().toLocaleString('pt-BR')}. Válido sem assinatura digital conforme Res. CFM 2.299/2021.</p>
   </div>
@@ -524,7 +524,7 @@ export function gerarHTMLSolicitacaoMultipla(exams: ExamRecord[], patient: Patie
       <p>${siteConfig.especialidade}</p>
       <p>${siteConfig.consultorio}</p>
       <p>${siteConfig.endereco}</p>
-      <p>${siteConfig.cidade}</p>
+      <p>${siteConfig.cidadeCompleta}</p>
     </div>
     <div class="header-right">
       <p class="crm">${MEDICO_CONFIG.crm}</p>
@@ -598,7 +598,7 @@ export function gerarHTMLSolicitacaoMultipla(exams: ExamRecord[], patient: Patie
   </div>
 
   <div class="footer">
-    <p>${siteConfig.consultorio} — ${siteConfig.endereco} — ${siteConfig.cidade}</p>
+    <p>${siteConfig.consultorio} — ${siteConfig.endereco} — ${siteConfig.cidadeCompleta}</p>
     <p>Tel: ${siteConfig.telefone} | ${siteConfig.email}</p>
     <p style="margin-top:3px;">Documento gerado eletronicamente em ${new Date().toLocaleString('pt-BR')}. Válido sem assinatura digital conforme Res. CFM 2.299/2021.</p>
   </div>

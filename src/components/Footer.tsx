@@ -41,6 +41,9 @@ export default function Footer() {
               Acolhendo a mulher em todas as fases da vida em Presidente Prudente e região.
             </p>
             <p className="text-secondary-400 text-sm font-medium">CRM/SP 207702 • RQE 135096</p>
+            <p className="text-secondary-500 text-xs mt-2">
+              Ginecologista e Obstetra em Presidente Prudente, SP
+            </p>
           </div>
 
           {/* Column 2 */}
@@ -114,7 +117,7 @@ export default function Footer() {
       <div className="border-t border-secondary-800/50">
         <div className="container-custom py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-secondary-400 text-xs text-center md:text-left">
-            © {new Date().getFullYear()} Dra. Andresa Martin Louzada — Ginecologista e Obstetra. Todos os direitos reservados.
+            © {new Date().getFullYear()} Dra. Andresa Martin Louzada — Ginecologista e Obstetra em Presidente Prudente, SP. CRM/SP 207702 | RQE 135096. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-6">
             <Link href="/politica-privacidade" className="text-secondary-400 hover:text-primary-200 text-xs transition-colors">

@@ -1,9 +1,12 @@
 import AnimatedSection from '@/components/AnimatedSection';
 import { siteConfig } from '@/lib/site-config';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Termos de Uso | Dra. Andresa Martin Louzada',
-  description: 'Termos de uso do site da Dra. Andresa Martin Louzada, Ginecologista e Obstetra.',
+  description: 'Termos de uso do site da Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente - SP.',
+  alternates: { canonical: '/termos-de-uso' },
+  robots: { index: true, follow: true },
 };
 
 export default function TermosDeUsoPage() {
@@ -66,7 +69,7 @@ export default function TermosDeUsoPage() {
                 <strong>Dra. Andresa Martin Louzada</strong><br />
                 Telefone: {siteConfig.telefone}<br />
                 E-mail: {siteConfig.email}<br />
-                Endereço: {siteConfig.endereco}, {siteConfig.cidade}
+                Endereço: {siteConfig.endereco}, {siteConfig.cidadeCompleta}
               </p>
             </div>
           </div>

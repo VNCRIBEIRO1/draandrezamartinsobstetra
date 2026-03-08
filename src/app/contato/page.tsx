@@ -3,15 +3,46 @@ import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeader from '@/components/SectionHeader';
 import ContactForm from '@/components/ContactForm';
 import { siteConfig } from '@/lib/site-config';
+import { getLocalBusinessSchema, getBreadcrumbSchema } from '@/lib/seo';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Contato | Dra. Andresa Martin Louzada',
-  description: 'Entre em contato com a Dra. Andresa Martin Louzada. Agende sua consulta no Espaço Humanizare em Presidente Prudente.',
+export const metadata: Metadata = {
+  title: 'Contato e Agendamento - Ginecologista Presidente Prudente | Dra. Andresa Martin',
+  description:
+    'Agende sua consulta com a Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente. Espaço Humanizare, Av. Mathias Mendes Cardoso, 460. WhatsApp: (18) 99820-7964.',
+  keywords: [
+    'agendar consulta ginecologista Presidente Prudente',
+    'marcar consulta ginecologista Presidente Prudente',
+    'contato ginecologista Presidente Prudente',
+    'Espaço Humanizare endereço',
+    'Espaço Humanizare Presidente Prudente',
+    'telefone ginecologista Presidente Prudente',
+    'WhatsApp ginecologista Presidente Prudente',
+  ],
+  alternates: { canonical: '/contato' },
+  openGraph: {
+    title: 'Contato | Agende com a Dra. Andresa Martin - Ginecologista Presidente Prudente',
+    description: 'Agende consulta no Espaço Humanizare. Av. Mathias Mendes Cardoso, 460. WhatsApp: (18) 99820-7964.',
+    url: '/contato',
+  },
 };
+
+const contatoSchemas = [
+  getLocalBusinessSchema(),
+  getBreadcrumbSchema([
+    { name: 'Início', url: siteConfig.url },
+    { name: 'Contato', url: `${siteConfig.url}/contato` },
+  ]),
+];
 
 export default function ContatoPage() {
   return (
     <>
+      {/* JSON-LD Structured Data */}
+      {contatoSchemas.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
+
       {/* Hero */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-primary-50 via-baby-cream to-secondary-50">
         <div className="container-custom text-center">
@@ -45,7 +76,7 @@ export default function ContatoPage() {
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Endereço</h3>
                     <p className="text-gray-600">{siteConfig.endereco}</p>
-                    <p className="text-gray-600">{siteConfig.cidade}</p>
+                    <p className="text-gray-600">{siteConfig.cidadeCompleta}</p>
                     <p className="text-sm text-primary-500 mt-1">{siteConfig.consultorio}</p>
                   </div>
                 </div>
