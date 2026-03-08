@@ -34,7 +34,7 @@ export const siteConfig = {
   longitude: -51.3889,
 
   // ---- Web ----
-  url: 'https://draandrezamartinsobstetra.vercel.app',
+  url: 'https://draandresamartin.com.br',
   instagram: 'https://instagram.com/dra.andreamartin',
   instagramHandle: '@dra.andreamartin',
 

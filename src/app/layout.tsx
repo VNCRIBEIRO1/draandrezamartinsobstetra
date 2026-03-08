@@ -51,7 +51,10 @@ export const metadata: Metadata = {
   // ---- Category ----
   category: 'Saúde',
 
-  // ---- Robots avançado ----
+  // ---- Google Search Console Verification ----
+  verification: {
+    google: '1j757xUijbjwadZURaWaYOVvllrJBgfmfx9qDF',
+  },
   robots: {
     index: true,
     follow: true,
