@@ -1,79 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Clock, Calendar, Tag, ArrowRight } from 'lucide-react';
 import AnimatedSection from '@/components/AnimatedSection';
 import VideoEmbed from '@/components/VideoEmbed';
 import { IMAGES, getArticleImage } from '@/lib/images';
-import { articles as staticArticles, articlesList, type Article } from '@/lib/articles';
+import { articlesList, type Article } from '@/lib/articles';
 
 interface BlogArticleClientProps {
   slug: string;
   staticArticle: (Article & { slug: string }) | null;
 }
 
-interface StoredArticle {
-  id: string;
-  slug: string;
-  title: string;
-  category: string;
-  date: string;
-  readTime: string;
-  content: string[];
-  videoUrl?: string;
-  published: boolean;
-}
-
 export default function BlogArticleClient({ slug, staticArticle }: BlogArticleClientProps) {
-  const [article, setArticle] = useState<Article | null>(staticArticle);
-  const [otherArticles, setOtherArticles] = useState<{ slug: string; title: string; category: string; date: string; readTime: string; excerpt: string }[]>(
-    articlesList.filter(a => a.slug !== slug).slice(0, 3).map(a => ({ slug: a.slug, title: a.title, category: a.category, date: a.date, readTime: a.readTime, excerpt: a.excerpt }))
-  );
-
-  // On mount, check localStorage for admin-edited version
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('dra_blog_articles');
-      if (stored) {
-        const adminArticles: StoredArticle[] = JSON.parse(stored);
-        // Look for this slug in admin articles
-        const adminVersion = adminArticles.find(a => a.slug === slug && a.published);
-        if (adminVersion) {
-          setArticle({
-            title: adminVersion.title,
-            category: adminVersion.category,
-            date: adminVersion.date,
-            readTime: adminVersion.readTime,
-            content: adminVersion.content,
-            videoUrl: adminVersion.videoUrl,
-          });
-        }
-
-        // Also merge admin articles into "related" list
-        const allSlugs = new Set([...Object.keys(staticArticles), ...adminArticles.filter(a => a.published).map(a => a.slug)]);
-        const others: { slug: string; title: string; category: string; date: string; readTime: string; excerpt: string }[] = [];
-        allSlugs.forEach(s => {
-          if (s === slug) return;
-          const adminA = adminArticles.find(a => a.slug === s && a.published);
-          const staticA = staticArticles[s];
-          const src = adminA || staticA;
-          if (src) {
-            others.push({
-              slug: s,
-              title: src.title,
-              category: src.category,
-              date: src.date,
-              readTime: src.readTime,
-              excerpt: src.content[0] || '',
-            });
-          }
-        });
-        setOtherArticles(others.slice(0, 3));
-      }
-    } catch { /* ignore */ }
-  }, [slug]);
+  // Blog articles are served from static data — no localStorage needed
+  const article = staticArticle;
+  const otherArticles = articlesList.filter(a => a.slug !== slug).slice(0, 3).map(a => ({ slug: a.slug, title: a.title, category: a.category, date: a.date, readTime: a.readTime, excerpt: a.excerpt }));
 
   if (!article) return null;
 

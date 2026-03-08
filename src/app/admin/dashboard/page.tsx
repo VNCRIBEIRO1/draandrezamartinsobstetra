@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Calendar, Clock, Users, FileText, LogOut, Plus, Trash2,
@@ -16,7 +16,6 @@ import FinanceTab from '@/components/admin/FinanceTab';
 import {
   type UserRole, type BlockedDate,
   BLOCK_TYPE_LABELS, MOTIVOS_BLOQUEIO, isDateBlocked, isDateFullyBlocked,
-  LS_KEYS as TYPE_LS_KEYS,
 } from '@/lib/admin-types';
 
 /* ═══════════ TYPES ═══════════ */
@@ -167,64 +166,107 @@ export default function DashboardPage() {
     })();
   }, [router]);
 
-  /* ── Load Data ── */
+  /* ── Load Data from DB ── */
   useEffect(() => {
-    const a = localStorage.getItem('dra_appointments');
-    const s = localStorage.getItem('dra_slots');
-    const b = localStorage.getItem('dra_blog_articles');
-    if (a) setAppointments(JSON.parse(a));
-    if (s) { setSlots(JSON.parse(s)); } else {
-      const def: AvailableSlot[] = [];
-      DIAS_SEMANA_FULL.forEach((dia) => {
-        const hrs = dia === 'Sábado' ? HORARIOS.filter(h => parseInt(h) < 12) : HORARIOS;
-        hrs.forEach(h => def.push({ id: `${dia}-${h}`, dia, horario: h, ativo: true }));
-      });
-      setSlots(def);
-    }
-    if (b) {
-      const stored: BlogArticle[] = JSON.parse(b);
-      const merged = stored.map((art) => {
-        if ((!art.content || art.content.length === 0) && articles[art.slug]) {
-          return { ...art, content: articles[art.slug].content };
+    (async () => {
+      try {
+        // Load appointments
+        const aRes = await fetch('/api/db/appointments');
+        if (aRes.ok) { const a = await aRes.json(); setAppointments(a); }
+
+        // Load slots
+        const sRes = await fetch('/api/db/available_slots');
+        if (sRes.ok) {
+          const s = await sRes.json();
+          if (s.length > 0) { setSlots(s); } else {
+            // Seed default slots
+            const def: AvailableSlot[] = [];
+            DIAS_SEMANA_FULL.forEach((dia) => {
+              const hrs = dia === 'Sábado' ? HORARIOS.filter(h => parseInt(h) < 12) : HORARIOS;
+              hrs.forEach(h => def.push({ id: `${dia}-${h}`, dia, horario: h, ativo: true }));
+            });
+            setSlots(def);
+            await fetch('/api/db/available_slots', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(def) });
+          }
         }
-        return art;
-      });
-      setBlogArticles(merged);
-    } else {
-      setBlogArticles(DEFAULT_ARTICLES);
-    }
+
+        // Blog articles are static (from articles.ts), no DB needed
+        setBlogArticles(DEFAULT_ARTICLES);
+      } catch (err) { console.error('[Dashboard] Load error:', err); }
+    })();
   }, []);
 
-  /* ── Save Data ── */
-  useEffect(() => { localStorage.setItem('dra_appointments', JSON.stringify(appointments)); }, [appointments]);
-  useEffect(() => { if (slots.length > 0) localStorage.setItem('dra_slots', JSON.stringify(slots)); }, [slots]);
-  useEffect(() => { localStorage.setItem('dra_blog_articles', JSON.stringify(blogArticles)); }, [blogArticles]);
+  /* ── Save Data is now handled per-action via API calls ── */
+  /* Appointments, slots, and blocked dates are saved to DB on each CRUD operation */
 
-  /* ── Load/Save Blocked Dates ── */
+  /* ── Load Blocked Dates from DB ── */
   useEffect(() => {
-    const bd = localStorage.getItem(TYPE_LS_KEYS.blockedDates);
-    if (bd) try { setBlockedDates(JSON.parse(bd)); } catch { /* ignore */ }
+    (async () => {
+      try {
+        const res = await fetch('/api/db/blocked_dates');
+        if (res.ok) { const bd = await res.json(); setBlockedDates(bd); }
+      } catch { /* ignore */ }
+    })();
   }, []);
-  useEffect(() => {
-    localStorage.setItem(TYPE_LS_KEYS.blockedDates, JSON.stringify(blockedDates));
-  }, [blockedDates]);
 
-  /* ── Data Refresh (sync with ChatBot in real-time) ── */
+  /* ── Sync Slots to DB on change (debounced) ── */
+  const slotsInitRef = useRef(false);
   useEffect(() => {
-    const interval = setInterval(() => {
-      const stored = localStorage.getItem('dra_appointments');
-      if (stored) {
-        try {
-          const parsed: Appointment[] = JSON.parse(stored);
+    if (!slotsInitRef.current) { slotsInitRef.current = true; return; }
+    if (slots.length === 0) return;
+    const t = setTimeout(async () => {
+      try {
+        // Batch update: delete all then re-insert
+        await fetch('/api/db/available_slots', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ deleteAll: true }) });
+        await fetch('/api/db/available_slots', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(slots) });
+      } catch { /* ignore */ }
+    }, 1000);
+    return () => clearTimeout(t);
+  }, [slots]);
+
+  /* ── Data Refresh (poll DB every 5s for ChatBot sync) ── */
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch('/api/db/appointments');
+        if (res.ok) {
+          const parsed: Appointment[] = await res.json();
           setAppointments(prev => {
-            if (JSON.stringify(prev) !== stored) return parsed;
+            if (JSON.stringify(prev) !== JSON.stringify(parsed)) return parsed;
             return prev;
           });
-        } catch { /* ignore parse errors */ }
-      }
-    }, 3000);
+        }
+      } catch { /* ignore */ }
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  /* ── DB Persistence Helpers ── */
+  const dbSaveAppointment = async (appt: Appointment) => {
+    await fetch('/api/db/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(appt) });
+  };
+  const dbUpdateAppointment = async (appt: Partial<Appointment> & { id: string }) => {
+    await fetch('/api/db/appointments', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(appt) });
+  };
+  const dbDeleteAppointment = async (id: string) => {
+    await fetch('/api/db/appointments', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+  };
+  const dbSaveSlot = async (slot: AvailableSlot) => {
+    await fetch('/api/db/available_slots', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(slot) });
+  };
+  const dbUpdateSlot = async (slot: Partial<AvailableSlot> & { id: string }) => {
+    await fetch('/api/db/available_slots', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(slot) });
+  };
+  const dbSaveBlock = async (block: BlockedDate) => {
+    await fetch('/api/db/blocked_dates', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(block) });
+  };
+  const dbDeleteBlock = async (id: string) => {
+    await fetch('/api/db/blocked_dates', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+  };
+  const dbDeleteBlocksByDate = async (dateStr: string) => {
+    const toDelete = blockedDates.filter(b => dateStr >= b.dataInicio && dateStr <= b.dataFim);
+    await Promise.all(toDelete.map(b => dbDeleteBlock(b.id)));
+  };
 
   /* ── ChatBot Pending Alerts ── */
   const chatbotPending = useMemo(() =>
@@ -234,6 +276,7 @@ export default function DashboardPage() {
 
   const confirmChatbotAppointment = (id: string) => {
     setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'confirmado' } : a));
+    dbUpdateAppointment({ id, status: 'confirmado' });
   };
 
   /* ── Horários Schedule Helpers ── */
@@ -317,13 +360,15 @@ export default function DashboardPage() {
 
   const bookFromHorarios = (date: string, horario: string) => {
     if (!quickBookData.paciente) return;
-    setAppointments(prev => [...prev, {
+    const newAppt: Appointment = {
       id: Date.now().toString(), paciente: quickBookData.paciente,
       telefone: quickBookData.telefone, tipo: quickBookData.tipo,
       data: date, horario, status: 'pendente',
       observacoes: quickBookData.observacoes,
       criadoEm: new Date().toISOString(), origem: 'manual',
-    }]);
+    };
+    setAppointments(prev => [...prev, newAppt]);
+    dbSaveAppointment(newAppt);
     setSlotDetail(null);
     setQuickBookData({ paciente: '', telefone: '', tipo: TIPOS[0], observacoes: '' });
   };
@@ -345,22 +390,27 @@ export default function DashboardPage() {
       criadoEm: new Date().toISOString(),
     };
     setBlockedDates(prev => [...prev, newBlock]);
+    dbSaveBlock(newBlock);
     setBlockForm({ dataInicio: '', dataFim: '', tipo: 'dia_inteiro', horariosEspecificos: [], motivo: MOTIVOS_BLOQUEIO[0] });
     setShowBlockForm(false);
   };
 
   const deleteBlock = (id: string) => {
     setBlockedDates(prev => prev.filter(b => b.id !== id));
+    dbDeleteBlock(id);
   };
 
   const quickBlockDate = (dateStr: string, tipo: BlockedDate['tipo']) => {
-    setBlockedDates(prev => [...prev, {
+    const newBlock: BlockedDate = {
       id: Date.now().toString(), dataInicio: dateStr, dataFim: dateStr,
       tipo, motivo: 'Bloqueio rápido', criadoEm: new Date().toISOString(),
-    }]);
+    };
+    setBlockedDates(prev => [...prev, newBlock]);
+    dbSaveBlock(newBlock);
   };
 
   const unblockDate = (dateStr: string) => {
+    dbDeleteBlocksByDate(dateStr);
     setBlockedDates(prev => prev.filter(b => !(dateStr >= b.dataInicio && dateStr <= b.dataFim)));
   };
 
@@ -369,12 +419,15 @@ export default function DashboardPage() {
     if (!formData.paciente || !formData.data || !formData.horario) return;
     if (editingAppt) {
       setAppointments(prev => prev.map(a => a.id === editingAppt.id ? { ...a, ...formData } : a));
+      dbUpdateAppointment({ id: editingAppt.id, ...formData });
       setEditingAppt(null);
     } else {
-      setAppointments(prev => [...prev, {
+      const newAppt: Appointment = {
         id: Date.now().toString(), ...formData, status: 'pendente',
         criadoEm: new Date().toISOString(), origem: 'manual',
-      }]);
+      };
+      setAppointments(prev => [...prev, newAppt]);
+      dbSaveAppointment(newAppt);
     }
     setFormData({ paciente: '', telefone: '', tipo: TIPOS[0], data: '', horario: '', observacoes: '' });
     setShowForm(false);
@@ -549,39 +602,69 @@ export default function DashboardPage() {
 
         <div className="p-4 md:p-6 max-w-[1400px]">
 
-          {/* Aviso de Segurança — Backup e LGPD */}
-          {userRole === 'medica' && !localStorage.getItem('dra_backup_dismissed') && (
-            <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
-              <ShieldCheck className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+          {/* Informativo — Dados no Servidor (Neon PostgreSQL) */}
+          {userRole === 'medica' && (
+            <div className="mb-6 bg-green-50 border border-green-200 rounded-2xl p-4 flex items-start gap-3">
+              <ShieldCheck className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-bold text-amber-800">⚠️ Dados armazenados localmente</p>
-                <p className="text-xs text-amber-700 mt-1">
-                  Os dados de pacientes e consultas estão salvos no navegador (localStorage). 
-                  Limpar o cache apagará tudo. Recomendamos <strong>exportar regularmente</strong> seus dados como backup.
-                  Em conformidade com a LGPD, dados de saúde devem ser armazenados em servidor seguro.
+                <p className="text-sm font-bold text-green-800">✅ Dados armazenados em servidor seguro</p>
+                <p className="text-xs text-green-700 mt-1">
+                  Todos os dados de pacientes, consultas e agendamentos estão salvos em banco de dados PostgreSQL (Neon) com criptografia SSL.
+                  Em conformidade com a LGPD, seus dados estão protegidos. Você pode exportar um backup a qualquer momento.
                 </p>
                 <div className="flex gap-2 mt-3">
-                  <button onClick={() => {
-                    const data = {
-                      exportadoEm: new Date().toISOString(),
-                      pacientes: JSON.parse(localStorage.getItem('dra_patients') || '[]'),
-                      consultas: JSON.parse(localStorage.getItem('dra_consultations') || '[]'),
-                      exames: JSON.parse(localStorage.getItem('dra_exams') || '[]'),
-                      pagamentos: JSON.parse(localStorage.getItem('dra_payments') || '[]'),
-                      agendamentos: JSON.parse(localStorage.getItem('dra_appointments') || '[]'),
-                    };
-                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url; a.download = `backup-draandresa-${new Date().toISOString().split('T')[0]}.json`;
-                    a.click(); URL.revokeObjectURL(url);
-                  }} className="px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded-lg hover:bg-amber-600">
+                  <button onClick={async () => {
+                    try {
+                      const [pRes, cRes, eRes, pgRes, aRes] = await Promise.all([
+                        fetch('/api/db/patients'), fetch('/api/db/consultations'),
+                        fetch('/api/db/exams'), fetch('/api/db/payments'),
+                        fetch('/api/db/appointments'),
+                      ]);
+                      const data = {
+                        exportadoEm: new Date().toISOString(),
+                        pacientes: pRes.ok ? await pRes.json() : [],
+                        consultas: cRes.ok ? await cRes.json() : [],
+                        exames: eRes.ok ? await eRes.json() : [],
+                        pagamentos: pgRes.ok ? await pgRes.json() : [],
+                        agendamentos: aRes.ok ? await aRes.json() : [],
+                      };
+                      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url; a.download = `backup-draandresa-${new Date().toISOString().split('T')[0]}.json`;
+                      a.click(); URL.revokeObjectURL(url);
+                    } catch { alert('❌ Erro ao exportar backup'); }
+                  }} className="px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600">
                     📥 Exportar Backup JSON
                   </button>
-                  <button onClick={() => { localStorage.setItem('dra_backup_dismissed', 'true'); window.location.reload(); }}
-                    className="px-3 py-1.5 bg-white text-amber-700 text-xs font-medium rounded-lg border border-amber-300 hover:bg-amber-50">
-                    Entendi, não mostrar novamente
-                  </button>
+                  <label className="px-3 py-1.5 bg-blue-500 text-white text-xs font-medium rounded-lg hover:bg-blue-600 cursor-pointer">
+                    📤 Importar Backup
+                    <input type="file" accept=".json" className="hidden" onChange={async e => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const reader = new FileReader();
+                      reader.onload = async (event) => {
+                        try {
+                          const data = JSON.parse(event.target?.result as string);
+                          const tables = [
+                            { key: 'agendamentos', table: 'appointments' },
+                            { key: 'pacientes', table: 'patients' },
+                            { key: 'consultas', table: 'consultations' },
+                            { key: 'exames', table: 'exams' },
+                            { key: 'pagamentos', table: 'payments' },
+                          ];
+                          for (const { key, table } of tables) {
+                            if (data[key] && Array.isArray(data[key])) {
+                              await fetch(`/api/db/${table}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data[key]) });
+                            }
+                          }
+                          alert('✅ Backup importado com sucesso! Recarregando...');
+                          setTimeout(() => window.location.reload(), 1000);
+                        } catch { alert('❌ Erro ao importar: arquivo inválido'); }
+                      };
+                      reader.readAsText(file);
+                    }} />
+                  </label>
                 </div>
               </div>
             </div>
@@ -642,7 +725,7 @@ export default function DashboardPage() {
                             className="px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600 transition-colors inline-flex items-center gap-1">
                             <CheckCircle2 className="w-3.5 h-3.5" /> Confirmar
                           </button>
-                          <button onClick={() => setAppointments(prev => prev.map(x => x.id === a.id ? { ...x, status: 'cancelado' } : x))}
+                          <button onClick={() => { setAppointments(prev => prev.map(x => x.id === a.id ? { ...x, status: 'cancelado' } : x)); dbUpdateAppointment({ id: a.id, status: 'cancelado' }); }}
                             className="px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors inline-flex items-center gap-1">
                             <XCircle className="w-3.5 h-3.5" /> Recusar
                           </button>
@@ -817,7 +900,7 @@ export default function DashboardPage() {
                             </div>
                             <div className="mt-2 flex gap-1">
                               {(['pendente', 'confirmado', 'realizado', 'cancelado'] as const).map(st => (
-                                <button key={st} onClick={() => setAppointments(prev => prev.map(x => x.id === a.id ? { ...x, status: st } : x))}
+                                <button key={st} onClick={() => { setAppointments(prev => prev.map(x => x.id === a.id ? { ...x, status: st } : x)); dbUpdateAppointment({ id: a.id, status: st }); }}
                                   className={`text-[10px] px-2 py-0.5 rounded-full border transition-all ${a.status === st ? STATUS_CONFIG[st].bg + ' font-semibold' : 'bg-white/50 text-gray-500 border-gray-200 hover:bg-white'}`}>
                                   {STATUS_CONFIG[st].label}
                                 </button>
@@ -860,7 +943,7 @@ export default function DashboardPage() {
                             <td className="px-4 py-3 text-gray-600">{formatDateBR(a.data)}</td>
                             <td className="px-4 py-3 text-gray-600">{a.horario}</td>
                             <td className="px-4 py-3">
-                              <select value={a.status} onChange={e => setAppointments(prev => prev.map(x => x.id === a.id ? { ...x, status: e.target.value as Appointment['status'] } : x))}
+                              <select value={a.status} onChange={e => { const newSt = e.target.value as Appointment['status']; setAppointments(prev => prev.map(x => x.id === a.id ? { ...x, status: newSt } : x)); dbUpdateAppointment({ id: a.id, status: newSt }); }}
                                 className={`text-xs px-2 py-1 rounded-lg border font-medium ${STATUS_CONFIG[a.status].bg}`}>
                                 <option value="pendente">Pendente</option>
                                 <option value="confirmado">Confirmado</option>
@@ -880,7 +963,7 @@ export default function DashboardPage() {
                                 const msg = `Olá, ${a.paciente}! 🌸\n\nLembrete da sua consulta:\n\n🏥 *${a.tipo}*\n📅 *${dias[dt.getDay()]}, ${d} de ${meses[parseInt(m)-1]} de ${y}*\n⏰ *${a.horario}*\n📍 Espaço Humanizare\n\nConfirme sua presença respondendo esta mensagem.\n\nDra. Andresa Martin Louzada\nCRM/SP 207702`;
                                 window.open(`https://wa.me/${telFmt}?text=${encodeURIComponent(msg)}`, '_blank');
                               }} className="p-1 text-gray-400 hover:text-green-600" title="Enviar lembrete WhatsApp"><Phone className="w-4 h-4" /></button>
-                              <button onClick={() => setAppointments(prev => prev.filter(x => x.id !== a.id))} className="p-1 text-gray-400 hover:text-red-600" title="Excluir"><Trash2 className="w-4 h-4" /></button>
+                              <button onClick={() => { setAppointments(prev => prev.filter(x => x.id !== a.id)); dbDeleteAppointment(a.id); }} className="p-1 text-gray-400 hover:text-red-600" title="Excluir"><Trash2 className="w-4 h-4" /></button>
                             </td>
                           </tr>
                         ))}
@@ -1189,6 +1272,7 @@ export default function DashboardPage() {
                                   onClick={() => {
                                     setAppointments(prev => prev.map(x => x.id === slotDetail.appointment!.id ? { ...x, status: st } : x));
                                     setSlotDetail(prev => prev ? { ...prev, appointment: { ...prev.appointment!, status: st } } : null);
+                                    dbUpdateAppointment({ id: slotDetail.appointment!.id, status: st });
                                   }}
                                   className={`text-xs px-3 py-1.5 rounded-lg border font-medium transition-all ${slotDetail.appointment!.status === st ? STATUS_CONFIG[st].bg + ' ring-2 ring-offset-1' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}
                                 >
@@ -1202,7 +1286,7 @@ export default function DashboardPage() {
                               className="flex-1 px-4 py-2 bg-primary-500 text-white text-sm font-medium rounded-xl hover:bg-primary-600 inline-flex items-center justify-center gap-2">
                               <Edit3 className="w-4 h-4" /> Editar
                             </button>
-                            <button onClick={() => { setAppointments(prev => prev.filter(x => x.id !== slotDetail.appointment!.id)); setSlotDetail(null); }}
+                            <button onClick={() => { dbDeleteAppointment(slotDetail.appointment!.id); setAppointments(prev => prev.filter(x => x.id !== slotDetail.appointment!.id)); setSlotDetail(null); }}
                               className="px-4 py-2 bg-red-50 text-red-600 text-sm font-medium rounded-xl hover:bg-red-100 inline-flex items-center gap-2">
                               <Trash2 className="w-4 h-4" /> Excluir
                             </button>

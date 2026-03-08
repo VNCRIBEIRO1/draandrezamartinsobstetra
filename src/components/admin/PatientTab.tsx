@@ -12,7 +12,7 @@ import {
   TIPOS_CONSULTA, TIPOS_EXAME, STATUS_SAUDE_CONFIG, STATUS_EXAME_CONFIG,
   STATUS_PAGAMENTO_CONFIG, FORMAS_PAGAMENTO, CONVENIOS, TIPOS_SANGUINEO,
   VALORES_CONSULTA, ESTADOS_CIVIS, MEDICO_CONFIG, CIDS_COMUNS, PREPARO_EXAME,
-  calcularIdade, calcularIMC, formatarMoeda, formatDateBR, toISO, LS_KEYS,
+  calcularIdade, calcularIMC, formatarMoeda, formatDateBR, toISO,
   type UserRole,
 } from '@/lib/admin-types';
 import {
@@ -126,23 +126,26 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
   const [viewExam, setViewExam] = useState<ExamRecord | null>(null);
   const [selectedExamIds, setSelectedExamIds] = useState<Set<string>>(new Set());
 
-  /* ── Load/Save ── */
+  /* ── Load from DB ── */
   useEffect(() => {
-    try {
-      const p = localStorage.getItem(LS_KEYS.patients);
-      const c = localStorage.getItem(LS_KEYS.consultations);
-      const e = localStorage.getItem(LS_KEYS.exams);
-      const pay = localStorage.getItem(LS_KEYS.payments);
-      if (p) setPatients(JSON.parse(p));
-      if (c) setConsultations(JSON.parse(c));
-      if (e) setExams(JSON.parse(e));
-      if (pay) setPayments(JSON.parse(pay));
-    } catch { /* ignore corrupt data */ }
+    (async () => {
+      try {
+        const [pRes, cRes, eRes, payRes] = await Promise.all([
+          fetch('/api/db/patients'), fetch('/api/db/consultations'),
+          fetch('/api/db/exams'), fetch('/api/db/payments'),
+        ]);
+        if (pRes.ok) setPatients(await pRes.json());
+        if (cRes.ok) setConsultations(await cRes.json());
+        if (eRes.ok) setExams(await eRes.json());
+        if (payRes.ok) setPayments(await payRes.json());
+      } catch { /* ignore */ }
+    })();
   }, []);
 
-  useEffect(() => { if (patients.length > 0) localStorage.setItem(LS_KEYS.patients, JSON.stringify(patients)); }, [patients]);
-  useEffect(() => { localStorage.setItem(LS_KEYS.consultations, JSON.stringify(consultations)); }, [consultations]);
-  useEffect(() => { localStorage.setItem(LS_KEYS.exams, JSON.stringify(exams)); }, [exams]);
+  /* ── DB persistence helpers ── */
+  const dbPost = (table: string, data: unknown) => fetch(`/api/db/${table}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  const dbPut = (table: string, data: unknown) => fetch(`/api/db/${table}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  const dbDel = (table: string, id: string) => fetch(`/api/db/${table}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
 
   /* ── Derived Data ── */
   const selectedPatient = useMemo(() => patients.find(p => p.id === selectedId) || null, [patients, selectedId]);
@@ -172,9 +175,13 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
     if (!pForm.nome || !pForm.telefone) { alert('Nome e telefone são obrigatórios.'); return; }
     const now = new Date().toISOString();
     if (editingP) {
-      setPatients(prev => prev.map(p => p.id === editingP.id ? { ...p, ...pForm, atualizadoEm: now } as Patient : p));
+      const updated = { ...editingP, ...pForm, atualizadoEm: now };
+      setPatients(prev => prev.map(p => p.id === editingP.id ? updated as Patient : p));
+      dbPut('patients', { id: editingP.id, ...pForm, atualizadoEm: now });
     } else {
-      setPatients(prev => [...prev, { ...pForm, id: Date.now().toString(), criadoEm: now, atualizadoEm: now } as Patient]);
+      const newP = { ...pForm, id: Date.now().toString(), criadoEm: now, atualizadoEm: now } as Patient;
+      setPatients(prev => [...prev, newP]);
+      dbPost('patients', newP);
     }
     resetPForm();
   };
@@ -186,6 +193,9 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
     setConsultations(prev => prev.filter(c => c.pacienteId !== id));
     setExams(prev => prev.filter(e => e.pacienteId !== id));
     setPayments(prev => prev.filter(p => p.pacienteId !== id));
+    dbDel('patients', id); // cascades to consultations & exams in DB
+    // Delete payments manually (no cascade)
+    payments.filter(p => p.pacienteId === id).forEach(p => dbDel('payments', p.id));
     if (selectedId === id) setSelectedId(null);
   };
   const resetPForm = () => { setShowPForm(false); setEditingP(null); setPForm(defaultPForm()); };
@@ -195,13 +205,16 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
     if (!cForm.queixaPrincipal || !cForm.data || !selectedId) { alert('Data e queixa principal são obrigatórios.'); return; }
     if (editingC) {
       setConsultations(prev => prev.map(c => c.id === editingC.id ? { ...c, ...cForm } as Consultation : c));
+      dbPut('consultations', { id: editingC.id, ...cForm });
     } else {
-      setConsultations(prev => [...prev, { ...cForm, id: Date.now().toString(), pacienteId: selectedId, criadoEm: new Date().toISOString() } as Consultation]);
+      const newC = { ...cForm, id: Date.now().toString(), pacienteId: selectedId, criadoEm: new Date().toISOString() } as Consultation;
+      setConsultations(prev => [...prev, newC]);
+      dbPost('consultations', newC);
     }
     resetCForm();
   };
   const editConsultation = (c: Consultation) => { setEditingC(c); setCForm({ ...c }); setShowCForm(true); };
-  const deleteConsultation = (id: string) => { if (confirm('Excluir esta consulta?')) setConsultations(prev => prev.filter(c => c.id !== id)); };
+  const deleteConsultation = (id: string) => { if (confirm('Excluir esta consulta?')) { setConsultations(prev => prev.filter(c => c.id !== id)); dbDel('consultations', id); } };
   const resetCForm = () => { setShowCForm(false); setEditingC(null); setCForm(defaultCForm()); };
 
   /* ── Exam CRUD ── */
@@ -209,21 +222,27 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
     if (!eForm.nome || !eForm.indicacaoClinica || !selectedId) { alert('Nome do exame e indicação clínica são obrigatórios (CFM).'); return; }
     if (editingE) {
       setExams(prev => prev.map(e => e.id === editingE.id ? { ...e, ...eForm } as ExamRecord : e));
+      dbPut('exams', { id: editingE.id, ...eForm });
     } else {
       const preparo = PREPARO_EXAME[eForm.tipo || ''] || eForm.preparoEspecial || '';
-      setExams(prev => [...prev, {
+      const newE = {
         ...eForm, preparoEspecial: eForm.preparoEspecial || preparo,
         id: Date.now().toString(), pacienteId: selectedId, criadoEm: new Date().toISOString(),
-      } as ExamRecord]);
+      } as ExamRecord;
+      setExams(prev => [...prev, newE]);
+      dbPost('exams', newE);
     }
     resetEForm();
   };
   const editExam = (ex: ExamRecord) => { setEditingE(ex); setEForm({ ...ex }); setShowEForm(true); };
   const updateExamStatus = (id: string, status: ExamRecord['status']) => {
     setExams(prev => prev.map(e => e.id === id ? { ...e, status } : e));
+    dbPut('exams', { id, status });
   };
   const updateExamResult = (id: string, resultado: string) => {
-    setExams(prev => prev.map(e => e.id === id ? { ...e, resultado, status: 'realizado' as const, dataResultado: e.dataResultado || toISO(new Date()) } : e));
+    const dataRes = toISO(new Date());
+    setExams(prev => prev.map(e => e.id === id ? { ...e, resultado, status: 'realizado' as const, dataResultado: e.dataResultado || dataRes } : e));
+    dbPut('exams', { id, resultado, status: 'realizado', dataResultado: dataRes });
   };
   const handleFileUpload = (examId: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -231,14 +250,16 @@ export default function PatientTab({ role = 'medica' }: { role?: UserRole }) {
     if (file.size > 5 * 1024 * 1024) { alert('Arquivo muito grande. Máximo: 5MB'); return; }
     const reader = new FileReader();
     reader.onload = () => {
-      setExams(prev => prev.map(ex => ex.id === examId ? {
-        ...ex, arquivoBase64: reader.result as string, arquivoNome: file.name,
-        arquivoTipo: file.type, status: 'laudo_disponivel' as const, dataResultado: ex.dataResultado || toISO(new Date()),
-      } : ex));
+      const updateData = {
+        arquivoBase64: reader.result as string, arquivoNome: file.name,
+        arquivoTipo: file.type, status: 'laudo_disponivel' as const, dataResultado: toISO(new Date()),
+      };
+      setExams(prev => prev.map(ex => ex.id === examId ? { ...ex, ...updateData } : ex));
+      dbPut('exams', { id: examId, ...updateData });
     };
     reader.readAsDataURL(file);
   };
-  const deleteExam = (id: string) => { if (confirm('Excluir exame?')) setExams(prev => prev.filter(e => e.id !== id)); };
+  const deleteExam = (id: string) => { if (confirm('Excluir exame?')) { setExams(prev => prev.filter(e => e.id !== id)); dbDel('exams', id); } };
   const resetEForm = () => { setShowEForm(false); setEditingE(null); setEForm(defaultEForm()); };
 
   const selectPatient = (id: string) => { setSelectedId(id); setDetailTab('perfil'); };

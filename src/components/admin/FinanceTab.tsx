@@ -9,7 +9,7 @@ import {
 import {
   Patient, Payment, FORMAS_PAGAMENTO, STATUS_PAGAMENTO_CONFIG,
   CONVENIOS, VALORES_CONSULTA, TIPOS_CONSULTA,
-  formatarMoeda, formatDateBR, toISO, LS_KEYS,
+  formatarMoeda, formatDateBR, toISO,
 } from '@/lib/admin-types';
 
 const defaultPayForm = (): Partial<Payment> => ({
@@ -31,15 +31,21 @@ export default function FinanceTab() {
   const [filterMethod, setFilterMethod] = useState('todos');
   const [filterMonth, setFilterMonth] = useState(toISO(new Date()).slice(0, 7)); // YYYY-MM
 
-  /* ── Load/Save ── */
+  /* ── Load from DB ── */
   useEffect(() => {
-    const p = localStorage.getItem(LS_KEYS.payments);
-    const pts = localStorage.getItem(LS_KEYS.patients);
-    if (p) setPayments(JSON.parse(p));
-    if (pts) setPatients(JSON.parse(pts));
+    (async () => {
+      try {
+        const [pRes, ptRes] = await Promise.all([fetch('/api/db/payments'), fetch('/api/db/patients')]);
+        if (pRes.ok) setPayments(await pRes.json());
+        if (ptRes.ok) setPatients(await ptRes.json());
+      } catch { /* ignore */ }
+    })();
   }, []);
 
-  useEffect(() => { localStorage.setItem(LS_KEYS.payments, JSON.stringify(payments)); }, [payments]);
+  /* ── DB helpers ── */
+  const dbPost = (data: unknown) => fetch('/api/db/payments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  const dbPut = (data: unknown) => fetch('/api/db/payments', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+  const dbDel = (id: string) => fetch('/api/db/payments', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
 
   /* ── Recalculate form values ── */
   const recalc = (f: Partial<Payment>) => {
@@ -69,15 +75,19 @@ export default function FinanceTab() {
     const now = new Date().toISOString();
     const final = recalc(form);
     if (editingPay) {
-      setPayments(prev => prev.map(p => p.id === editingPay.id ? { ...p, ...final, pacienteNome: patientName } as Payment : p));
+      const updated = { ...editingPay, ...final, pacienteNome: patientName };
+      setPayments(prev => prev.map(p => p.id === editingPay.id ? updated as Payment : p));
+      dbPut({ id: editingPay.id, ...final, pacienteNome: patientName });
     } else {
-      setPayments(prev => [...prev, { ...final, id: Date.now().toString(), pacienteNome: patientName, criadoEm: now } as Payment]);
+      const newP = { ...final, id: Date.now().toString(), pacienteNome: patientName, criadoEm: now } as Payment;
+      setPayments(prev => [...prev, newP]);
+      dbPost(newP);
     }
     resetForm();
   };
 
   const editPayment = (p: Payment) => { setEditingPay(p); setForm({ ...p }); setShowForm(true); };
-  const deletePayment = (id: string) => { if (confirm('Excluir pagamento?')) setPayments(prev => prev.filter(p => p.id !== id)); };
+  const deletePayment = (id: string) => { if (confirm('Excluir pagamento?')) { setPayments(prev => prev.filter(p => p.id !== id)); dbDel(id); } };
   const resetForm = () => { setShowForm(false); setEditingPay(null); setForm(defaultPayForm()); };
 
   const toggleStatus = (id: string) => {
@@ -85,7 +95,9 @@ export default function FinanceTab() {
       if (p.id !== id) return p;
       const cycle: Payment['status'][] = ['pendente', 'pago', 'parcial'];
       const idx = cycle.indexOf(p.status);
-      return { ...p, status: cycle[(idx + 1) % cycle.length] };
+      const newStatus = cycle[(idx + 1) % cycle.length];
+      dbPut({ id, status: newStatus });
+      return { ...p, status: newStatus };
     }));
   };
 

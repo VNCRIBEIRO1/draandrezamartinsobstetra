@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageCircle, X, Send, Heart, Baby, Stethoscope,
   Flower2, Microscope, Sparkles, Calendar, Clock,
-  ChevronRight, ChevronLeft, ArrowLeft, Bot, CheckCircle2, Phone
+  ChevronRight, ChevronLeft, ArrowLeft, Bot, CheckCircle2, Phone,
+  ShieldCheck, XCircle
 } from 'lucide-react';
 
 /* ─────────────────── Types ─────────────────── */
@@ -124,61 +125,58 @@ function getDaysInMonth(y: number, m: number) { return new Date(y, m + 1, 0).get
 function getFirstDayOfMonth(y: number, m: number) { return new Date(y, m, 1).getDay(); }
 function toISO(d: Date) { return d.toISOString().split('T')[0]; }
 
+/* ── Cached DB data for scheduling functions ── */
+let cachedSlots: { dia: string; horario: string; ativo: boolean }[] = [];
+let cachedBlockedDates: { dataInicio: string; dataFim: string; tipo: string; horariosEspecificos?: string[] }[] = [];
+let cachedAppointments: { data: string; horario: string; status: string }[] = [];
+let cacheLoaded = false;
+
+async function refreshScheduleCache() {
+  try {
+    const [sRes, bRes, aRes] = await Promise.all([
+      fetch('/api/db/available_slots'),
+      fetch('/api/db/blocked_dates'),
+      fetch('/api/db/appointments'),
+    ]);
+    if (sRes.ok) cachedSlots = await sRes.json();
+    if (bRes.ok) cachedBlockedDates = await bRes.json();
+    if (aRes.ok) cachedAppointments = await aRes.json();
+    cacheLoaded = true;
+  } catch { /* ignore */ }
+}
+
 function getAvailableSlots(dateStr: string): string[] {
   const date = new Date(dateStr + 'T12:00');
   const dayName = DIAS_SEMANA_FULL[date.getDay()];
   if (dayName === 'Domingo') return [];
 
   // Check if the entire date is blocked
-  try {
-    const bdStored = localStorage.getItem('dra_blocked_dates');
-    if (bdStored) {
-      const blocked = JSON.parse(bdStored) as { dataInicio: string; dataFim: string; tipo: string; horariosEspecificos?: string[] }[];
-      const fullBlock = blocked.find(b => dateStr >= b.dataInicio && dateStr <= b.dataFim && b.tipo === 'dia_inteiro');
-      if (fullBlock) return [];
-    }
-  } catch { /* ignore */ }
+  const fullBlock = cachedBlockedDates.find(b => dateStr >= b.dataInicio && dateStr <= b.dataFim && b.tipo === 'dia_inteiro');
+  if (fullBlock) return [];
 
   let slots: string[] = [];
-  try {
-    const stored = localStorage.getItem('dra_slots');
-    if (stored) {
-      const allSlots = JSON.parse(stored) as { dia: string; horario: string; ativo: boolean }[];
-      slots = allSlots.filter(s => s.dia === dayName && s.ativo).map(s => s.horario);
-    }
-  } catch { /* ignore */ }
+  if (cachedSlots.length > 0) {
+    slots = cachedSlots.filter(s => s.dia === dayName && s.ativo).map(s => s.horario);
+  }
   if (slots.length === 0) slots = HORARIOS_DEFAULT[dayName] || [];
 
   // Filter out blocked time slots
-  try {
-    const bdStored = localStorage.getItem('dra_blocked_dates');
-    if (bdStored) {
-      const blocked = JSON.parse(bdStored) as { dataInicio: string; dataFim: string; tipo: string; horariosEspecificos?: string[] }[];
-      slots = slots.filter(h => {
-        for (const b of blocked) {
-          if (dateStr >= b.dataInicio && dateStr <= b.dataFim) {
-            if (b.tipo === 'manha' && parseInt(h) < 12) return false;
-            if (b.tipo === 'tarde' && parseInt(h) >= 13) return false;
-            if (b.tipo === 'horarios' && b.horariosEspecificos?.includes(h)) return false;
-          }
-        }
-        return true;
-      });
+  slots = slots.filter(h => {
+    for (const b of cachedBlockedDates) {
+      if (dateStr >= b.dataInicio && dateStr <= b.dataFim) {
+        if (b.tipo === 'manha' && parseInt(h) < 12) return false;
+        if (b.tipo === 'tarde' && parseInt(h) >= 13) return false;
+        if (b.tipo === 'horarios' && b.horariosEspecificos?.includes(h)) return false;
+      }
     }
-  } catch { /* ignore */ }
+    return true;
+  });
 
   return slots;
 }
 
 function getBookedSlots(dateStr: string): string[] {
-  try {
-    const stored = localStorage.getItem('dra_appointments');
-    if (stored) {
-      const appts = JSON.parse(stored) as { data: string; horario: string; status: string }[];
-      return appts.filter(a => a.data === dateStr && a.status !== 'cancelado').map(a => a.horario);
-    }
-  } catch { /* ignore */ }
-  return [];
+  return cachedAppointments.filter(a => a.data === dateStr && a.status !== 'cancelado').map(a => a.horario);
 }
 
 function getFreeSlots(dateStr: string): string[] {
@@ -198,12 +196,7 @@ function MiniCalendar({ year, month, onSelectDate, onNav }: {
   for (let d = 1; d <= daysInMonth; d++) {
     const date = toISO(new Date(year, month, d));
     const dayOfWeek = new Date(year, month, d).getDay();
-    const isBlocked = (() => { try {
-      const bd = localStorage.getItem('dra_blocked_dates');
-      if (bd) { const blocks = JSON.parse(bd) as { dataInicio: string; dataFim: string; tipo: string }[];
-        return blocks.some(b => date >= b.dataInicio && date <= b.dataFim && b.tipo === 'dia_inteiro');
-      }
-    } catch {} return false; })();
+    const isBlocked = cachedBlockedDates.some(b => date >= b.dataInicio && date <= b.dataFim && b.tipo === 'dia_inteiro');
     days.push({ date, day: d, disabled: date < today || dayOfWeek === 0 || isBlocked, blocked: isBlocked });
   }
 
@@ -299,9 +292,10 @@ export default function ChatBot() {
   const [isTyping, setIsTyping] = useState(false);
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [collectingData, setCollectingData] = useState<{
-    step: 'tipo' | 'calendar' | 'timeslot' | 'nome' | 'telefone' | 'confirmar' | null;
+    step: 'lgpd_consent' | 'tipo' | 'calendar' | 'timeslot' | 'nome' | 'telefone' | 'confirmar' | null;
     nome?: string; telefone?: string; tipo?: string; tipoLabel?: string;
     data?: string; horario?: string; calYear?: number; calMonth?: number;
+    consent?: boolean;
   }>({ step: null });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -312,6 +306,13 @@ export default function ChatBot() {
 
   useEffect(() => { scrollToBottom(); }, [messages, isTyping, scrollToBottom]);
   useEffect(() => { if (waitingForInput && inputRef.current) setTimeout(() => inputRef.current?.focus(), 150); }, [waitingForInput, messages]);
+
+  // Load schedule data from DB on mount and refresh periodically
+  useEffect(() => {
+    if (!cacheLoaded) refreshScheduleCache();
+    const interval = setInterval(refreshScheduleCache, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Listen for external open-chatbot events (from /agendar page)
   useEffect(() => {
@@ -417,8 +418,15 @@ export default function ChatBot() {
         await simulateTyping('Como posso ajudar?', WELCOME_OPTIONS);
         break;
       case 'agendar':
-        setCollectingData({ step: 'tipo' });
-        await simulateTyping('Que tipo de consulta você gostaria?', CONSULTA_TIPO_OPTIONS);
+        // Etapa LGPD — Consentimento
+        await simulateTyping(
+          '🔒 **Termos de Privacidade**\n\nPara prosseguir com o agendamento, preciso coletar alguns dados pessoais (nome e telefone) apenas para este atendimento. Esses dados são protegidos pela LGPD e não são compartilhados.\n\nVocê concorda com o tratamento de seus dados para este fim?',
+          [
+            { label: '✅ Sim, concordo', value: 'lgpd_aceito', icon: <CheckCircle2 className="w-4 h-4" /> },
+            { label: '❌ Não concordo', value: 'lgpd_recusado', icon: <XCircle className="w-4 h-4" /> },
+            { label: '📄 Ver Política de Privacidade', value: 'politica_privacidade', icon: <ShieldCheck className="w-4 h-4" /> },
+          ]
+        );
         break;
       case 'areas':
         await simulateTyping('Selecione uma especialidade para saber mais:', AREA_OPTIONS);
@@ -472,10 +480,9 @@ export default function ChatBot() {
         break;
       case 'confirmar_sim': {
         try {
-          const stored = localStorage.getItem('dra_appointments');
-          const appts = stored ? JSON.parse(stored) : [];
-          appts.push({ id: Date.now().toString(), paciente: collectingData.nome || '', telefone: collectingData.telefone || '', tipo: collectingData.tipoLabel || 'Consulta', data: collectingData.data || '', horario: collectingData.horario || '', status: 'pendente', criadoEm: new Date().toISOString(), origem: 'chatbot', consentimentoLgpd: true, consentimentoEm: new Date().toISOString() });
-          localStorage.setItem('dra_appointments', JSON.stringify(appts));
+          const newAppt = { id: Date.now().toString(), paciente: collectingData.nome || '', telefone: collectingData.telefone || '', tipo: collectingData.tipoLabel || 'Consulta', data: collectingData.data || '', horario: collectingData.horario || '', status: 'pendente', criadoEm: new Date().toISOString(), origem: 'chatbot', consentimentoLgpd: true, consentimentoEm: new Date().toISOString() };
+          await fetch('/api/db/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newAppt) });
+          cachedAppointments.push(newAppt);
         } catch { /* ignore */ }
         const link = buildWhatsAppLink(collectingData);
         setCollectingData({ step: null });
@@ -489,6 +496,15 @@ export default function ChatBot() {
       case 'confirmar_nao':
         setCollectingData({ step: 'tipo' });
         await simulateTyping('Sem problemas! Vamos recomeçar:', CONSULTA_TIPO_OPTIONS);
+        break;
+      case 'politica_privacidade':
+        await simulateTyping(
+          '📄 **Política de Privacidade**\n\nColetamos apenas nome e telefone para agendamento. Seus dados são armazenados em servidor seguro com criptografia SSL e não são compartilhados com terceiros.\n\nVocê tem direito a:\n• Acesso aos dados\n• Correção\n• Eliminação\n\nMais informações: /politica-privacidade\n\nDeseja agendar agora?',
+          [
+            { label: '✅ Sim, concordo em prosseguir', value: 'lgpd_aceito', icon: <CheckCircle2 className="w-4 h-4" /> },
+            { label: '❌ Não', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
+          ]
+        );
         break;
       case 'encerrar':
         addMessage('Não, obrigada!', 'user');

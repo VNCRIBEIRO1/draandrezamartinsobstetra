@@ -27,9 +27,9 @@ export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
   const article = articles[slug];
 
-  // For static articles, pass them; for dynamic ones, the client will load from localStorage
+  // For static articles, pass them; dynamic articles served from static data
   const staticArticle = article ? { ...article, slug } : null;
 
-  // Allow dynamic slugs (from admin) – don't notFound() so client can check localStorage
+  // Allow dynamic slugs from admin — articles are managed via static content
   return <BlogArticleClient slug={slug} staticArticle={staticArticle} />;
 }
