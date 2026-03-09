@@ -9,18 +9,30 @@ import { getPhysicianSchema, getBreadcrumbSchema, getMedicalWebPageSchema } from
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sobre a Dra. Andresa Martin Louzada - Ginecologista e Obstetra Presidente Prudente',
+  title: 'Sobre a Dra. Andresa Martin Louzada - Ginecologista e Obstetra em Presidente Prudente SP',
   description:
-    'Conheça a Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente - SP. CRM/SP 207702 | RQE 135096. Formada pela UNOESTE, atua no Espaço Humanizare com atendimento humanizado.',
+    'Conheça a Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente - SP. CRM/SP 207702 | RQE 135096. Formada pela UNOESTE, atua no Espaço Humanizare com atendimento humanizado em DIU, Implanon, Pré-natal, Menopausa e Microscopia Vaginal.',
   keywords: [
     'Dra Andresa Martin Louzada',
+    'Dra Andresa Martin Louzada ginecologista',
+    'Dra Andresa Martin Louzada obstetra',
     'ginecologista Presidente Prudente',
     'obstetra Presidente Prudente',
     'CRM 207702',
+    'RQE 135096',
     'Espaço Humanizare',
+    'Espaço Humanizare Presidente Prudente',
     'UNOESTE medicina',
     'médica ginecologista Presidente Prudente',
     'saúde da mulher Presidente Prudente',
+    'ginecologista humanizada Presidente Prudente',
+    'obstetra humanizada Presidente Prudente',
+    'melhor ginecologista Presidente Prudente',
+    'ginecologista de confiança Presidente Prudente',
+    'ginecologista acolhedora Presidente Prudente',
+    'ginecologista mulher Presidente Prudente',
+    'ginecologista feminina Presidente Prudente',
+    'especialista saúde feminina Presidente Prudente',
   ],
   alternates: { canonical: '/sobre' },
   openGraph: {

@@ -7,9 +7,9 @@ import { getLocalBusinessSchema, getBreadcrumbSchema } from '@/lib/seo';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contato e Agendamento - Ginecologista Presidente Prudente | Dra. Andresa Martin',
+  title: 'Contato e Agendamento - Ginecologista e Obstetra Presidente Prudente | Dra. Andresa Martin',
   description:
-    'Agende sua consulta com a Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente. Espaço Humanizare, Av. Mathias Mendes Cardoso, 460. WhatsApp: (18) 99820-7964.',
+    'Agende sua consulta com a Dra. Andresa Martin Louzada, Ginecologista e Obstetra em Presidente Prudente - SP. Espaço Humanizare, Av. Mathias Mendes Cardoso, 460. WhatsApp: (18) 99820-7964. DIU, Implanon, Pré-natal, Menopausa.',
   keywords: [
     'agendar consulta ginecologista Presidente Prudente',
     'marcar consulta ginecologista Presidente Prudente',
@@ -18,6 +18,19 @@ export const metadata: Metadata = {
     'Espaço Humanizare Presidente Prudente',
     'telefone ginecologista Presidente Prudente',
     'WhatsApp ginecologista Presidente Prudente',
+    'agendar consulta obstetra Presidente Prudente',
+    'agendamento online ginecologista Presidente Prudente',
+    'marcar consulta obstetra Presidente Prudente',
+    'ginecologista Presidente Prudente telefone',
+    'ginecologista Presidente Prudente whatsapp',
+    'agendar DIU Presidente Prudente',
+    'agendar Implanon Presidente Prudente',
+    'agendar pré-natal Presidente Prudente',
+    'agendar papanicolau Presidente Prudente',
+    'consulta ginecológica Presidente Prudente agendar',
+    'ginecologista perto de mim Presidente Prudente',
+    'Dra Andresa Martin contato',
+    'Dra Andresa Martin telefone',
   ],
   alternates: { canonical: '/contato' },
   openGraph: {

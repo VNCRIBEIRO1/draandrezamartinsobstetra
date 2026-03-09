@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { articles } from '@/lib/articles';
 import BlogArticleClient from '@/components/BlogArticleClient';
-import { getArticleSchema, getBreadcrumbSchema } from '@/lib/seo';
+import { getArticleSchema, getBreadcrumbSchema, ARTICLE_KEYWORDS_BY_CATEGORY } from '@/lib/seo';
 import { siteConfig } from '@/lib/site-config';
 
 // Allow dynamic slugs beyond the static ones (for admin-created articles)
@@ -22,15 +22,27 @@ export async function generateMetadata({ params }: Props) {
 
   const description = article.content[0]?.substring(0, 155) || article.title;
 
+  // Keywords dinâmicas baseadas na categoria do artigo
+  const categoryKeywords = ARTICLE_KEYWORDS_BY_CATEGORY[article.category] || [];
+
   return {
-    title: `${article.title} | Ginecologista Presidente Prudente`,
-    description,
+    title: `${article.title} | Ginecologista em Presidente Prudente`,
+    description: `${description} Dra. Andresa Martin Louzada - Ginecologista e Obstetra em Presidente Prudente, SP.`,
     keywords: [
       article.title,
+      article.category,
       'ginecologista Presidente Prudente',
+      'obstetra Presidente Prudente',
       'Dra Andresa Martin',
-      'saúde da mulher',
+      'Dra Andresa Martin Louzada',
+      'Espaço Humanizare',
+      'saúde da mulher Presidente Prudente',
+      'saúde feminina Presidente Prudente',
       slug.replace(/-/g, ' '),
+      `${article.category} Presidente Prudente`,
+      `${article.category.toLowerCase()} Presidente Prudente`,
+      `ginecologista ${article.category.toLowerCase()} Presidente Prudente`,
+      ...categoryKeywords,
     ],
     alternates: { canonical: `/blog/${slug}` },
     openGraph: {

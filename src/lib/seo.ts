@@ -7,6 +7,45 @@ import { siteConfig } from './site-config';
 
 const BASE_URL = siteConfig.url;
 
+// ---- CONFIGURAÇÃO SEO LOCAL: Cidade + Região + Serviços ----
+const CIDADE = 'Presidente Prudente';
+const ESTADO = 'SP';
+const CIDADES_REGIAO = [
+  'Álvares Machado', 'Regente Feijó', 'Martinópolis', 'Pirapozinho',
+  'Presidente Bernardes', 'Presidente Venceslau', 'Dracena', 'Adamantina',
+  'Tupã', 'Santo Anastácio', 'Rancharia', 'Quatá', 'Paraguaçu Paulista',
+];
+const SERVICOS_CORE = [
+  'DIU', 'DIU de cobre', 'DIU Mirena', 'DIU hormonal', 'DIU Kyleena',
+  'colocar DIU', 'inserção de DIU', 'retirar DIU', 'trocar DIU',
+  'Implanon', 'implante contraceptivo', 'implante anticoncepcional',
+  'colocar Implanon', 'retirar Implanon',
+  'pré-natal', 'pré-natal humanizado', 'acompanhamento pré-natal',
+  'parto humanizado', 'parto normal', 'plano de parto', 'cesárea',
+  'menopausa', 'climatério', 'reposição hormonal', 'reposição hormonal bioidêntica',
+  'terapia hormonal', 'fogachos tratamento',
+  'anticoncepcional', 'pílula anticoncepcional', 'injeção anticoncepcional',
+  'métodos contraceptivos', 'contracepção',
+  'microscopia vaginal', 'papanicolau', 'colposcopia', 'preventivo',
+  'ultrassom obstétrico', 'ultrassom transvaginal', 'ultrassonografia pélvica',
+  'exame ginecológico', 'exames ginecológicos', 'check-up ginecológico',
+  'ginecologia', 'obstetrícia', 'consulta ginecológica',
+  'planejamento familiar', 'planejamento reprodutivo',
+  'saúde da mulher', 'saúde feminina',
+];
+const CONDICOES_MEDICAS = [
+  'endometriose', 'mioma', 'mioma uterino',
+  'ovário policístico', 'SOP', 'síndrome dos ovários policísticos',
+  'cisto no ovário', 'candidíase', 'corrimento vaginal',
+  'vaginose bacteriana', 'infecção urinária', 'infecção vaginal',
+  'HPV', 'IST', 'cólica menstrual', 'dismenorreia',
+  'sangramento irregular', 'sangramento uterino anormal', 'dor pélvica',
+  'secura vaginal', 'dispareunia', 'dor na relação',
+  'infertilidade', 'dificuldade para engravidar',
+  'TPM', 'tensão pré-menstrual', 'amenorreia',
+  'incontinência urinária', 'prolapso uterino',
+];
+
 // ---- KEYWORDS COMPLETAS POR INTENÇÃO DE BUSCA ----
 export const SEO_KEYWORDS = {
   // Busca direta pela profissional
@@ -47,29 +86,47 @@ export const SEO_KEYWORDS = {
     'consulta obstetra Presidente Prudente',
     'ginecologista particular Presidente Prudente',
     'ginecologista unimed Presidente Prudente',
+    // Variações adicionais de busca por especialidade
+    'ginecologista feminina Presidente Prudente',
+    'ginecologista mulher Presidente Prudente',
+    'médica obstetra Presidente Prudente',
+    'ginecologista confiável Presidente Prudente',
+    'ginecologista de confiança Presidente Prudente',
+    'ginecologista com boas avaliações Presidente Prudente',
+    'ginecologista 5 estrelas Presidente Prudente',
+    'ginecologista centro Presidente Prudente',
+    'ginecologista que aceita convênio Presidente Prudente',
+    'clínica ginecológica Presidente Prudente',
+    'clínica obstétrica Presidente Prudente',
+    'especialista saúde da mulher Presidente Prudente',
+    'ginecologista acolhedora Presidente Prudente',
+    'ginecologista atenciosa Presidente Prudente',
+    'consulta ginecológica humanizada Presidente Prudente',
+    'GO Presidente Prudente',
+    'ginecologista com agenda aberta Presidente Prudente',
+    'teleconsulta ginecologista Presidente Prudente',
+    'ginecologista Presidente Prudente preço',
+    'ginecologista Presidente Prudente valor consulta',
+    'ginecologista Presidente Prudente telefone',
+    'ginecologista Presidente Prudente whatsapp',
+    'ginecologista Presidente Prudente agendamento',
   ],
-  // Busca por serviço + cidade
+  // Serviço + cidade (gerado automaticamente — cada serviço × variações)
   servicos: [
-    'pré-natal Presidente Prudente',
-    'pré-natal humanizado Presidente Prudente',
-    'parto humanizado Presidente Prudente',
-    'DIU Presidente Prudente',
-    'colocar DIU Presidente Prudente',
-    'DIU de cobre Presidente Prudente',
-    'DIU Mirena Presidente Prudente',
-    'Implanon Presidente Prudente',
-    'implante contraceptivo Presidente Prudente',
-    'menopausa tratamento Presidente Prudente',
-    'reposição hormonal Presidente Prudente',
-    'anticoncepcional Presidente Prudente',
-    'microscopia vaginal Presidente Prudente',
-    'papanicolau Presidente Prudente',
-    'colposcopia Presidente Prudente',
-    'ultrassom obstétrico Presidente Prudente',
-    'ginecologia Presidente Prudente',
-    'obstetrícia Presidente Prudente',
-    'planejamento familiar Presidente Prudente',
-    'saúde da mulher Presidente Prudente',
+    ...SERVICOS_CORE.flatMap(s => [`${s} ${CIDADE}`, `${s} em ${CIDADE}`, `${s} ${CIDADE} ${ESTADO}`]),
+  ],
+  // Condições médicas + cidade
+  condicoes: [
+    ...CONDICOES_MEDICAS.flatMap(c => [`${c} ${CIDADE}`, `tratamento ${c} ${CIDADE}`, `${c} tratamento ${CIDADE}`]),
+  ],
+  // Ginecologista + serviço + cidade (combos de alta conversão)
+  ginecologistaServico: [
+    ...SERVICOS_CORE.map(s => `ginecologista ${s} ${CIDADE}`),
+    ...SERVICOS_CORE.slice(0, 20).map(s => `ginecologista que faz ${s} ${CIDADE}`),
+    ...SERVICOS_CORE.slice(0, 15).map(s => `onde fazer ${s} em ${CIDADE}`),
+    ...SERVICOS_CORE.slice(0, 15).map(s => `quanto custa ${s} ${CIDADE}`),
+    ...CONDICOES_MEDICAS.slice(0, 15).map(c => `ginecologista para ${c} ${CIDADE}`),
+    ...CONDICOES_MEDICAS.slice(0, 12).map(c => `onde tratar ${c} em ${CIDADE}`),
   ],
   // Local / consultório
   local: [
@@ -80,29 +137,183 @@ export const SEO_KEYWORDS = {
     'ginecologista Central Park Residence',
     'médica saúde feminina Presidente Prudente',
   ],
-  // Long-tail / perguntas
+  // Long-tail / perguntas (alta conversão)
   longTail: [
     'agendar consulta ginecologista Presidente Prudente',
     'marcar consulta ginecologista Presidente Prudente',
+    'agendar consulta obstetra Presidente Prudente',
+    'marcar consulta obstetra Presidente Prudente',
     'onde colocar DIU em Presidente Prudente',
     'onde colocar Implanon em Presidente Prudente',
     'ginecologista que coloca DIU Presidente Prudente',
+    'ginecologista que coloca Implanon Presidente Prudente',
     'ginecologista que faz pré-natal Presidente Prudente',
     'ginecologista para menopausa Presidente Prudente',
     'obstetra para parto humanizado Presidente Prudente',
     'microscopia vaginal resultado na hora',
+    'microscopia vaginal resultado na hora Presidente Prudente',
     'ginecologista atendimento humanizado',
+    'ginecologista atendimento humanizado Presidente Prudente',
+    'quanto custa consulta ginecologista Presidente Prudente',
+    'quanto custa DIU em Presidente Prudente',
+    'quanto custa Implanon em Presidente Prudente',
+    'valor consulta ginecologista Presidente Prudente',
+    'ginecologista que aceita Unimed Presidente Prudente',
+    'ginecologista convênio Unimed Presidente Prudente',
+    'consulta ginecológica particular Presidente Prudente',
+    'onde fazer papanicolau em Presidente Prudente',
+    'onde fazer colposcopia em Presidente Prudente',
+    'onde fazer ultrassom obstétrico Presidente Prudente',
+    'onde fazer pré-natal em Presidente Prudente',
+    'onde tratar endometriose Presidente Prudente',
+    'onde tratar menopausa Presidente Prudente',
+    'ginecologista para endometriose Presidente Prudente',
+    'ginecologista para adolescente Presidente Prudente',
+    'primeira consulta ginecologista Presidente Prudente',
+    'ginecologista perto do centro Presidente Prudente',
+    'melhor clínica ginecológica Presidente Prudente',
+    'pré-natal particular Presidente Prudente',
+    'pré-natal Unimed Presidente Prudente',
+    'parto humanizado Presidente Prudente obstetra',
+    'obstetra particular Presidente Prudente',
+    'ginecologista para SOP Presidente Prudente',
+    'ginecologista para infertilidade Presidente Prudente',
+    'ginecologista para corrimento Presidente Prudente',
+    'ginecologista para candidíase Presidente Prudente',
+    'como tratar endometriose em Presidente Prudente',
+    'como tratar menopausa em Presidente Prudente',
+    'DIU de cobre ou Mirena Presidente Prudente',
+    'DIU preço Presidente Prudente',
+    'Implanon preço Presidente Prudente',
+    'retirada de DIU Presidente Prudente',
+    'troca de DIU Presidente Prudente',
+    'troca de Implanon Presidente Prudente',
+    'ginecologista para HPV Presidente Prudente',
+    'ginecologista para cólica Presidente Prudente',
+    'ginecologista para sangramento Presidente Prudente',
+    'exame preventivo Presidente Prudente',
+    'check-up feminino Presidente Prudente',
+  ],
+  // Região Oeste Paulista (cidades próximas)
+  regiao: [
+    ...CIDADES_REGIAO.flatMap(c => [
+      `ginecologista ${c}`,
+      `obstetra ${c}`,
+      `ginecologista e obstetra ${c}`,
+      `DIU ${c}`,
+      `pré-natal ${c}`,
+      `Implanon ${c}`,
+      `menopausa tratamento ${c}`,
+      `papanicolau ${c}`,
+      `colposcopia ${c}`,
+    ]),
+    'ginecologista Oeste Paulista',
+    `ginecologista região de ${CIDADE}`,
+    `obstetra região de ${CIDADE}`,
+    'melhor ginecologista Oeste Paulista',
+    'obstetra Oeste Paulista',
+    'DIU Oeste Paulista',
+    'pré-natal Oeste Paulista',
+    'Implanon Oeste Paulista',
+  ],
+  // Variações sem acento / coloquial / digitação comum
+  variacoes: [
+    'ginecologista presidente prudente',
+    'gineco presidente prudente',
+    'go presidente prudente',
+    'obstetra presidente prudente',
+    'pre natal presidente prudente',
+    'pre natal humanizado presidente prudente',
+    'diu presidente prudente',
+    'diu de cobre presidente prudente',
+    'diu mirena presidente prudente',
+    'diu hormonal presidente prudente',
+    'diu kyleena presidente prudente',
+    'implanon presidente prudente',
+    'menopausa presidente prudente',
+    'reposicao hormonal presidente prudente',
+    'anticoncepcional presidente prudente',
+    'papanicolau presidente prudente',
+    'colposcopia presidente prudente',
+    'microscopia vaginal presidente prudente',
+    'endometriose presidente prudente',
+    'mioma presidente prudente',
+    'ovario policistico presidente prudente',
+    'candidíase presidente prudente',
+    'corrimento presidente prudente',
+    'exame ginecologico presidente prudente',
+    'consulta ginecologica presidente prudente',
+    'parto humanizado presidente prudente',
+    'saude da mulher presidente prudente',
+    'ginecologista presidente prudente sp',
+    'obstetra presidente prudente sp',
+    'dra andresa martin presidente prudente',
+    'dra andresa ginecologista presidente prudente',
+    'espaco humanizare presidente prudente',
+    'ginecologista unimed presidente prudente',
+    'ginecologista particular presidente prudente',
+    'ginecologista boa presidente prudente',
+    'melhor ginecologista presidente prudente',
   ],
 };
 
-// Todas as keywords flat para uso em meta tags
+// Todas as keywords flat para uso em meta tags (inclui TODAS as categorias)
 export const ALL_KEYWORDS = [
-  ...SEO_KEYWORDS.nome.slice(0, 6),
+  ...SEO_KEYWORDS.nome,
   ...SEO_KEYWORDS.especialidade,
-  ...SEO_KEYWORDS.servicos.slice(0, 15),
-  ...SEO_KEYWORDS.local.slice(0, 4),
-  ...SEO_KEYWORDS.longTail.slice(0, 5),
+  ...SEO_KEYWORDS.servicos,
+  ...SEO_KEYWORDS.condicoes,
+  ...SEO_KEYWORDS.ginecologistaServico,
+  ...SEO_KEYWORDS.local,
+  ...SEO_KEYWORDS.longTail,
+  ...SEO_KEYWORDS.regiao,
+  ...SEO_KEYWORDS.variacoes,
 ];
+
+// Keywords por categoria de artigo (para SEO de blog posts)
+export const ARTICLE_KEYWORDS_BY_CATEGORY: Record<string, string[]> = {
+  'Pré-natal': [
+    `pré-natal ${CIDADE}`, `pré-natal humanizado ${CIDADE}`, `obstetra ${CIDADE}`,
+    `acompanhamento gestação ${CIDADE}`, `exames pré-natal ${CIDADE}`, `obstetra pré-natal ${CIDADE}`,
+  ],
+  'Microscopia Vaginal': [
+    `microscopia vaginal ${CIDADE}`, `exame ginecológico ${CIDADE}`, 'diagnóstico imediato',
+    `infecção vaginal tratamento ${CIDADE}`, `microscopia vaginal resultado na hora`,
+  ],
+  'Menopausa': [
+    `menopausa ${CIDADE}`, `climatério tratamento ${CIDADE}`, `reposição hormonal ${CIDADE}`,
+    `fogachos tratamento ${CIDADE}`, `terapia hormonal ${CIDADE}`, `menopausa tratamento ${CIDADE}`,
+  ],
+  'Anticoncepcional': [
+    `anticoncepcional ${CIDADE}`, `métodos contraceptivos ${CIDADE}`, 'pílula anticoncepcional',
+    `ginecologista anticoncepcional ${CIDADE}`, `contracepção ${CIDADE}`, `injeção anticoncepcional ${CIDADE}`,
+  ],
+  'DIU': [
+    `DIU ${CIDADE}`, `colocar DIU ${CIDADE}`, `DIU de cobre ${CIDADE}`,
+    `DIU Mirena ${CIDADE}`, `DIU hormonal ${CIDADE}`, `ginecologista DIU ${CIDADE}`,
+    `inserção de DIU ${CIDADE}`, `DIU Kyleena ${CIDADE}`,
+  ],
+  'Implanon': [
+    `Implanon ${CIDADE}`, `implante contraceptivo ${CIDADE}`, `colocar Implanon ${CIDADE}`,
+    `implante anticoncepcional ${CIDADE}`, `ginecologista Implanon ${CIDADE}`,
+  ],
+  'Ginecologia': [
+    `ginecologista ${CIDADE}`, `consulta ginecológica ${CIDADE}`, `exame ginecológico ${CIDADE}`,
+    `saúde feminina ${CIDADE}`, `ginecologia ${CIDADE}`, `check-up ginecológico ${CIDADE}`,
+  ],
+  'Contracepção': [
+    `contracepção ${CIDADE}`, `métodos contraceptivos ${CIDADE}`, `anticoncepcional ${CIDADE}`,
+    `planejamento familiar ${CIDADE}`, `ginecologista contracepção ${CIDADE}`,
+  ],
+  'Obstetrícia': [
+    `obstetra ${CIDADE}`, `parto humanizado ${CIDADE}`, `gestação ${CIDADE}`,
+    `obstetrícia ${CIDADE}`, `parto normal ${CIDADE}`, `cesárea ${CIDADE}`,
+  ],
+  'Saúde da Mulher': [
+    `saúde da mulher ${CIDADE}`, `ginecologista ${CIDADE}`, `saúde feminina ${CIDADE}`,
+    `cuidado feminino ${CIDADE}`, `ginecologista humanizada ${CIDADE}`,
+  ],
+};
 
 // ---- JSON-LD: PHYSICIAN (Schema.org) ----
 export function getPhysicianSchema() {
@@ -178,6 +389,11 @@ export function getPhysicianSchema() {
         name: 'Presidente Prudente',
         '@id': 'https://www.wikidata.org/wiki/Q201413',
       },
+      ...CIDADES_REGIAO.map(c => ({ '@type': 'City', name: c })),
+      {
+        '@type': 'AdministrativeArea',
+        name: 'Oeste Paulista',
+      },
       {
         '@type': 'State',
         name: 'São Paulo',
@@ -232,18 +448,25 @@ export function getLocalBusinessSchema() {
       opens: h.abre,
       closes: h.fecha,
     })),
-    areaServed: {
-      '@type': 'City',
-      name: 'Presidente Prudente',
-      containedInPlace: {
-        '@type': 'State',
-        name: 'São Paulo',
+    areaServed: [
+      {
+        '@type': 'City',
+        name: 'Presidente Prudente',
         containedInPlace: {
-          '@type': 'Country',
-          name: 'Brasil',
+          '@type': 'State',
+          name: 'São Paulo',
+          containedInPlace: {
+            '@type': 'Country',
+            name: 'Brasil',
+          },
         },
       },
-    },
+      ...CIDADES_REGIAO.map(c => ({
+        '@type': 'City',
+        name: c,
+        containedInPlace: { '@type': 'State', name: 'São Paulo' },
+      })),
+    ],
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '5.0',
@@ -458,6 +681,74 @@ export const HOME_FAQS = [
   {
     question: 'O que é microscopia vaginal e onde fazer em Presidente Prudente?',
     answer: 'A microscopia vaginal é um exame realizado durante a consulta ginecológica que permite diagnóstico imediato de infecções vaginais. A Dra. Andresa Martin realiza esse exame no Espaço Humanizare com resultado na hora!',
+  },
+  {
+    question: 'Quanto custa colocar DIU em Presidente Prudente?',
+    answer: 'O valor da inserção de DIU varia conforme o tipo (cobre ou hormonal Mirena/Kyleena). A Dra. Andresa Martin oferece inserção de DIU no Espaço Humanizare em Presidente Prudente com acompanhamento pós-inserção incluso. Entre em contato pelo WhatsApp (18) 99820-7964 para valores e agendamento.',
+  },
+  {
+    question: 'Onde colocar Implanon em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin Louzada realiza inserção, troca e retirada de Implanon (implante contraceptivo subdérmico) no Espaço Humanizare em Presidente Prudente. O procedimento é rápido, feito com anestesia local e dura apenas alguns minutos. Agende pelo WhatsApp (18) 99820-7964.',
+  },
+  {
+    question: 'Qual a melhor ginecologista em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin Louzada é ginecologista e obstetra com CRM/SP 207702 e RQE 135096, atuando no Espaço Humanizare em Presidente Prudente. Oferece atendimento humanizado com foco na saúde integral da mulher, cobrindo ginecologia, obstetrícia, pré-natal, DIU, Implanon, menopausa e microscopia vaginal.',
+  },
+  {
+    question: 'A Dra. Andresa Martin trata endometriose em Presidente Prudente?',
+    answer: 'Sim! A Dra. Andresa Martin realiza diagnóstico e tratamento de endometriose no Espaço Humanizare em Presidente Prudente. O acompanhamento inclui avaliação clínica, exames de imagem, tratamento hormonal e orientação personalizada para cada paciente.',
+  },
+  {
+    question: 'Onde fazer exame de papanicolau em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin realiza o exame de Papanicolau (preventivo do câncer de colo do útero) no Espaço Humanizare em Presidente Prudente. O exame é rápido, simples e fundamental para a saúde da mulher. Agende pelo WhatsApp (18) 99820-7964.',
+  },
+  {
+    question: 'Qual ginecologista coloca DIU Mirena em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin Louzada realiza inserção de DIU Mirena (hormonal), DIU Kyleena e DIU de cobre no Espaço Humanizare em Presidente Prudente. A inserção é feita no consultório com técnicas para minimizar o desconforto, e inclui acompanhamento pós-inserção.',
+  },
+  {
+    question: 'Tem ginecologista em Presidente Prudente que atende por Unimed?',
+    answer: 'Sim! A Dra. Andresa Martin Louzada atende pelo convênio Unimed e particular no Espaço Humanizare em Presidente Prudente. Ligue para (18) 99820-7964 para verificar a cobertura do seu plano e agendar sua consulta.',
+  },
+  {
+    question: 'A Dra. Andresa Martin atende pacientes de Álvares Machado, Regente Feijó e região?',
+    answer: 'Sim! A Dra. Andresa Martin atende pacientes de toda a região do Oeste Paulista, incluindo Álvares Machado, Regente Feijó, Martinópolis, Pirapozinho, Presidente Bernardes, Dracena, Adamantina, Tupã e demais cidades da região. O consultório fica no Espaço Humanizare, com fácil acesso em Presidente Prudente.',
+  },
+  {
+    question: 'Quais anticoncepcionais a Dra. Andresa prescreve em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin orienta sobre todos os métodos contraceptivos disponíveis: pílulas combinadas e minipílulas, injeção mensal e trimestral, DIU de cobre, DIU hormonal (Mirena/Kyleena), Implanon (implante subdérmico), anel vaginal e adesivo hormonal. A escolha é sempre personalizada, no Espaço Humanizare em Presidente Prudente.',
+  },
+  {
+    question: 'Onde tratar menopausa e climatério em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin Louzada oferece tratamento completo para menopausa e climatério no Espaço Humanizare em Presidente Prudente, incluindo reposição hormonal bioidêntica, controle de fogachos, cuidados com saúde óssea e cardiovascular, e acompanhamento da qualidade de vida.',
+  },
+  {
+    question: 'A Dra. Andresa Martin faz colposcopia em Presidente Prudente?',
+    answer: 'Sim! A Dra. Andresa Martin realiza colposcopia no Espaço Humanizare em Presidente Prudente. O exame é indicado para investigação de alterações no Papanicolau, acompanhamento de lesões cervicais e rastreamento de HPV.',
+  },
+  {
+    question: 'Onde fazer ultrassom obstétrico e transvaginal em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin solicita e acompanha ultrassonografias obstétricas e transvaginais durante o pré-natal e consultas ginecológicas no Espaço Humanizare em Presidente Prudente, incluindo ultrassom morfológico, obstétrico seriado e pélvico.',
+  },
+  {
+    question: 'Qual ginecologista trata ovário policístico (SOP) em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin Louzada realiza diagnóstico e tratamento da Síndrome dos Ovários Policísticos (SOP) no Espaço Humanizare em Presidente Prudente, com investigação hormonal completa, orientação nutricional e tratamento personalizado.',
+  },
+  {
+    question: 'Ginecologista que faz parto humanizado em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin Louzada é obstetra que acompanha parto humanizado em Presidente Prudente, com respeito ao plano de parto, acompanhamento individualizado da gestante, suporte contínuo e liberdade de escolha da mulher durante todo o trabalho de parto.',
+  },
+  {
+    question: 'Como agendar consulta ginecológica pelo WhatsApp em Presidente Prudente?',
+    answer: 'Basta enviar uma mensagem para o WhatsApp (18) 99820-7964 solicitando agendamento com a Dra. Andresa Martin. A equipe do Espaço Humanizare em Presidente Prudente responderá com as datas e horários disponíveis. Também é possível agendar pelo chatbot do site.',
+  },
+  {
+    question: 'A Dra. Andresa trata mioma uterino em Presidente Prudente?',
+    answer: 'Sim! A Dra. Andresa Martin realiza diagnóstico e acompanhamento de miomas uterinos no Espaço Humanizare em Presidente Prudente, com ultrassonografia, tratamento clínico e encaminhamento cirúrgico quando necessário.',
+  },
+  {
+    question: 'Ginecologista para primeira consulta em Presidente Prudente?',
+    answer: 'A Dra. Andresa Martin Louzada atende mulheres em todas as fases da vida no Espaço Humanizare em Presidente Prudente, incluindo primeira consulta ginecológica para adolescentes. O atendimento é humanizado, acolhedor e respeitoso.',
   },
 ];
 

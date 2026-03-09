@@ -37,7 +37,7 @@ export const articles: Record<string, Article> = {
       'Uma alimentação equilibrada e rica em nutrientes é essencial durante a gestação. A suplementação de ácido fólico deve ser iniciada idealmente antes da concepção e mantida durante o primeiro trimestre. Ferro, cálcio, vitamina D e ômega-3 também podem ser necessários conforme orientação médica.',
 
       '## Considerações Finais',
-      'O pré-natal é o melhor presente que uma mãe pode dar ao seu bebê antes mesmo dele nascer. Agende sua consulta e inicie esse cuidado o quanto antes. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'O pré-natal é o melhor presente que uma mãe pode dar ao seu bebê antes mesmo dele nascer. A Dra. Andresa Martin Louzada oferece pré-natal completo e humanizado no Espaço Humanizare em Presidente Prudente. Agende sua consulta e inicie esse cuidado o quanto antes. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -63,7 +63,7 @@ export const articles: Record<string, Article> = {
       'Através da microscopia vaginal, é possível identificar: candidíase (infecção por fungos), vaginose bacteriana (desequilíbrio da flora vaginal), tricomoníase (infecção por protozoário), vaginite citolítica, vaginose por lactobacilos e outras alterações microbiológicas.',
 
       '## Considerações Finais',
-      'A microscopia vaginal é um exame simples, rápido e extremamente útil na prática ginecológica. Se você apresenta qualquer sintoma vaginal, agende sua consulta para um diagnóstico preciso e imediato. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'A microscopia vaginal é um exame simples, rápido e extremamente útil na prática ginecológica. A Dra. Andresa Martin Louzada realiza microscopia vaginal com resultado na hora no Espaço Humanizare em Presidente Prudente. Se você apresenta qualquer sintoma vaginal, agende sua consulta para um diagnóstico preciso e imediato. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -91,7 +91,7 @@ export const articles: Record<string, Article> = {
       'A menopausa pode trazer desafios emocionais significativos. É fundamental que a mulher se sinta acolhida e amparada nessa fase. O acompanhamento psicológico pode ser benéfico, assim como práticas de mindfulness, yoga e atividades que promovam o bem-estar emocional.',
 
       '## Considerações Finais',
-      'A menopausa não é o fim, é uma nova fase. Com acompanhamento médico adequado, é possível viver com qualidade, saúde e plenitude. Agende sua consulta para um acompanhamento personalizado. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'A menopausa não é o fim, é uma nova fase. Com acompanhamento médico adequado, é possível viver com qualidade, saúde e plenitude. A Dra. Andresa Martin Louzada oferece tratamento completo para menopausa e climatério no Espaço Humanizare em Presidente Prudente, incluindo reposição hormonal e acompanhamento personalizado. Agende sua consulta. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -128,7 +128,7 @@ export const articles: Record<string, Article> = {
       'Procure sua ginecologista antes de iniciar qualquer método contraceptivo, se sentir efeitos colaterais incômodos, se esquecer pílulas com frequência, ou se quiser trocar de método. Aqui no Espaço Humanizare, a Dra. Andresa oferece orientação individualizada para ajudar você a encontrar o método perfeito.',
 
       '## Considerações Finais',
-      'Não existe o "melhor anticoncepcional" — existe o melhor para VOCÊ. O mais importante é usar o método corretamente e fazer acompanhamento ginecológico regular. Agende sua consulta e cuide da sua saúde. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'Não existe o "melhor anticoncepcional" — existe o melhor para VOCÊ. O mais importante é usar o método corretamente e fazer acompanhamento ginecológico regular. A Dra. Andresa Martin Louzada orienta sobre todos os métodos contraceptivos no Espaço Humanizare em Presidente Prudente. Agende sua consulta e cuide da sua saúde. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -165,7 +165,7 @@ export const articles: Record<string, Article> = {
       'Após colocar o DIU, é importante retornar para uma consulta de revisão (geralmente após 30 dias) para verificar o posicionamento com ultrassom. Depois, o acompanhamento segue na rotina ginecológica normal.',
 
       '## Considerações Finais',
-      'O DIU é uma excelente opção para quem busca praticidade, eficácia e liberdade. Se você tem interesse, agende uma consulta para avaliar qual tipo é mais indicado para o seu caso. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'O DIU é uma excelente opção para quem busca praticidade, eficácia e liberdade. A Dra. Andresa Martin Louzada realiza a inserção de DIU de cobre, DIU Mirena e DIU Kyleena no Espaço Humanizare em Presidente Prudente. Agende uma consulta para avaliar qual tipo é mais indicado para o seu caso. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -202,7 +202,7 @@ export const articles: Record<string, Article> = {
       'A remoção é simples, feita no consultório com anestesia local, em poucos minutos. A fertilidade retorna rapidamente — geralmente no primeiro ciclo após a retirada. Se desejar continuar usando, um novo implante pode ser inserido no mesmo momento.',
 
       '## Considerações Finais',
-      'O Implanon é uma opção moderna, segura e prática para contracepção de longa duração. Se você quer mais liberdade e menos preocupação, agende uma consulta para saber se o implante é a melhor opção para você. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'O Implanon é uma opção moderna, segura e prática para contracepção de longa duração. A Dra. Andresa Martin Louzada realiza inserção, troca e retirada de Implanon no Espaço Humanizare em Presidente Prudente. Agende uma consulta para saber se o implante é a melhor opção para você. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -233,7 +233,7 @@ export const articles: Record<string, Article> = {
       'Para manter sua saúde em dia, mantenha um checklist: consulta ginecológica anual, Papanicolau conforme orientação médica, mamografia a partir dos 40 anos, ultrassonografia pélvica anual, exames laboratoriais periódicos, e autoexame das mamas mensal.',
 
       '## Considerações Finais',
-      'Não espere ter sintomas para procurar sua ginecologista. A prevenção e o diagnóstico precoce salvam vidas. Agende sua consulta de rotina. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'Não espere ter sintomas para procurar sua ginecologista. A prevenção e o diagnóstico precoce salvam vidas. A Dra. Andresa Martin Louzada realiza todos os exames ginecológicos de rotina no Espaço Humanizare em Presidente Prudente, incluindo Papanicolau, colposcopia e microscopia vaginal. Agende sua consulta de rotina. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -261,7 +261,7 @@ export const articles: Record<string, Article> = {
       'No consultório da Dra. Andresa, a microscopia vaginal permite identificar a causa do odor alterado durante a própria consulta. O diagnóstico imediato possibilita o início do tratamento adequado no mesmo dia, sem necessidade de esperar resultados laboratoriais.',
 
       '## Considerações Finais',
-      'Não tenha vergonha de falar sobre odor íntimo com sua ginecologista. É uma queixa comum e geralmente de fácil resolução. Agende sua consulta. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'Não tenha vergonha de falar sobre odor íntimo com sua ginecologista. É uma queixa comum e geralmente de fácil resolução. A Dra. Andresa Martin Louzada realiza diagnóstico imediato com microscopia vaginal no Espaço Humanizare em Presidente Prudente. Agende sua consulta. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -292,7 +292,7 @@ export const articles: Record<string, Article> = {
       'Existem diversas opções de contracepção regular: pílula anticoncepcional, DIU (hormonal ou de cobre), implante subdérmico, injeção contraceptiva, anel vaginal, e adesivo contraceptivo. Sua ginecologista pode ajudá-la a escolher o método mais adequado para seu estilo de vida e saúde.',
 
       '## Considerações Finais',
-      'A contracepção de emergência é um recurso importante, mas deve ser usada com consciência. Agende uma consulta para discutir planejamento contraceptivo e escolher o melhor método para você. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'A contracepção de emergência é um recurso importante, mas deve ser usada com consciência. A Dra. Andresa Martin Louzada orienta sobre todos os métodos contraceptivos regulares — DIU, Implanon, pílula e mais — no Espaço Humanizare em Presidente Prudente. Agende uma consulta para discutir planejamento contraceptivo e escolher o melhor método para você. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -323,7 +323,7 @@ export const articles: Record<string, Article> = {
       'Não existe tratamento antiviral específico para o VSR. O tratamento é de suporte: hidratação adequada, aspiração nasal, manutenção da oxigenação e, em casos graves, hospitalização com suporte respiratório. A maioria dos casos leves pode ser tratada em casa com acompanhamento médico.',
 
       '## Considerações Finais',
-      'A informação é a melhor forma de proteção. Converse com sua obstetra ou pediatra sobre as medidas de prevenção do VSR, especialmente se seu bebê tem fatores de risco. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'A informação é a melhor forma de proteção. A Dra. Andresa Martin Louzada acompanha gestantes e orienta sobre cuidados com o recém-nascido no Espaço Humanizare em Presidente Prudente. Converse com sua obstetra sobre as medidas de prevenção do VSR, especialmente se seu bebê tem fatores de risco. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -351,7 +351,7 @@ export const articles: Record<string, Article> = {
       'Cada mulher é única e suas decisões sobre contracepção, gestação, amamentação e saúde sexual devem ser respeitadas e apoiadas. No consultório, o objetivo é oferecer informação de qualidade para que você possa fazer as melhores escolhas para sua vida.',
 
       '## Considerações Finais',
-      'Cuidar de você é o primeiro passo para uma vida mais plena e feliz. Agende sua consulta e invista no bem mais precioso que você tem: sua saúde. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'Cuidar de você é o primeiro passo para uma vida mais plena e feliz. A Dra. Andresa Martin Louzada oferece atendimento ginecológico humanizado e acolhedor no Espaço Humanizare em Presidente Prudente. Agende sua consulta e invista no bem mais precioso que você tem: sua saúde. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -382,7 +382,7 @@ export const articles: Record<string, Article> = {
       'Mudanças significativas no padrão menstrual — como ciclos muito irregulares, sangramento muito intenso, dor excessiva ou ausência de menstruação — sempre merecem investigação médica.',
 
       '## Considerações Finais',
-      'Pequenas mudanças de hábito podem fazer grande diferença na sua saúde íntima. Cuide de você e procure sempre orientação profissional. Este artigo tem caráter informativo e não substitui a consulta médica.',
+      'Pequenas mudanças de hábito podem fazer grande diferença na sua saúde íntima. A Dra. Andresa Martin Louzada oferece diagnóstico com microscopia vaginal e orientação personalizada no Espaço Humanizare em Presidente Prudente. Cuide de você e procure sempre orientação profissional. Este artigo tem caráter informativo e não substitui a consulta médica.',
     ],
   },
 
@@ -413,7 +413,7 @@ export const articles: Record<string, Article> = {
       'Muitas mulheres adiam consultas ginecológicas por vergonha, medo ou falta de tempo. No Espaço Humanizare, cada consulta é conduzida com respeito, escuta ativa e atenção individualizada. A Dra. Andresa Martin Louzada acredita que quando a mulher se sente acolhida, ela cuida melhor de si mesma — e isso transforma a saúde feminina de dentro para fora.',
 
       '## Considerações Finais',
-      'Cuidar da saúde ginecológica é um ato de amor-próprio. Não espere surgir algum sintoma para agendar sua consulta — a prevenção é sempre o melhor caminho. Este artigo tem caráter informativo e não substitui a avaliação médica individualizada.',
+      'Cuidar da saúde ginecológica é um ato de amor-próprio. Não espere surgir algum sintoma para agendar sua consulta — a prevenção é sempre o melhor caminho. A Dra. Andresa Martin Louzada atende no Espaço Humanizare em Presidente Prudente, com atendimento humanizado e completo em ginecologia, obstetrícia, DIU, Implanon, pré-natal, menopausa e microscopia vaginal. Este artigo tem caráter informativo e não substitui a avaliação médica individualizada.',
     ],
   },
 
@@ -450,7 +450,7 @@ export const articles: Record<string, Article> = {
       'Busque atendimento imediato se apresentar: sangramento vaginal intenso, dor abdominal severa, perda de líquido amniótico antes da 37ª semana, diminuição dos movimentos fetais, pressão arterial elevada, dor de cabeça intensa, inchaço súbito, febre, sintomas de infecção ou sinais de depressão pós-parto (tristeza intensa, choro sem motivo, dificuldade de vínculo com o bebê).',
 
       '## Considerações Finais',
-      'A gestação é única para cada mulher. Ter uma obstetra de confiança ao seu lado faz toda a diferença para vivê-la com segurança e tranquilidade. Agende sua consulta e inicie o acompanhamento o quanto antes. Este artigo tem caráter informativo e não substitui a consulta médica individualizada.',
+      'A gestação é única para cada mulher. Ter uma obstetra de confiança ao seu lado faz toda a diferença para vivê-la com segurança e tranquilidade. A Dra. Andresa Martin Louzada acompanha gestações com pré-natal humanizado e parto respeitoso no Espaço Humanizare em Presidente Prudente. Agende sua consulta e inicie o acompanhamento o quanto antes. Este artigo tem caráter informativo e não substitui a consulta médica individualizada.',
     ],
   },
 };
