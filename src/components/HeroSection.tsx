@@ -4,7 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Heart, Baby, Stethoscope, Flower2, MapPin, Award } from 'lucide-react';
-import { IMAGES } from '@/lib/images';
+import { IMAGES, VIDEOS } from '@/lib/images';
+import HeroVideo from './HeroVideo';
 
 export default function HeroSection() {
   return (
@@ -89,22 +90,15 @@ export default function HeroSection() {
             className="lg:col-span-7 relative"
           >
             <div className="relative flex justify-center lg:justify-end">
-              {/* Moldura decorativa atrás da foto */}
+              {/* Moldura decorativa atrás do vídeo */}
               <div className="absolute -top-4 -right-4 w-[85%] max-w-[420px] aspect-[4/5] rounded-3xl bg-gradient-to-br from-secondary-200/40 to-gold-200/30 hidden lg:block" />
 
-              {/* Foto principal */}
-              <div className="relative w-[85%] max-w-[420px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-secondary-900/15 ring-1 ring-white/50">
-                <Image
-                  src={IMAGES.heroPhoto}
-                  alt="Dra. Andresa Martin Louzada — Ginecologista e Obstetra"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                  sizes="(max-width: 768px) 90vw, (max-width: 1024px) 50vw, 420px"
-                />
-                {/* Gradient sutil na base da foto */}
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/20 to-transparent" />
-              </div>
+              {/* Vídeo principal — estilo “vendedor de curso” */}
+              <HeroVideo
+                src={VIDEOS.heroVideo}
+                poster={IMAGES.heroPhoto}
+                className="relative w-[85%] max-w-[420px] aspect-[4/5] rounded-3xl shadow-2xl shadow-secondary-900/15 ring-1 ring-white/50"
+              />
 
 
 

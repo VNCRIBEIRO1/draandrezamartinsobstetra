@@ -50,6 +50,11 @@ export const IMAGES = {
   extra8: '/images/dra-andresa-extra-8.jpeg',
 } as const;
 
+/* ─── Video mappings ─── */
+export const VIDEOS = {
+  heroVideo: '/videos/hero-video.mp4',
+} as const;
+
 /* ─── Blog article images mapped by slug ─── */
 export const ARTICLE_IMAGES: Record<string, string> = {
   'importancia-pre-natal': '/images/generated/importancia-pre-natal.jpg',
