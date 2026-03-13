@@ -11,6 +11,11 @@
 
   body {
     @apply font-sans text-gray-800 bg-white;
+    background-image: url('/images/background-botanical.jpg');
+    background-repeat: repeat;
+    background-size: 900px auto;
+    background-attachment: fixed;
+    background-blend-mode: normal;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -66,12 +71,12 @@
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-md hover:shadow-xl 
+    @apply bg-white/85 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-xl 
            transition-all duration-300 overflow-hidden;
   }
 
   .card-elevated {
-    @apply bg-white rounded-2xl shadow-lg hover:shadow-2xl
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl
            transition-all duration-300 overflow-hidden
            border border-secondary-200 hover:border-primary-200;
   }

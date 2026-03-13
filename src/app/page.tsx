@@ -62,7 +62,7 @@ export default function HomePage() {
       <HeroSection />
 
       {/* Áreas de Atuação */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white/80 backdrop-blur-sm">
         <div className="container-custom">
           <AnimatedSection>
             <SectionHeader
@@ -85,7 +85,7 @@ export default function HomePage() {
       </section>
 
       {/* Sobre - Preview */}
-      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-beige">
+      <section className="py-20 bg-gradient-to-br from-baby-sage/80 via-baby-cream/85 to-baby-beige/80">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection>
@@ -172,7 +172,7 @@ export default function HomePage() {
       <GoogleReviews />
 
       {/* Blog Preview */}
-      <section className="py-20 bg-gradient-to-br from-baby-sage via-baby-cream to-baby-beige">
+      <section className="py-20 bg-gradient-to-br from-baby-sage/80 via-baby-cream/85 to-baby-beige/80">
         <div className="container-custom">
           <AnimatedSection>
             <SectionHeader
@@ -195,7 +195,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ - SEO (Perguntas Frequentes) */}
-      <section className="py-20 bg-white" id="perguntas-frequentes">
+      <section className="py-20 bg-white/80 backdrop-blur-sm" id="perguntas-frequentes">
         <div className="container-custom">
           <AnimatedSection>
             <SectionHeader

@@ -9,7 +9,7 @@ import HeroVideo from './HeroVideo';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-baby-sage via-baby-cream to-baby-beige overflow-hidden">
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-baby-sage/80 via-baby-cream/85 to-baby-beige/80 overflow-hidden">
       {/* Background subtle texture */}
       <div className="absolute inset-0">
         <Image
