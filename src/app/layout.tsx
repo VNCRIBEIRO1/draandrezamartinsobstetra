@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
+import Script from 'next/script';
 import LayoutShell from '@/components/LayoutShell';
 import { ALL_KEYWORDS, GEO_META } from '@/lib/seo';
 import { siteConfig } from '@/lib/site-config';
@@ -9,6 +10,7 @@ const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-int
 const playfair = Playfair_Display({ subsets: ['latin'], display: 'swap', variable: '--font-playfair' });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || siteConfig.url;
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-2ZKX1C37Q5';
 
 export const viewport: Viewport = {
   themeColor: '#8a9b80',
@@ -145,6 +147,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Preconnect para performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+        {/* Google Analytics 4 — consent default: denied (LGPD) */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('consent', 'default', {
+            'analytics_storage': 'denied',
+            'ad_storage': 'denied'
+          });
+          gtag('config', '${GA_ID}');
+        `}</Script>
       </head>
       <body className="min-h-screen flex flex-col font-sans">
         <LayoutShell>{children}</LayoutShell>

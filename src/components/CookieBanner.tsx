@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { X, Cookie, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
@@ -16,12 +16,16 @@ export default function CookieBanner() {
     localStorage.setItem('cookies-accepted', 'true');
     localStorage.setItem('cookies-accepted-at', new Date().toISOString());
     setVisible(false);
+    // Destrava o Google Analytics após consentimento (LGPD)
+    window.gtag?.('consent', 'update', { analytics_storage: 'granted' });
   };
 
   const refuse = () => {
     localStorage.setItem('cookies-accepted', 'essential-only');
     localStorage.setItem('cookies-accepted-at', new Date().toISOString());
     setVisible(false);
+    // Mantém Analytics bloqueado
+    window.gtag?.('consent', 'update', { analytics_storage: 'denied' });
   };
 
   if (!visible) return null;
@@ -36,12 +40,12 @@ export default function CookieBanner() {
           <div className="flex-1">
             <h3 className="text-sm font-bold text-gray-900 mb-1">Privacidade e Cookies</h3>
             <p className="text-sm text-gray-600 mb-3">
-              Utilizamos cookies essenciais para o funcionamento do site e cookies de autenticação para o painel administrativo. 
-              Seus dados são protegidos conforme a{' '}
+              Utilizamos cookies essenciais para o funcionamento do site e cookies analíticos
+              (Google Analytics) para melhorar sua experiência. Seus dados são protegidos
+              conforme a{' '}
               <Link href="/politica-privacidade" className="text-secondary-500 underline font-medium">
                 LGPD (Lei 13.709/2018)
-              </Link>. 
-              Não utilizamos cookies de rastreamento ou publicidade.
+              </Link>.
             </p>
             <div className="flex flex-col sm:flex-row gap-2">
               <button onClick={accept} className="btn-primary text-sm px-6 py-2">

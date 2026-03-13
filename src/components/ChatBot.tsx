@@ -487,10 +487,21 @@ export default function ChatBot() {
         const link = buildWhatsAppLink(collectingData);
         setCollectingData({ step: null });
         await simulateTyping('✅ **Agendamento registrado!**\n\nEnvie a confirmação pelo WhatsApp para a secretária finalizar:', undefined, { whatsappLink: link });
-        setTimeout(() => addMessage('Posso ajudar em mais alguma coisa?', 'bot', [
-          { label: 'Sim, tenho outra dúvida', value: 'inicio', icon: <Heart className="w-4 h-4" /> },
-          { label: 'Não, obrigada!', value: 'encerrar' },
-        ]), 1500);
+        setTimeout(() => {
+          const jaAvaliou = localStorage.getItem('feedback-prompted');
+          if (!jaAvaliou) {
+            addMessage('Que ótimo! 🌸 Você teria 30 segundos para avaliar o atendimento da Dra. Andresa no Google? Isso nos ajuda muito a cuidar de mais mulheres! 💗', 'bot', [
+              { label: '⭐ Avaliar no Google', value: 'feedback_google', icon: <Heart className="w-4 h-4" /> },
+              { label: 'Sim, outra dúvida', value: 'inicio', icon: <Heart className="w-4 h-4" /> },
+              { label: 'Não, obrigada!', value: 'encerrar' },
+            ]);
+          } else {
+            addMessage('Posso ajudar em mais alguma coisa?', 'bot', [
+              { label: 'Sim, tenho outra dúvida', value: 'inicio', icon: <Heart className="w-4 h-4" /> },
+              { label: 'Não, obrigada!', value: 'encerrar' },
+            ]);
+          }
+        }, 1500);
         break;
       }
       case 'confirmar_nao':
@@ -505,6 +516,17 @@ export default function ChatBot() {
             { label: '❌ Não', value: 'inicio', icon: <ArrowLeft className="w-4 h-4" /> },
           ]
         );
+        break;
+      case 'feedback_google':
+        localStorage.setItem('feedback-prompted', 'true');
+        window.open(
+          'https://search.google.com/local/writereview?placeid=ChIJU71J-dX1k5QRmmYRjylYvCw',
+          '_blank'
+        );
+        await simulateTyping('Muito obrigada! 🌸 Sua avaliação faz toda a diferença! 💗\n\nSe precisar de mais alguma coisa, é só chamar.', [
+          { label: 'Sim, tenho outra dúvida', value: 'inicio', icon: <Heart className="w-4 h-4" /> },
+          { label: 'Não, obrigada!', value: 'encerrar' },
+        ]);
         break;
       case 'encerrar':
         addMessage('Não, obrigada!', 'user');
