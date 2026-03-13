@@ -13,15 +13,16 @@ interface HeroVideoProps {
 
 /**
  * Vídeo estilo "vendedor de curso":
- * - Autoplay muted + loop
+ * - Começa pausado com poster + botão play grande
+ * - Ao clicar, inicia com VOLUME MÁXIMO e som
  * - Sem barra de progresso, sem controles nativos
- * - Click/tap para pausar e retomar — sem botões fixos visíveis
- * - Indicador visual breve (ícone play/pause) aparece por 800ms no clique
+ * - Click/tap para pausar e retomar
  * - Fallback para poster image se o vídeo falhar
  */
 export default function HeroVideo({ src, poster, className = '' }: HeroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [showIndicator, setShowIndicator] = useState(false);
   const [hasError, setHasError] = useState(false);
   const indicatorTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -32,10 +33,22 @@ export default function HeroVideo({ src, poster, className = '' }: HeroVideoProp
     };
   }, []);
 
-  const togglePlay = useCallback(() => {
+  const startVideo = useCallback(() => {
     const video = videoRef.current;
     if (!video || hasError) return;
 
+    // Primeiro clique: desmuta e coloca volume máximo
+    if (!hasStarted) {
+      video.muted = false;
+      video.volume = 1.0;
+      video.currentTime = 0;
+      video.play().catch(() => {});
+      setHasStarted(true);
+      setIsPlaying(true);
+      return;
+    }
+
+    // Cliques subsequentes: toggle pause/resume
     if (video.paused) {
       video.play().catch(() => {});
       setIsPlaying(true);
@@ -48,7 +61,7 @@ export default function HeroVideo({ src, poster, className = '' }: HeroVideoProp
     setShowIndicator(true);
     if (indicatorTimeout.current) clearTimeout(indicatorTimeout.current);
     indicatorTimeout.current = setTimeout(() => setShowIndicator(false), 800);
-  }, [hasError]);
+  }, [hasError, hasStarted]);
 
   // Fallback: mostrar poster se vídeo falhar
   if (hasError && poster) {
@@ -69,14 +82,14 @@ export default function HeroVideo({ src, poster, className = '' }: HeroVideoProp
   return (
     <div
       className={`relative cursor-pointer overflow-hidden select-none ${className}`}
-      onClick={togglePlay}
+      onClick={startVideo}
       role="button"
       tabIndex={0}
       aria-label={isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo'}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          togglePlay();
+          startVideo();
         }
       }}
     >
@@ -85,8 +98,6 @@ export default function HeroVideo({ src, poster, className = '' }: HeroVideoProp
         ref={videoRef}
         src={src}
         poster={poster}
-        autoPlay
-        muted
         loop
         playsInline
         preload="auto"
@@ -121,16 +132,25 @@ export default function HeroVideo({ src, poster, className = '' }: HeroVideoProp
         )}
       </AnimatePresence>
 
-      {/* Play persistente (sutil) quando vídeo está pausado */}
+      {/* Botão play quando pausado */}
       {!isPlaying && !showIndicator && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="absolute inset-0 flex items-center justify-center z-10"
         >
-          <div className="w-16 h-16 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center hover:bg-black/40 transition-colors">
-            <Play className="w-7 h-7 text-white ml-1" fill="white" />
+          <div className={`rounded-full backdrop-blur-sm flex items-center justify-center transition-colors ${
+            hasStarted
+              ? 'w-16 h-16 bg-black/25 hover:bg-black/40'
+              : 'w-20 h-20 bg-secondary-500/90 hover:bg-secondary-600/90 shadow-lg shadow-secondary-500/30'
+          }`}>
+            <Play className={`text-white ml-1 ${hasStarted ? 'w-7 h-7' : 'w-9 h-9'}`} fill="white" />
           </div>
+          {!hasStarted && (
+            <p className="absolute bottom-8 text-white text-sm font-medium drop-shadow-lg animate-pulse">
+              Clique para assistir
+            </p>
+          )}
         </motion.div>
       )}
 
